@@ -51,7 +51,7 @@ public class Library extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(btn);
 
-        Scene scene = new Scene(getAddPublisherView(), 300, 250);
+        Scene scene = new Scene(getAddSectionView(), 300, 250);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
@@ -165,6 +165,19 @@ public class Library extends Application {
 
         
         VBox vbox = new VBox(15, hboxPublisherName, hboxPublisherAddress);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        return vbox;
+    }
+
+    private VBox getAddSectionView() {
+        Label lbSectionName = new Label("Section Name");
+        TextField tfSectionName = new TextField();
+        tfSectionName.setPromptText("Section Name");
+        HBox hboxSectionName = new HBox(10, lbSectionName, tfSectionName);
+
+        
+        VBox vbox = new VBox(15, hboxSectionName);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
