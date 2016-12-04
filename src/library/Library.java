@@ -13,6 +13,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -195,13 +196,14 @@ public class Library extends Application {
 
         Label lbSalary = new Label("Salary");
         lbSalary.setMinWidth(minWidthLabels);
-
         TextField tfSalary = new TextField();
         tfSalary.setMinWidth(minWidth);
         HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
         Button btnAddEmployee = new Button("+");
 
-        VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress, hboxSalary, btnAddEmployee);
+        CheckBox chIsAdmin = new CheckBox("Admin Privileges");
+        VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress, 
+                                 hboxSalary,chIsAdmin, btnAddEmployee);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
