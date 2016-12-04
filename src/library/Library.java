@@ -26,6 +26,8 @@ import javafx.stage.Stage;
  *
  * @author abdelrahman
  */
+
+
 public class Library extends Application {
 
     private int minWidth = 200;
