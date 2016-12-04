@@ -26,8 +26,6 @@ import javafx.stage.Stage;
  *
  * @author abdelrahman
  */
-
-
 public class Library extends Application {
 
     private int minWidth = 200;
@@ -37,8 +35,8 @@ public class Library extends Application {
     public void start(Stage primaryStage) {
 
         GridPane gridPane = new GridPane();
-        gridPane.addColumn(0, getAddMemberView(), getSignInView());
-        gridPane.addColumn(1, getAddBookView(), getAddSectionView());
+        gridPane.addColumn(0, getAddMemberView(), getSignInView(), getAddPublisherView());
+        gridPane.addColumn(1, getAddBookView(), getAddSectionView(), getAddEmployeeView());
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setPadding(new Insets(10));
 
@@ -169,6 +167,61 @@ public class Library extends Application {
 
         Button btnAddSection = new Button("+");
         VBox vbox = new VBox(15, hboxSectionName, btnAddSection);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        return vbox;
+    }
+
+    private VBox getAddEmployeeView() {
+        Label lbEmployeeName = new Label("Employee Name");
+        lbEmployeeName.setMinWidth(minWidthLabels);
+
+        TextField tfEmployeeName = new TextField();
+        tfEmployeeName.setMinWidth(minWidth);
+        tfEmployeeName.setPromptText("Employee Name");
+        HBox hboxEmployeeName = new HBox(10, lbEmployeeName, tfEmployeeName);
+
+        Label lbEmployeeAddress = new Label("Employee Address");
+        lbEmployeeAddress.setMinWidth(minWidthLabels);
+
+        TextField tfEmployeeAddress = new TextField();
+        tfEmployeeAddress.setMinWidth(minWidth);
+        tfEmployeeAddress.setPromptText("Employee Address");
+        HBox hboxEmployeeAddress = new HBox(10, lbEmployeeAddress, tfEmployeeAddress);
+
+        Label lbSalary = new Label("Salary");
+        lbSalary.setMinWidth(minWidthLabels);
+
+        TextField tfSalary = new TextField();
+        tfSalary.setMinWidth(minWidth);
+        HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
+        Button btnAddEmployee = new Button("+");
+
+        VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress, hboxSalary, btnAddEmployee);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        return vbox;
+    }
+
+    private VBox getAddPublisherView() {
+        Label lbPublisherName = new Label("Publisher Name");
+        lbPublisherName.setMinWidth(minWidthLabels);
+
+        TextField tfPublisherName = new TextField();
+        tfPublisherName.setMinWidth(minWidth);
+        tfPublisherName.setPromptText("Publisher Name");
+        HBox hboxPublisherName = new HBox(10, lbPublisherName, tfPublisherName);
+
+        Label lbPublisherAddress = new Label("Publisher Address");
+        lbPublisherAddress.setMinWidth(minWidthLabels);
+
+        TextField tfPublisherAddress = new TextField();
+        tfPublisherAddress.setMinWidth(minWidth);
+        tfPublisherAddress.setPromptText("Publisher Address");
+        HBox hboxPublisherAddress = new HBox(10, lbPublisherAddress, tfPublisherAddress);
+
+        Button btnAddPublisher = new Button("+");
+        VBox vbox = new VBox(15, hboxPublisherName, hboxPublisherAddress, btnAddPublisher);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
