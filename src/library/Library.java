@@ -8,6 +8,7 @@ package library;
 import java.time.LocalDate;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -16,6 +17,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -37,10 +40,12 @@ public class Library extends Application {
         GridPane gridPane = new GridPane();
         gridPane.addColumn(0, getAddMemberView(), getSignInView(), getAddPublisherView());
         gridPane.addColumn(1, getAddBookView(), getAddSectionView(), getAddEmployeeView());
+        gridPane.addColumn(2, getPrevilageControlView());
+
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setPadding(new Insets(10));
 
-        Scene scene = new Scene(gridPane, 800, 600);
+        Scene scene = new Scene(gridPane, 1250, 600);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
@@ -225,6 +230,22 @@ public class Library extends Application {
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
+    }
+
+    private VBox getPrevilageControlView() {
+        TableView table = new TableView();
+        TableColumn tcIDCol = new TableColumn("#ID");
+        TableColumn tcNameCol = new TableColumn("First Name");
+        TableColumn tcPrevilage1 = new TableColumn("Previlage #1");
+        TableColumn tcPrevilage2 = new TableColumn("Previlage #2");
+        TableColumn tcPrevilage3 = new TableColumn("Previlage #3");
+        TableColumn tcPrevilage4 = new TableColumn("Previlage #4");
+        table.getColumns().addAll(tcIDCol, tcNameCol, tcPrevilage1, tcPrevilage2, tcPrevilage3, tcPrevilage4);
+        VBox vbox = new VBox(15, table);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        return vbox;
+
     }
 
     /**
