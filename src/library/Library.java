@@ -5,9 +5,13 @@
  */
 package library;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.Map;
+import java.util.Observable;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -46,7 +51,7 @@ public class Library extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(btn);
 
-        Scene scene = new Scene(getAddBookView(), 300, 250);
+        Scene scene = new Scene(getAddMemberView(), 300, 250);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
@@ -83,14 +88,44 @@ public class Library extends Application {
         ComboBox<String> cbPublisher = new ComboBox<>();
         HBox hboxPublisher = new HBox(10, lbPublisher, cbPublisher);
 
-        ListView<CheckBox> lvAuthor = new ListView<>();
+        ListView lvAuthor = new ListView();
         lvAuthor.setItems(FXCollections.observableArrayList());
-        lvAuthor.getItems().add(new CheckBox("Name 1"));
-        lvAuthor.getItems().add(new CheckBox("Name 2"));
-        lvAuthor.getItems().add(new CheckBox("Name 3"));
-        //use setUserData to set data for checkBox
-        //new CheckBox().setUserData();
+        Button btnAddAuthor = new Button("+");
+        lvAuthor.getItems().add(new HBox(5, new TextField("Author Name 1"), btnAddAuthor));
+        btnAddAuthor.setOnAction(e -> {
+            int size = lvAuthor.getItems().size();
+            HBox hbox = ((HBox) lvAuthor.getItems().get(size - 1));
+            hbox.getChildren().remove(btnAddAuthor);
+            lvAuthor.getItems().add(new HBox(5, new TextField("Author Name 1"), btnAddAuthor));
+        });
+
         VBox vbox = new VBox(15, hboxBookName, hboxSection, hboxPublisher, lvAuthor);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        return vbox;
+    }
+
+    private VBox getAddMemberView() {
+        Label lbMemberName = new Label("Member Name");
+        TextField tfMemberName = new TextField();
+        tfMemberName.setPromptText("Member Name");
+        HBox hboxMemberName = new HBox(10, lbMemberName, tfMemberName);
+
+        Label lbMemberAddress = new Label("Member Address");
+        TextField tfMemberAddress = new TextField();
+        tfMemberAddress.setPromptText("Member Address");
+        HBox hboxMemberAddress = new HBox(10, lbMemberAddress, tfMemberAddress);
+
+        Label lbExpireDate = new Label("Expire Date");
+        DatePicker dpExpireDate = new DatePicker(LocalDate.now());
+        HBox hboxExpireDate = new HBox(10, lbExpireDate, dpExpireDate);
+
+        Label lbPhoneNumber = new Label("Phone Number");
+        TextField tfPhoneNumber = new TextField();
+        tfPhoneNumber.setPromptText("Phone Number");
+        HBox hboxPhoneNumber = new HBox(10, lbPhoneNumber, tfPhoneNumber);
+
+        VBox vbox = new VBox(15, hboxMemberName, hboxMemberAddress, hboxPhoneNumber, hboxExpireDate);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
