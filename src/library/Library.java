@@ -24,6 +24,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -51,7 +53,7 @@ public class Library extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(btn);
 
-        Scene scene = new Scene(getAddSectionView(), 300, 250);
+        Scene scene = new Scene(getPrevilageControlView(), 300, 250);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
@@ -130,7 +132,7 @@ public class Library extends Application {
         vbox.setPadding(new Insets(10));
         return vbox;
     }
-    
+
     private VBox getAddEmployeeView() {
         Label lbEmployeeName = new Label("Employee Name");
         TextField tfEmployeeName = new TextField();
@@ -163,7 +165,6 @@ public class Library extends Application {
         tfPublisherAddress.setPromptText("Publisher Address");
         HBox hboxPublisherAddress = new HBox(10, lbPublisherAddress, tfPublisherAddress);
 
-        
         VBox vbox = new VBox(15, hboxPublisherName, hboxPublisherAddress);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
@@ -176,13 +177,30 @@ public class Library extends Application {
         tfSectionName.setPromptText("Section Name");
         HBox hboxSectionName = new HBox(10, lbSectionName, tfSectionName);
 
-        
         VBox vbox = new VBox(15, hboxSectionName);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
     }
 
+    private VBox getPrevilageControlView() {
+        TableView table = new TableView();
+        TableColumn tcIDCol = new TableColumn("#ID");
+        TableColumn tcNameCol = new TableColumn("First Name");
+        TableColumn tcPrevilage1 = new TableColumn("Previlage #1");
+        TableColumn tcPrevilage2 = new TableColumn("Previlage #2");
+        TableColumn tcPrevilage3 = new TableColumn("Previlage #3");
+        TableColumn tcPrevilage4 = new TableColumn("Previlage #4");
+        table.getColumns().addAll(tcIDCol, tcNameCol, tcPrevilage1, tcPrevilage2, tcPrevilage3, tcPrevilage4);
+        VBox vbox = new VBox(15,table);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        return vbox;
+
+    }
+    private ObservableList<Object> getEmployeeData(){
+        ObservableList<Object>
+    }
 
     /**
      * @param args the command line arguments
