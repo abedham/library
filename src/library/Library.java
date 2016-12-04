@@ -51,7 +51,7 @@ public class Library extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(btn);
 
-        Scene scene = new Scene(getAddBookView(), 300, 250);
+        Scene scene = new Scene(getAddPublisherView(), 300, 250);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
@@ -147,6 +147,24 @@ public class Library extends Application {
         HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
 
         VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress, hboxSalary);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        return vbox;
+    }
+
+    private VBox getAddPublisherView() {
+        Label lbPublisherName = new Label("Publisher Name");
+        TextField tfPublisherName = new TextField();
+        tfPublisherName.setPromptText("Publisher Name");
+        HBox hboxPublisherName = new HBox(10, lbPublisherName, tfPublisherName);
+
+        Label lbPublisherAddress = new Label("Publisher Address");
+        TextField tfPublisherAddress = new TextField();
+        tfPublisherAddress.setPromptText("Publisher Address");
+        HBox hboxPublisherAddress = new HBox(10, lbPublisherAddress, tfPublisherAddress);
+
+        
+        VBox vbox = new VBox(15, hboxPublisherName, hboxPublisherAddress);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
