@@ -51,7 +51,7 @@ public class Library extends Application {
         StackPane root = new StackPane();
         root.getChildren().add(btn);
 
-        Scene scene = new Scene(getAddMemberView(), 300, 250);
+        Scene scene = new Scene(getAddBookView(), 300, 250);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
@@ -130,6 +130,28 @@ public class Library extends Application {
         vbox.setPadding(new Insets(10));
         return vbox;
     }
+    
+    private VBox getAddEmployeeView() {
+        Label lbEmployeeName = new Label("Employee Name");
+        TextField tfEmployeeName = new TextField();
+        tfEmployeeName.setPromptText("Employee Name");
+        HBox hboxEmployeeName = new HBox(10, lbEmployeeName, tfEmployeeName);
+
+        Label lbEmployeeAddress = new Label("Employee Address");
+        TextField tfEmployeeAddress = new TextField();
+        tfEmployeeAddress.setPromptText("Employee Address");
+        HBox hboxEmployeeAddress = new HBox(10, lbEmployeeAddress, tfEmployeeAddress);
+
+        Label lbSalary = new Label("Salary");
+        TextField tfSalary = new TextField();
+        HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
+
+        VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress, hboxSalary);
+        vbox.setAlignment(Pos.CENTER);
+        vbox.setPadding(new Insets(10));
+        return vbox;
+    }
+
 
     /**
      * @param args the command line arguments
