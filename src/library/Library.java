@@ -1,7 +1,7 @@
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * and  open the template in the editor.
  */
 package library;
 
@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -41,7 +42,6 @@ public class Library extends Application {
         GridPane gridPane = new GridPane();
         gridPane.addColumn(0, getAddMemberView(), signIn, getAddPublisherView());
         gridPane.addColumn(1, getAddBookView(), getAddSectionView(), getAddEmployeeView());
-        gridPane.addColumn(2, getPrevilageControlView());
 
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setPadding(new Insets(10));
@@ -197,13 +197,14 @@ public class Library extends Application {
 
         Label lbSalary = new Label("Salary");
         lbSalary.setMinWidth(minWidthLabels);
-
         TextField tfSalary = new TextField();
         tfSalary.setMinWidth(minWidth);
         HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
         Button btnAddEmployee = new Button("+");
 
-        VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress, hboxSalary, btnAddEmployee);
+        CheckBox chIsAdmin = new CheckBox("Admin Privileges");
+        VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress, 
+                                 hboxSalary,chIsAdmin, btnAddEmployee);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
@@ -233,21 +234,6 @@ public class Library extends Application {
         return vbox;
     }
 
-    private VBox getPrevilageControlView() {
-        TableView table = new TableView();
-        TableColumn tcIDCol = new TableColumn("#ID");
-        TableColumn tcNameCol = new TableColumn("First Name");
-        TableColumn tcPrevilage1 = new TableColumn("Previlage #1");
-        TableColumn tcPrevilage2 = new TableColumn("Previlage #2");
-        TableColumn tcPrevilage3 = new TableColumn("Previlage #3");
-        TableColumn tcPrevilage4 = new TableColumn("Previlage #4");
-        table.getColumns().addAll(tcIDCol, tcNameCol, tcPrevilage1, tcPrevilage2, tcPrevilage3, tcPrevilage4);
-        VBox vbox = new VBox(15, table);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(10));
-        return vbox;
-
-    }
 
     /**
      * @param args the command line arguments
