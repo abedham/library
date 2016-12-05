@@ -8,7 +8,6 @@ package library;
 import java.time.LocalDate;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,6 +23,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import library.Views.SignIn;
 
 /**
  *
@@ -36,9 +36,10 @@ public class Library extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-
+        
+        SignIn signIn = new SignIn();
         GridPane gridPane = new GridPane();
-        gridPane.addColumn(0, getAddMemberView(), getSignInView(), getAddPublisherView());
+        gridPane.addColumn(0, getAddMemberView(), signIn, getAddPublisherView());
         gridPane.addColumn(1, getAddBookView(), getAddSectionView(), getAddEmployeeView());
         gridPane.addColumn(2, getPrevilageControlView());
 
