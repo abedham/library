@@ -24,6 +24,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import library.Views.AddMember;
 import library.Views.SignIn;
 
 /**
@@ -37,10 +38,11 @@ public class Library extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        
+
         SignIn signIn = new SignIn();
+        AddMember addMember = new AddMember();
         GridPane gridPane = new GridPane();
-        gridPane.addColumn(0, getAddMemberView(), signIn, getAddPublisherView());
+        gridPane.addColumn(0, addMember, signIn, getAddPublisherView());
         gridPane.addColumn(1, getAddBookView(), getAddSectionView(), getAddEmployeeView());
 
         gridPane.setAlignment(Pos.CENTER);
@@ -203,8 +205,8 @@ public class Library extends Application {
         Button btnAddEmployee = new Button("+");
 
         CheckBox chIsAdmin = new CheckBox("Admin Privileges");
-        VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress, 
-                                 hboxSalary,chIsAdmin, btnAddEmployee);
+        VBox vbox = new VBox(15, hboxEmployeeName, hboxEmployeeAddress,
+                hboxSalary, chIsAdmin, btnAddEmployee);
         vbox.setAlignment(Pos.CENTER);
         vbox.setPadding(new Insets(10));
         return vbox;
@@ -233,7 +235,6 @@ public class Library extends Application {
         vbox.setPadding(new Insets(10));
         return vbox;
     }
-
 
     /**
      * @param args the command line arguments
