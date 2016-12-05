@@ -25,6 +25,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import library.Views.AddMember;
+import library.Views.AddPublisher;
 import library.Views.SignIn;
 
 /**
@@ -41,8 +42,10 @@ public class Library extends Application {
 
         SignIn signIn = new SignIn();
         AddMember addMember = new AddMember();
+        AddPublisher addPublisher = new AddPublisher();
+
         GridPane gridPane = new GridPane();
-        gridPane.addColumn(0, addMember, signIn, getAddPublisherView());
+        gridPane.addColumn(0, addMember, signIn, addPublisher);
         gridPane.addColumn(1, getAddBookView(), getAddSectionView(), getAddEmployeeView());
 
         gridPane.setAlignment(Pos.CENTER);
