@@ -34,6 +34,7 @@ public class AddBook extends VBox {
     private Label lbSection = new Label("Section");
 
     private TextField tfBookName = new TextField();
+    TextField tfAuthor;
 
     private ComboBox<String> cbSection = new ComboBox<>();
     private ComboBox<String> cbPublisher = new ComboBox<>();
@@ -75,19 +76,25 @@ public class AddBook extends VBox {
         hboxSection.setAlignment(Pos.CENTER);
 
         lvAuthor.setItems(FXCollections.observableArrayList());
-        lvAuthor.getItems().add(new HBox(5, new TextField("Author Name 1"), btnAddAuthor));
+        tfAuthor = new TextField();
+        tfAuthor.setPromptText("Author Name");
+        lvAuthor.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
         btnAddAuthor.setOnAction(e -> {
             int size = lvAuthor.getItems().size();
             HBox hbox = ((HBox) lvAuthor.getItems().get(size - 1));
             hbox.getChildren().remove(btnAddAuthor);
-            TextField tfAuthor = new TextField();
+            tfAuthor = new TextField();
             tfAuthor.setPromptText("Author Name");
             tfsAuthors.add(tfAuthor);
             lvAuthor.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
         });
+        HBox hblvAuthor = new HBox(lvAuthor);
+        hblvAuthor.setAlignment(Pos.CENTER);
+        hblvAuthor.autosize();
+        hblvAuthor.setPrefHeight(120);
 
         setSpacing(spacing);
-        getChildren().addAll(hboxBookName, hboxSection, hboxPublisher, lvAuthor, btnAddBook);
+        getChildren().addAll(hboxBookName, hboxSection, hboxPublisher, hblvAuthor, btnAddBook);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
 
