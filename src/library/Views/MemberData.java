@@ -5,7 +5,6 @@
  */
 package library.Views;
 
-import java.util.Observable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
