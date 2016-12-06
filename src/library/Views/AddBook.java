@@ -70,6 +70,10 @@ public class AddBook extends VBox {
 
         HBox hboxPublisher = new HBox(10, lbPublisher, cbPublisher);
 
+        hboxBookName.setAlignment(Pos.CENTER);
+        hboxPublisher.setAlignment(Pos.CENTER);
+        hboxSection.setAlignment(Pos.CENTER);
+
         lvAuthor.setItems(FXCollections.observableArrayList());
         lvAuthor.getItems().add(new HBox(5, new TextField("Author Name 1"), btnAddAuthor));
         btnAddAuthor.setOnAction(e -> {

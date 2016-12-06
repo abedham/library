@@ -57,6 +57,9 @@ public class SignIn extends VBox {
         HBox hboxPassword = new HBox(10, lbPassword, tfPassword);
         setBtnLogin(new Button("Login"));
 
+        hboxPassword.setAlignment(Pos.CENTER);
+        hboxUserName.setAlignment(Pos.CENTER);
+        
         setSpacing(spacing);
         getChildren().addAll(hboxUserName, hboxPassword, getBtnLogin());
         setAlignment(Pos.CENTER);

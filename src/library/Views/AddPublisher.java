@@ -49,6 +49,9 @@ public class AddPublisher extends VBox {
         tfPublisherAddress.setPromptText("Publisher Address");
         HBox hboxPublisherAddress = new HBox(10, lbPublisherAddress, tfPublisherAddress);
 
+        hboxPublisherAddress.setAlignment(Pos.CENTER);
+        hboxPublisherName.setAlignment(Pos.CENTER);
+        
         setSpacing(spacing);
         getChildren().addAll(hboxPublisherName, hboxPublisherAddress, btnAddPublisher);
         setAlignment(Pos.CENTER);

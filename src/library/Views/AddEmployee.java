@@ -58,6 +58,10 @@ public class AddEmployee extends VBox {
         tfSalary.setMinWidth(minWidth);
         HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
 
+        hboxSalary.setAlignment(Pos.CENTER);
+        hboxEmployeeName.setAlignment(Pos.CENTER);
+        hboxEmployeeAddress.setAlignment(Pos.CENTER);
+
         setSpacing(spacing);
         getChildren().addAll(hboxEmployeeName, hboxEmployeeAddress,
                 hboxSalary, chIsAdmin, btnAddEmployee);
