@@ -57,6 +57,7 @@ public class Library extends Application {
 
         TabPane tabPane = new TabPane();
         tabPane.setSide(Side.LEFT);
+
         Tab tab = new Tab();
         Tab tab2 = new Tab();
         Tab tab3 = new Tab();
@@ -74,23 +75,23 @@ public class Library extends Application {
         tab3.setContent(addBook);
         tab4.setContent(addSection);
         tab5.setContent(addEmployee);
-        
+
         tab.setText("Add Member");
         tab2.setText("Add Publisher");
         tab3.setText("Add Book");
         tab4.setText("Add Section");
         tab5.setText("Add Employee");
-        
-        tabPane.getTabs().addAll(tab, tab2, tab3, tab4,tab5);
+
+        tabPane.getTabs().addAll(tab, tab2, tab3, tab4, tab5);
 
         GridPane gridPane = new GridPane();
         gridPane.addColumn(0, addMember, signIn, addPublisher);
-        gridPane.addColumn(1, addBook, addSection, addEmployee);
+        gridPane.addColumn(1, addSection, addEmployee);
 
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setPadding(new Insets(10));
 
-        Scene scene = new Scene(tabPane, 1250, 600);
+        Scene scene = new Scene(tabPane, 800, 600);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);

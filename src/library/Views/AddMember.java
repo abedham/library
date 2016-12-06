@@ -70,6 +70,11 @@ public class AddMember extends VBox {
 
         HBox hboxPhoneNumber = new HBox(10, lbPhoneNumber, tfPhoneNumber);
 
+        hboxMemberName.setAlignment(Pos.CENTER);
+        hboxPhoneNumber.setAlignment(Pos.CENTER);
+        hboxExpireDate.setAlignment(Pos.CENTER);
+        hboxMemberAddress.setAlignment(Pos.CENTER);
+        
         setSpacing(spacing);
         getChildren().addAll(hboxMemberName, hboxMemberAddress,
                 hboxPhoneNumber, hboxExpireDate, btnAddMember);

@@ -37,6 +37,10 @@ public class AddEmployee extends VBox {
 
     private CheckBox chIsAdmin = new CheckBox("Admin Privileges");
 
+    public AddEmployee() {
+        initAddEmployeeView();
+    }
+
     private void initAddEmployeeView() {
         lbEmployeeName.setMinWidth(minWidthLabels);
 
@@ -53,6 +57,10 @@ public class AddEmployee extends VBox {
         lbSalary.setMinWidth(minWidthLabels);
         tfSalary.setMinWidth(minWidth);
         HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
+
+        hboxSalary.setAlignment(Pos.CENTER);
+        hboxEmployeeName.setAlignment(Pos.CENTER);
+        hboxEmployeeAddress.setAlignment(Pos.CENTER);
 
         setSpacing(spacing);
         getChildren().addAll(hboxEmployeeName, hboxEmployeeAddress,
