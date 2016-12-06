@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
@@ -81,41 +82,54 @@ public class SignIn extends VBox {
         AddSection addSection = new AddSection();
         AddEmployee addEmployee = new AddEmployee();
         MemberData memberData = new MemberData();
-        
+
         TabPane tabPane = new TabPane();
         tabPane.setSide(Side.LEFT);
 
-        Tab tab = new Tab();
-        Tab tab2 = new Tab();
-        Tab tab3 = new Tab();
-        Tab tab4 = new Tab();
-        Tab tab5 = new Tab();
-        Tab tab6 = new Tab();
+        Tab tabAddMember = new Tab();
+        Tab tabAddPublisher = new Tab();
+        Tab tabAddBook = new Tab();
+        Tab tabAddSection = new Tab();
+        Tab tabAddEmployee = new Tab();
+        Tab tabMemberData = new Tab();
 
-        tab.closableProperty().set(false);
-        tab2.closableProperty().set(false);
-        tab3.closableProperty().set(false);
-        tab4.closableProperty().set(false);
-        tab5.closableProperty().set(false);
-        tab6.closableProperty().set(false);
+        tabAddMember.closableProperty().set(false);
+        tabAddPublisher.closableProperty().set(false);
+        tabAddBook.closableProperty().set(false);
+        tabAddSection.closableProperty().set(false);
+        tabAddEmployee.closableProperty().set(false);
+        tabMemberData.closableProperty().set(false);
 
-        tab.setContent(addMember);
-        tab2.setContent(addPublisher);
-        tab3.setContent(addBook);
-        tab4.setContent(addSection);
-        tab5.setContent(addEmployee);
-        tab6.setContent(memberData);
+        tabAddMember.setContent(addMember);
+        tabAddPublisher.setContent(addPublisher);
+        tabAddBook.setContent(addBook);
+        tabAddSection.setContent(addSection);
+        tabAddEmployee.setContent(addEmployee);
+        tabMemberData.setContent(memberData);
 
-        tab.setText("Add Member");
-        tab2.setText("Add Publisher");
-        tab3.setText("Add Book");
-        tab4.setText("Add Section");
-        tab5.setText("Add Employee");
-        tab6.setText("Member Data");
+        tabAddMember.setText("Add Member");
+        tabAddPublisher.setText("Add Publisher");
+        tabAddBook.setText("Add Book");
+        tabAddSection.setText("Add Section");
+        tabAddEmployee.setText("Add Employee");
+        tabMemberData.setText("Member Data");
 
-        
-        tabPane.getTabs().addAll(tab, tab2, tab3, tab4, tab5, tab6);
+        if (true) {             /// if was an admin
+            tabPane.getTabs().addAll(tabAddMember, tabAddPublisher, tabAddBook,
+                    tabAddSection, tabAddEmployee, tabMemberData);
 
+        } else if (false) {              /// if was an employee
+            tabPane.getTabs().addAll(tabAddMember, tabAddPublisher, tabAddBook,
+                    tabAddSection, tabMemberData);
+
+        } else {             /// if wrong input
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Warning !");
+            alert.setHeaderText("Wrong credentials");
+            alert.setContentText("Please check your input");
+
+            alert.showAndWait();
+        }
         Scene scene = new Scene(tabPane);
         Stage stage = new Stage();
         stage.setTitle("Control Panel");
