@@ -10,6 +10,7 @@ import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
@@ -17,14 +18,19 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import library.Views.AddBook;
+import library.Views.AddEmployee;
 import library.Views.AddMember;
 import library.Views.AddPublisher;
 import library.Views.AddSection;
@@ -47,15 +53,44 @@ public class Library extends Application {
         AddPublisher addPublisher = new AddPublisher();
         AddBook addBook = new AddBook();
         AddSection addSection = new AddSection();
+        AddEmployee addEmployee = new AddEmployee();
+
+        TabPane tabPane = new TabPane();
+        tabPane.setSide(Side.LEFT);
+        Tab tab = new Tab();
+        Tab tab2 = new Tab();
+        Tab tab3 = new Tab();
+        Tab tab4 = new Tab();
+        Tab tab5 = new Tab();
+
+        tab.closableProperty().set(false);
+        tab2.closableProperty().set(false);
+        tab3.closableProperty().set(false);
+        tab4.closableProperty().set(false);
+        tab5.closableProperty().set(false);
+
+        tab.setContent(addMember);
+        tab2.setContent(addPublisher);
+        tab3.setContent(addBook);
+        tab4.setContent(addSection);
+        tab5.setContent(addEmployee);
         
+        tab.setText("Add Member");
+        tab2.setText("Add Publisher");
+        tab3.setText("Add Book");
+        tab4.setText("Add Section");
+        tab5.setText("Add Employee");
+        
+        tabPane.getTabs().addAll(tab, tab2, tab3, tab4,tab5);
+
         GridPane gridPane = new GridPane();
         gridPane.addColumn(0, addMember, signIn, addPublisher);
-        gridPane.addColumn(1, addBook, addSection, getAddEmployeeView());
+        gridPane.addColumn(1, addBook, addSection, addEmployee);
 
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setPadding(new Insets(10));
 
-        Scene scene = new Scene(gridPane, 1250, 600);
+        Scene scene = new Scene(tabPane, 1250, 600);
 
         primaryStage.setTitle("Hello World!");
         primaryStage.setScene(scene);
