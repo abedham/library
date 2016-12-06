@@ -6,6 +6,7 @@
 package library.Views;
 
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -20,43 +21,52 @@ import javafx.scene.layout.VBox;
  *
  * @author AbdelRahman
  */
-public class AddBook {
+public class AddBook extends VBox {
 
     private final int minWidth = 200;
     private final int minWidthLabels = 115;
     private final int spacing = 15;
     private final int padding = 10;
+    private Label lbBookName = new Label("Book Name");
+    private Label lbPublisher = new Label("Publisher");
+    private Label lbSection = new Label("Section");
 
-    private VBox getAddBookView() {
+    private TextField tfBookName = new TextField();
 
-        Label lbBookName = new Label("Book Name");
+    private ComboBox<String> cbSection = new ComboBox<>();
+    private ComboBox<String> cbPublisher = new ComboBox<>();
+
+    private ListView lvAuthor = new ListView();
+
+    private Button btnAddAuthor = new Button("+");
+    private Button btnAddBook = new Button("+");
+
+    public AddBook() {
+        initAddBookView();
+    }
+
+    private void initAddBookView() {
+
         lbBookName.setMinWidth(minWidthLabels);
 
-        TextField tfBookName = new TextField();
         tfBookName.setMinWidth(minWidth);
         tfBookName.setPromptText("Book Name");
 
         HBox hboxBookName = new HBox(10, lbBookName, tfBookName);
 
-        Label lbSection = new Label("Section");
         lbSection.setMinWidth(minWidthLabels);
 
-        ComboBox<String> cbSection = new ComboBox<>();
         cbSection.setMinWidth(minWidth);
 
         HBox hboxSection = new HBox(10, lbSection, cbSection);
 
-        Label lbPublisher = new Label("Publisher");
         lbPublisher.setMinWidth(minWidthLabels);
 
-        ComboBox<String> cbPublisher = new ComboBox<>();
         cbPublisher.setMinWidth(minWidth);
 
         HBox hboxPublisher = new HBox(10, lbPublisher, cbPublisher);
 
-        ListView lvAuthor = new ListView();
         lvAuthor.setItems(FXCollections.observableArrayList());
-        Button btnAddAuthor = new Button("+");
         lvAuthor.getItems().add(new HBox(5, new TextField("Author Name 1"), btnAddAuthor));
         btnAddAuthor.setOnAction(e -> {
             int size = lvAuthor.getItems().size();
@@ -65,11 +75,82 @@ public class AddBook {
             lvAuthor.getItems().add(new HBox(5, new TextField("Author Name 1"), btnAddAuthor));
         });
 
-        Button btnAddBook = new Button("+");
+        setSpacing(spacing);
+        getChildren().addAll(hboxBookName, hboxSection, hboxPublisher, lvAuthor, btnAddBook);
+        setAlignment(Pos.CENTER);
+        setPadding(new Insets(padding));
 
-        VBox vbox = new VBox(15, hboxBookName, hboxSection, hboxPublisher, lvAuthor, btnAddBook);
-        vbox.setAlignment(Pos.CENTER);
-        vbox.setPadding(new Insets(10));
-        return vbox;
+    }
+
+    public String getLbBookName() {
+        return lbBookName.getText();
+    }
+
+    public void setLbBookName(Label lbBookName) {
+        this.lbBookName = lbBookName;
+    }
+
+    public String getLbPublisher() {
+        return lbPublisher.getText();
+    }
+
+    public void setLbPublisher(Label lbPublisher) {
+        this.lbPublisher = lbPublisher;
+    }
+
+    public String getLbSection() {
+        return lbSection.getText();
+    }
+
+    public void setLbSection(Label lbSection) {
+        this.lbSection = lbSection;
+    }
+
+    public String getTfBookName() {
+        return tfBookName.getText();
+    }
+
+    public void setTfBookName(TextField tfBookName) {
+        this.tfBookName = tfBookName;
+    }
+
+    public ObservableList<String> getCbSection() {
+        return cbSection.getItems();
+    }
+
+    public void setCbSection(ComboBox<String> cbSection) {
+        this.cbSection = cbSection;
+    }
+
+    public ObservableList<String> getCbPublisher() {
+        return cbPublisher.getItems();
+    }
+
+    public void setCbPublisher(ComboBox<String> cbPublisher) {
+        this.cbPublisher = cbPublisher;
+    }
+
+    public ObservableList getLvAuthor() {
+        return lvAuthor.getItems();
+    }
+
+    public void setLvAuthor(ListView lvAuthor) {
+        this.lvAuthor = lvAuthor;
+    }
+
+    public Button getBtnAddAuthor() {
+        return btnAddAuthor;
+    }
+
+    public void setBtnAddAuthor(Button btnAddAuthor) {
+        this.btnAddAuthor = btnAddAuthor;
+    }
+
+    public Button getBtnAddBook() {
+        return btnAddBook;
+    }
+
+    public void setBtnAddBook(Button btnAddBook) {
+        this.btnAddBook = btnAddBook;
     }
 }
