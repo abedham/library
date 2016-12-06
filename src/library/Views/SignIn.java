@@ -66,7 +66,7 @@ public class SignIn extends VBox {
         hboxPassword.setAlignment(Pos.CENTER);
         hboxUserName.setAlignment(Pos.CENTER);
         btnLogin.setOnAction(e -> {
-            signIn();
+            checkCredentials();
         });
 
         setSpacing(spacing);
@@ -75,7 +75,7 @@ public class SignIn extends VBox {
         setPadding(new Insets(padding));
     }
 
-    private void signIn() {
+    private void checkCredentials() {
         AddMember addMember = new AddMember();
         AddPublisher addPublisher = new AddPublisher();
         AddBook addBook = new AddBook();
@@ -126,7 +126,7 @@ public class SignIn extends VBox {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Warning !");
             alert.setHeaderText("Wrong credentials");
-            alert.setContentText("Please check your input");
+            alert.setContentText("Please check username and password");
 
             alert.showAndWait();
         }
