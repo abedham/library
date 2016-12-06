@@ -5,6 +5,8 @@
  */
 package library.Views;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -41,6 +43,8 @@ public class AddBook extends VBox {
     private Button btnAddAuthor = new Button("+");
     private Button btnAddBook = new Button("+");
 
+    private List<TextField> tfsAuthors = new ArrayList<>();
+
     public AddBook() {
         initAddBookView();
     }
@@ -72,7 +76,10 @@ public class AddBook extends VBox {
             int size = lvAuthor.getItems().size();
             HBox hbox = ((HBox) lvAuthor.getItems().get(size - 1));
             hbox.getChildren().remove(btnAddAuthor);
-            lvAuthor.getItems().add(new HBox(5, new TextField("Author Name 1"), btnAddAuthor));
+            TextField tfAuthor = new TextField();
+            tfAuthor.setPromptText("Author Name");
+            tfsAuthors.add(tfAuthor);
+            lvAuthor.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
         });
 
         setSpacing(spacing);
@@ -152,5 +159,26 @@ public class AddBook extends VBox {
 
     public void setBtnAddBook(Button btnAddBook) {
         this.btnAddBook = btnAddBook;
+    }
+
+    public String getBookName() {
+        return tfBookName.getText();
+    }
+
+    public String getPublisherName() {
+        return cbPublisher.getSelectionModel().getSelectedItem();
+    }
+
+    public String getSectionName() {
+        return cbSection.getSelectionModel().getSelectedItem();
+    }
+
+    public List<String> getAuthors() {
+        List<String> authors = new ArrayList<>();
+        tfsAuthors.stream().filter((tfAuthor) -> (!tfAuthor.getText().trim().isEmpty()))
+                .forEach((tfAuthor) -> {
+                    authors.add(tfAuthor.getText());
+                });
+        return authors;
     }
 }

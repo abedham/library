@@ -37,6 +37,10 @@ public class AddEmployee extends VBox {
 
     private CheckBox chIsAdmin = new CheckBox("Admin Privileges");
 
+    public AddEmployee() {
+        initAddEmployeeView();
+    }
+
     private void initAddEmployeeView() {
         lbEmployeeName.setMinWidth(minWidthLabels);
 
@@ -126,4 +130,11 @@ public class AddEmployee extends VBox {
         this.chIsAdmin = chIsAdmin;
     }
 
+    public String getEmployeeName() {
+        return tfEmployeeName.getText();
+    }
+
+    public String getEmployeeAddress() {
+        return tfEmployeeAddress.getText();
+    }
 }

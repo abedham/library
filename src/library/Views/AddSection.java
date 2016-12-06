@@ -30,6 +30,10 @@ public class AddSection extends VBox {
 
     private Button btnAddSection = new Button("+");
 
+    public AddSection() {
+        initAddSectionView();
+    }
+
     private void initAddSectionView() {
 
         lbSectionName.setMinWidth(minWidthLabels);
@@ -68,4 +72,7 @@ public class AddSection extends VBox {
         this.btnAddSection = btnAddSection;
     }
 
+    public String getSectionName() {
+        return tfSectionName.getText();
+    }
 }
