@@ -34,6 +34,7 @@ import library.Views.AddEmployee;
 import library.Views.AddMember;
 import library.Views.AddPublisher;
 import library.Views.AddSection;
+import library.Views.MemberData;
 import library.Views.SignIn;
 
 /**
@@ -54,7 +55,7 @@ public class Library extends Application {
         AddBook addBook = new AddBook();
         AddSection addSection = new AddSection();
         AddEmployee addEmployee = new AddEmployee();
-
+        MemberData memberData = new MemberData();
         TabPane tabPane = new TabPane();
         tabPane.setSide(Side.LEFT);
 
@@ -63,26 +64,30 @@ public class Library extends Application {
         Tab tab3 = new Tab();
         Tab tab4 = new Tab();
         Tab tab5 = new Tab();
+        Tab tab6 = new Tab();
 
         tab.closableProperty().set(false);
         tab2.closableProperty().set(false);
         tab3.closableProperty().set(false);
         tab4.closableProperty().set(false);
         tab5.closableProperty().set(false);
+        tab6.closableProperty().set(false);
 
         tab.setContent(addMember);
         tab2.setContent(addPublisher);
         tab3.setContent(addBook);
         tab4.setContent(addSection);
         tab5.setContent(addEmployee);
+        tab6.setContent(memberData);
 
         tab.setText("Add Member");
         tab2.setText("Add Publisher");
         tab3.setText("Add Book");
         tab4.setText("Add Section");
         tab5.setText("Add Employee");
+        tab6.setText("Member Data");
 
-        tabPane.getTabs().addAll(tab, tab2, tab3, tab4, tab5);
+        tabPane.getTabs().addAll(tab, tab2, tab3, tab4, tab5, tab6);
 
         GridPane gridPane = new GridPane();
         gridPane.addColumn(0, addMember, signIn, addPublisher);

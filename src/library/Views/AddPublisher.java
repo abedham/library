@@ -51,7 +51,7 @@ public class AddPublisher extends VBox {
 
         hboxPublisherAddress.setAlignment(Pos.CENTER);
         hboxPublisherName.setAlignment(Pos.CENTER);
-        
+
         setSpacing(spacing);
         getChildren().addAll(hboxPublisherName, hboxPublisherAddress, btnAddPublisher);
         setAlignment(Pos.CENTER);
