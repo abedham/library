@@ -57,44 +57,46 @@ public class Library extends Application {
         AddEmployee addEmployee = new AddEmployee();
         MemberData memberData = new MemberData();
         TabPane tabPane = new TabPane();
-        tabPane.setSide(Side.LEFT);
+        tabPane.setSide(Side.TOP);
+
+        VBox vboxPubSec = new VBox(10, addPublisher, addSection);
+        vboxPubSec.setAlignment(Pos.CENTER);
+        vboxPubSec.setPadding(new Insets(10));
+
+        HBox hboxBook = new HBox(10, addBook, vboxPubSec);
+        hboxBook.setAlignment(Pos.CENTER);
+        hboxBook.setPadding(new Insets(10));
 
         Tab tab = new Tab();
-        Tab tab2 = new Tab();
+//        Tab tab2 = new Tab();
         Tab tab3 = new Tab();
-        Tab tab4 = new Tab();
+//        Tab tab4 = new Tab();
         Tab tab5 = new Tab();
         Tab tab6 = new Tab();
 
         tab.closableProperty().set(false);
-        tab2.closableProperty().set(false);
+//        tab2.closableProperty().set(false);
         tab3.closableProperty().set(false);
-        tab4.closableProperty().set(false);
+//        tab4.closableProperty().set(false);
         tab5.closableProperty().set(false);
         tab6.closableProperty().set(false);
 
         tab.setContent(addMember);
-        tab2.setContent(addPublisher);
-        tab3.setContent(addBook);
-        tab4.setContent(addSection);
+//        tab2.setContent(addPublisher);
+        tab3.setContent(hboxBook);
+//        tab4.setContent(addSection);
         tab5.setContent(addEmployee);
         tab6.setContent(memberData);
 
         tab.setText("Add Member");
-        tab2.setText("Add Publisher");
+//        tab2.setText("Add Publisher");
         tab3.setText("Add Book");
-        tab4.setText("Add Section");
+//        tab4.setText("Add Section");
         tab5.setText("Add Employee");
         tab6.setText("Member Data");
 
-        tabPane.getTabs().addAll(tab, tab2, tab3, tab4, tab5, tab6);
+        tabPane.getTabs().addAll(tab, tab3, tab5, tab6);
 
-        GridPane gridPane = new GridPane();
-        gridPane.addColumn(0, addMember, signIn, addPublisher);
-        gridPane.addColumn(1, addSection, addEmployee);
-
-        gridPane.setAlignment(Pos.CENTER);
-        gridPane.setPadding(new Insets(10));
 
         Scene scene = new Scene(tabPane, 800, 600);
 

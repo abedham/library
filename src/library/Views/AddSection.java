@@ -20,7 +20,7 @@ import javafx.scene.layout.VBox;
 public class AddSection extends VBox {
 
     private final int minWidth = 200;
-    private final int minWidthLabels = 200;
+    private final int minWidthLabels = 115;
     private final int spacing = 15;
     private final int padding = 10;
 

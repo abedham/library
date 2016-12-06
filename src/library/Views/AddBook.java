@@ -29,17 +29,18 @@ public class AddBook extends VBox {
     private final int minWidthLabels = 115;
     private final int spacing = 15;
     private final int padding = 10;
-    private Label lbBookName = new Label("Book Name");
-    private Label lbPublisher = new Label("Publisher");
-    private Label lbSection = new Label("Section");
 
+    private Label lbBookName = new Label("Book Name:");
+    private Label lbPublisher = new Label("Publisher:");
+    private Label lbSection = new Label("Section:");
+    private Label lbAuthors = new Label("Authors:");
     private TextField tfBookName = new TextField();
     TextField tfAuthor;
 
     private ComboBox<String> cbSection = new ComboBox<>();
     private ComboBox<String> cbPublisher = new ComboBox<>();
 
-    private ListView lvAuthor = new ListView();
+    private ListView lvAuthors = new ListView();
 
     private Button btnAddAuthor = new Button("+");
     private Button btnAddBook = new Button("+");
@@ -75,26 +76,29 @@ public class AddBook extends VBox {
         hboxPublisher.setAlignment(Pos.CENTER);
         hboxSection.setAlignment(Pos.CENTER);
 
-        lvAuthor.setItems(FXCollections.observableArrayList());
+        lbAuthors.setMinWidth(minWidthLabels);
+
+        lvAuthors.setItems(FXCollections.observableArrayList());
         tfAuthor = new TextField();
         tfAuthor.setPromptText("Author Name");
-        lvAuthor.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
+
+        lvAuthors.setPrefHeight(100);
+        lvAuthors.setMaxWidth(minWidth);
+        lvAuthors.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
         btnAddAuthor.setOnAction(e -> {
-            int size = lvAuthor.getItems().size();
-            HBox hbox = ((HBox) lvAuthor.getItems().get(size - 1));
+            int size = lvAuthors.getItems().size();
+            HBox hbox = ((HBox) lvAuthors.getItems().get(size - 1));
             hbox.getChildren().remove(btnAddAuthor);
             tfAuthor = new TextField();
             tfAuthor.setPromptText("Author Name");
             tfsAuthors.add(tfAuthor);
-            lvAuthor.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
+            lvAuthors.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
         });
-        HBox hblvAuthor = new HBox(lvAuthor);
-        hblvAuthor.setAlignment(Pos.CENTER);
-        hblvAuthor.autosize();
-        hblvAuthor.setPrefHeight(120);
+        HBox hblvAuthors = new HBox(10, lbAuthors, lvAuthors);
+        hblvAuthors.setAlignment(Pos.CENTER);
 
         setSpacing(spacing);
-        getChildren().addAll(hboxBookName, hboxSection, hboxPublisher, hblvAuthor, btnAddBook);
+        getChildren().addAll(hboxBookName, hboxPublisher, hboxSection, hblvAuthors, btnAddBook);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
 
@@ -149,11 +153,11 @@ public class AddBook extends VBox {
     }
 
     public ObservableList getLvAuthor() {
-        return lvAuthor.getItems();
+        return lvAuthors.getItems();
     }
 
-    public void setLvAuthor(ListView lvAuthor) {
-        this.lvAuthor = lvAuthor;
+    public void setLvAuthors(ListView lvAuthors) {
+        this.lvAuthors = lvAuthors;
     }
 
     public Button getBtnAddAuthor() {

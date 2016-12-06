@@ -170,4 +170,24 @@ public class MemberData extends VBox {
         tfMemberAddress.setText(memberAddress);
     }
 
+    public TableView getTableView() {
+        return tableView;
+    }
+
+    public TableColumn getTcBookName() {
+        return tcBookName;
+    }
+
+    public TableColumn getTcBorrowDate() {
+        return tcBorrowDate;
+    }
+
+    public TableColumn getTcReturnDate() {
+        return tcReturnDate;
+    }
+
+    public TableColumn getTcStatus() {
+        return tcStatus;
+    }
+
 }
