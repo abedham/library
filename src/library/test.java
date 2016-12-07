@@ -25,6 +25,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static javafx.application.Application.launch;
+import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 import static library.add.callableStatement;
 import library.AllClass.book;
@@ -37,6 +39,10 @@ import library.AllClass.Reg_book;
 import library.AllClass.Reg_member;
 import library.AllClass.Section;
 import library.AllClass.Supplies;
+import library.show_tables.show_book_table;
+import library.show_tables.show_table_member;
+import library.show_tables.show_employee_table;
+import library.show_tables.show_list_Author;
 
 /**
  *
@@ -44,61 +50,56 @@ import library.AllClass.Supplies;
  */
 public class test extends Application {
 
-    TableView<book> table;
-    ObservableList<book> data = FXCollections.observableArrayList();
+    TableView<member> table;
+    ObservableList<member> data = FXCollections.observableArrayList();
 
     static DBConnection db = new DBConnection();
     static Connection conn = db.getConn();
     static Statement stat = null;
-    show_data sh = new show_data();
-
-    add a = new add();
+    
+    show_list_Author sh = new show_list_Author();
 
     public test() throws SQLException {
 
-        data = sh.book_show();
+       // data = sh.Author_book_show();
     }
 
     @Override
     public void start(Stage primaryStage) throws SQLException {
 
-        table = new TableView<>();
+       
 
-        TableColumn tc1 = new TableColumn("book_id");
-        tc1.setPrefWidth(200);
-        tc1.setCellValueFactory(new PropertyValueFactory("book_id"));
-
-        TableColumn tc2 = new TableColumn("mem_id");
-        tc2.setPrefWidth(200);
-        tc2.setCellValueFactory(new PropertyValueFactory("title"));
-
-        table.setItems(data);
-        table.getColumns().addAll(tc1, tc2);
-        table.setMaxSize(600, 800);
+       
+        //    sla.getList_Author( data);
 
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
 
-        ArrayList<String> As = new ArrayList<>();
-        As.add("PO1");
+        ArrayList<Integer> As = new ArrayList<>();
+        As.add(852582148);
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(ActionEvent event) {
 
-                try {
-                    data.clear();
-                    a.add_Book("YYYYYY", "true", 3, 1, As, 4);
-                    data = sh.book_show();
-                    table.setItems(data);
-                } catch (SQLException ex) {
-                    Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
+            /*
+             try {
+
+             data.clear();
+             a.add_Member("Tamer", "T@gmail.com", As, 3, "Gaza", "1/1/17");
+             data = sh.member_show();
+             table.setItems(data);
+             } catch (SQLException ex) {
+             Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+                
+                    
+             }
+             */
         });
 
-        HBox h = new HBox(10, table, btn);
+        HBox h = new HBox(10, sh.getList_Author(), btn);
 
         Scene scene = new Scene(h, 300, 250);
 

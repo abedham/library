@@ -18,7 +18,10 @@ public class add {
     static Statement stmt;
     static PreparedStatement preparedStatement = null;
 
+    public static void main(String[] args) throws SQLException {
 
+      
+    }
 
     public  void add_Book(String title, String avail, int sec_id, int pub_id, ArrayList<String> Author_name, int emp_id) {
 

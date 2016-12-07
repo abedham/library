@@ -5,6 +5,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.scene.control.ContentDisplay;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.util.Callback;
 import library.AllClass.employee;
 import library.AllClass.book;
 import library.AllClass.member;
@@ -26,13 +35,13 @@ public class show_data {
     ////////       employee     ////////////////////
     ArrayList<employee> A_emp;
     ObservableList<employee> data_emp;
-    ///////////////////////////////////////////////
 
+    ///////////////////////////////////////////////
     ////////       book     ////////////////////
     ArrayList<book> A_book;
     ObservableList<book> data_book;
-    ///////////////////////////////////////////////
 
+    ///////////////////////////////////////////////
     ////////       member     ////////////////////
     ArrayList<member> A_mem;
     ObservableList<member> data_mem;
@@ -62,22 +71,18 @@ public class show_data {
     ArrayList<Reg_book> A_reg_book;
     ObservableList<Reg_book> data_reg_book;
     ///////////////////////////////////////////////
-    
-    
-     //////////       reg_member     ////////////////////
+
+    //////////       reg_member     ////////////////////
     ArrayList<Reg_member> A_reg_mem;
     ObservableList<Reg_member> data_reg_mem;
     ///////////////////////////////////////////////
-    
-    
-     //////////       section     ////////////////////
+
+    //////////       section     ////////////////////
     ArrayList<Section> A_sec;
     ObservableList<Section> data_sec;
     ///////////////////////////////////////////////
-    
-    
-    
-     //////////       supplies     ////////////////////
+
+    //////////       supplies     ////////////////////
     ArrayList<Supplies> A_sup;
     ObservableList<Supplies> data_sup;
     ///////////////////////////////////////////////
@@ -262,9 +267,6 @@ public class show_data {
         return data_reg_book;
     }
 
-    
-    
-    
     public ObservableList reg_member_show() throws SQLException {
 
         A_reg_mem = new ArrayList<>();
@@ -275,7 +277,7 @@ public class show_data {
 
         while (rs.next()) {
 
-            A_reg_mem.add(new Reg_member(rs.getInt("emp_id"), rs.getInt("mem_id"),rs.getString("cur_date"), rs.getString("expire_date")));
+            A_reg_mem.add(new Reg_member(rs.getInt("emp_id"), rs.getInt("mem_id"), rs.getString("cur_date"), rs.getString("expire_date")));
 
         }
 
@@ -286,11 +288,8 @@ public class show_data {
 
         return data_reg_mem;
     }
-    
-    
-    
-    
-     public ObservableList Section_show() throws SQLException {
+
+    public ObservableList Section_show() throws SQLException {
 
         A_sec = new ArrayList<>();
         data_sec = FXCollections.observableArrayList();
@@ -306,16 +305,13 @@ public class show_data {
 
         data_sec.removeAll(data_sec);
         for (int i = 0; i < A_sec.size(); i++) {
-            data_sec.add(new Section(A_sec.get(i).getSec_id() , A_sec.get(i).getSec_name()));
+            data_sec.add(new Section(A_sec.get(i).getSec_id(), A_sec.get(i).getSec_name()));
         }
 
         return data_sec;
     }
 
-     
-     
-     
-     public ObservableList supplies_show() throws SQLException {
+    public ObservableList supplies_show() throws SQLException {
 
         A_sup = new ArrayList<>();
         data_sup = FXCollections.observableArrayList();
@@ -336,4 +332,7 @@ public class show_data {
 
         return data_sup;
     }
+
+    //////////////////////////////////////////////////
+  
 }
