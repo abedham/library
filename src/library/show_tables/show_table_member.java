@@ -84,7 +84,7 @@ public class show_table_member {
                     @Override
                     public void handle(TableColumn.CellEditEvent<member, String> t) {
                         ((member) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setName(t.getNewValue());
+                                t.getTablePosition().getRow())).setEmail(t.getNewValue());
 
                         int mem_id = table_member.getSelectionModel().getSelectedItem().getMem_id();
                         String updateTableSQL = "UPDATE member SET email = ? WHERE mem_id = ?";
@@ -111,7 +111,7 @@ public class show_table_member {
                     @Override
                     public void handle(TableColumn.CellEditEvent<member, String> t) {
                         ((member) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setName(t.getNewValue());
+                                t.getTablePosition().getRow())).setAddress(t.getNewValue());
 
                         int mem_id = table_member.getSelectionModel().getSelectedItem().getMem_id();
                         String updateTableSQL = "UPDATE member SET address = ? WHERE mem_id = ?";

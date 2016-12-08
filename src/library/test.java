@@ -20,7 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import library.show.show_data;
-import library.AllClass.employee;
+import library.AllClass.Employee;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -35,7 +35,7 @@ import library.AllClass.borrow;
 import library.AllClass.Author_book;
 import library.AllClass.phone_number;
 import library.AllClass.Publisher;
-import library.AllClass.Reg_book;
+import library.AllClass.BookRegisteration;
 import library.AllClass.Reg_member;
 import library.AllClass.Section;
 import library.AllClass.Supplies;
@@ -43,6 +43,9 @@ import library.show_tables.show_book_table;
 import library.show_tables.show_table_member;
 import library.show_tables.show_employee_table;
 import library.show_tables.show_list_Author;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
+import static javafx.application.Application.launch;
 
 /**
  *
@@ -56,22 +59,18 @@ public class test extends Application {
     static DBConnection db = new DBConnection();
     static Connection conn = db.getConn();
     static Statement stat = null;
-    
+
     show_list_Author sh = new show_list_Author();
 
     public test() throws SQLException {
 
-       // data = sh.Author_book_show();
+        // data = sh.Author_book_show();
     }
 
     @Override
     public void start(Stage primaryStage) throws SQLException {
 
-       
-
-       
         //    sla.getList_Author( data);
-
         Button btn = new Button();
         btn.setText("Say 'Hello World'");
 

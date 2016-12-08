@@ -5,23 +5,14 @@ import java.sql.*;
 import java.util.ArrayList;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.util.Callback;
-import library.AllClass.employee;
+import library.AllClass.Employee;
 import library.AllClass.book;
 import library.AllClass.member;
 import library.AllClass.borrow;
 import library.AllClass.Author_book;
 import library.AllClass.phone_number;
 import library.AllClass.Publisher;
-import library.AllClass.Reg_book;
+import library.AllClass.BookRegisteration;
 import library.AllClass.Reg_member;
 import library.AllClass.Section;
 import library.AllClass.Supplies;
@@ -32,9 +23,9 @@ public class show_data {
     static Connection conn = db.getConn();
     static Statement stat = null;
 
-    ////////       employee     ////////////////////
-    ArrayList<employee> A_emp;
-    ObservableList<employee> data_emp;
+    ////////       Employee     ////////////////////
+    ArrayList<Employee> A_emp;
+    ObservableList<Employee> data_emp;
 
     ///////////////////////////////////////////////
     ////////       book     ////////////////////
@@ -68,8 +59,8 @@ public class show_data {
     ///////////////////////////////////////////////
 
     //////////       reg_book     ////////////////////
-    ArrayList<Reg_book> A_reg_book;
-    ObservableList<Reg_book> data_reg_book;
+    ArrayList<BookRegisteration> A_reg_book;
+    ObservableList<BookRegisteration> data_reg_book;
     ///////////////////////////////////////////////
 
     //////////       reg_member     ////////////////////
@@ -96,14 +87,14 @@ public class show_data {
         ResultSet rs = stat.executeQuery(sql);
 
         while (rs.next()) {
-            A_emp.add(new employee(rs.getInt("emp_id"), rs.getString("name"), rs.getString("isAdmin"),
-                    rs.getString("address"), rs.getString("email")));
+            A_emp.add(new Employee(rs.getInt("emp_id"), rs.getString("name"), rs.getBoolean("isAdmin"),
+                    rs.getString("address"), rs.getString("email"), rs.getInt("salary")));
         }
 
         data_emp.removeAll(data_emp);
         for (int i = 0; i < A_emp.size(); i++) {
-            data_emp.add(new employee(A_emp.get(i).getEmp_id(), A_emp.get(i).getEmp_name(),
-                    A_emp.get(i).getIsAdmin(), A_emp.get(i).getEmp_address(), A_emp.get(i).getEmp_email()));
+            data_emp.add(new Employee(A_emp.get(i).getEmp_id(), A_emp.get(i).getEmp_name(),
+                    A_emp.get(i).isAdmin(), A_emp.get(i).getEmp_address(), A_emp.get(i).getEmp_email(), A_emp.get(i).getSalary()));
         }
 
         return data_emp;
@@ -238,7 +229,7 @@ public class show_data {
 
         data_pub.removeAll(data_pub);
         for (int i = 0; i < A_pub.size(); i++) {
-            data_pub.add(new Publisher(A_pub.get(i).getPub_id(), A_pub.get(i).getPub_name(),
+            data_pub.add(new Publisher(A_pub.get(i).getId(), A_pub.get(i).getName(),
                     A_pub.get(i).getAddress()));
         }
 
@@ -255,13 +246,13 @@ public class show_data {
 
         while (rs.next()) {
 
-            A_reg_book.add(new Reg_book(rs.getInt("emp_id"), rs.getInt("book_id"), rs.getString("cur_date")));
+            A_reg_book.add(new BookRegisteration(rs.getInt("emp_id"), rs.getInt("book_id"), rs.getString("cur_date")));
 
         }
 
         data_reg_book.removeAll(data_reg_book);
         for (int i = 0; i < A_reg_book.size(); i++) {
-            data_reg_book.add(new Reg_book(A_reg_book.get(i).getEmp_id(), A_reg_book.get(i).getBook_id(), A_reg_book.get(i).getCur_date()));
+            data_reg_book.add(new BookRegisteration(A_reg_book.get(i).getId(), A_reg_book.get(i).getId(), A_reg_book.get(i).getCurrentDate()));
         }
 
         return data_reg_book;
@@ -334,5 +325,4 @@ public class show_data {
     }
 
     //////////////////////////////////////////////////
-  
 }

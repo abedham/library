@@ -37,11 +37,11 @@ public class show_book_table {
         Callback<TableColumn, TableCell> cellFactory
                 = new Callback<TableColumn, TableCell>() {
 
-                    @Override
-                    public TableCell call(TableColumn p) {
-                        return new show_book_table.EditingCell();
-                    }
-                };
+            @Override
+            public TableCell call(TableColumn p) {
+                return new show_book_table.EditingCell();
+            }
+        };
 
         TableColumn tc2 = new TableColumn("title");
         tc2.setPrefWidth(200);
@@ -49,26 +49,26 @@ public class show_book_table {
         tc2.setCellFactory(cellFactory);
         tc2.setOnEditCommit(
                 new EventHandler<TableColumn.CellEditEvent<book, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<book, String> t) {
-                        ((book) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setTitle(t.getNewValue());
+            @Override
+            public void handle(TableColumn.CellEditEvent<book, String> t) {
+                ((book) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())).setTitle(t.getNewValue());
 
-                        int book_id  = table_book.getSelectionModel().getSelectedItem().getBook_id();
-                        String updateTableSQL = "UPDATE book SET title = ? WHERE book_id = ?";
-                        PreparedStatement preparedStatement = null;
-                        try {
-                            preparedStatement = conn.prepareStatement(updateTableSQL);
-                            preparedStatement.setString(1,t.getNewValue());
-                             preparedStatement.setInt(2,book_id);
-                            preparedStatement.executeUpdate();
+                int book_id = table_book.getSelectionModel().getSelectedItem().getBook_id();
+                String updateTableSQL = "UPDATE book SET title = ? WHERE book_id = ?";
+                PreparedStatement preparedStatement = null;
+                try {
+                    preparedStatement = conn.prepareStatement(updateTableSQL);
+                    preparedStatement.setString(1, t.getNewValue());
+                    preparedStatement.setInt(2, book_id);
+                    preparedStatement.executeUpdate();
 
-                        } catch (SQLException ex) {
-                            Logger.getLogger(show_book_table.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                } catch (SQLException ex) {
+                    Logger.getLogger(show_book_table.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-                    }
-                });
+            }
+        });
 
         table_book.setItems(ob);
         table_book.getColumns().addAll(tc1, tc2);
@@ -114,19 +114,17 @@ public class show_book_table {
             if (empty) {
                 setText(null);
                 setGraphic(null);
-            } else {
-                if (isEditing()) {
-                    if (textField != null) {
-                        textField.setText(getString());
+            } else if (isEditing()) {
+                if (textField != null) {
+                    textField.setText(getString());
 
-                    }
-
-                    setGraphic(textField);
-                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                } else {
-                    setText(getString());
-                    setContentDisplay(ContentDisplay.TEXT_ONLY);
                 }
+
+                setGraphic(textField);
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            } else {
+                setText(getString());
+                setContentDisplay(ContentDisplay.TEXT_ONLY);
             }
         }
 

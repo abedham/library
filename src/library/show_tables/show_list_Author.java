@@ -17,8 +17,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 import library.AllClass.Author_book;
 import library.DBConnection;
-import library.show.show_data;
-import static library.show_tables.show_table_member.conn;
 
 public class show_list_Author {
 

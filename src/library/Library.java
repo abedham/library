@@ -5,6 +5,7 @@
  */
 package library;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -25,6 +26,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import library.AllClass.Employee;
 import library.Views.AddBook;
 import library.Views.AddEmployee;
 import library.Views.AddMember;
@@ -32,6 +34,8 @@ import library.Views.AddPublisher;
 import library.Views.AddSection;
 import library.Views.MemberData;
 import library.Views.SignIn;
+import library.show.show_data;
+import library.show_tables.show_employee_table;
 
 /**
  *
@@ -42,15 +46,34 @@ public class Library extends Application {
     private int minWidth = 200;
     private int minWidthLabels = 115;
 
+    add addition = new add();
+
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException {
+        show_employee_table shEmpTv = new show_employee_table();
+        show_data shData = new show_data();
 
         SignIn signIn = new SignIn();
         AddMember addMember = new AddMember();
         AddPublisher addPublisher = new AddPublisher();
         AddBook addBook = new AddBook();
         AddSection addSection = new AddSection();
+
         AddEmployee addEmployee = new AddEmployee();
+        addEmployee.setTvEmployees(shEmpTv.getTable_emp(shData.emp_show()));
+        addEmployee.getBtnAddEmployee().setOnAction(e -> {
+            try {
+                int salary = Integer.parseInt(addEmployee.getSalary());
+                Employee emp = addition.add_employee(addEmployee.getEmployeeName(), addEmployee.getEmployeeAddress(),
+                        addEmployee.isAdmin(), addEmployee.getEmail(), salary);
+                if (emp != null) {
+                    addEmployee.getTvEmployees().getItems().add(emp);
+                }
+            } catch (NumberFormatException ex) {
+                System.out.println("Error salary");
+            }
+        });
+
         MemberData memberData = new MemberData();
 
         VBox vboxPubSec = new VBox(10, addPublisher, addSection);

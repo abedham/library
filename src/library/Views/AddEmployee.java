@@ -10,6 +10,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,20 +29,30 @@ public class AddEmployee extends VBox {
     private Label lbEmployeeName = new Label("Employee Name");
     private Label lbEmployeeAddress = new Label("Employee Address");
     private Label lbSalary = new Label("Salary");
+    private Label lbEmail = new Label("Email");
 
     private TextField tfEmployeeAddress = new TextField();
     private TextField tfEmployeeName = new TextField();
     private TextField tfSalary = new TextField();
+    private TextField tfEmail = new TextField();
 
     private Button btnAddEmployee = new Button("+");
 
     private CheckBox chIsAdmin = new CheckBox("Admin Privileges");
+
+    TableView tvEmployees = new TableView();
 
     public AddEmployee() {
         initAddEmployeeView();
     }
 
     private void initAddEmployeeView() {
+        lbEmail.setMinWidth(minWidthLabels);
+
+        tfEmail.setPromptText("Email");
+        tfEmail.setMinWidth(minWidth);
+        HBox hboxEmail = new HBox(10, lbEmail, tfEmail);
+
         lbEmployeeName.setMinWidth(minWidthLabels);
 
         tfEmployeeName.setMinWidth(minWidth);
@@ -56,15 +67,20 @@ public class AddEmployee extends VBox {
 
         lbSalary.setMinWidth(minWidthLabels);
         tfSalary.setMinWidth(minWidth);
+        tfSalary.setPromptText("Salary");
         HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
 
+        hboxEmail.setAlignment(Pos.CENTER);
         hboxSalary.setAlignment(Pos.CENTER);
         hboxEmployeeName.setAlignment(Pos.CENTER);
         hboxEmployeeAddress.setAlignment(Pos.CENTER);
 
+        double tableWidth = 1.3 * (minWidth + minWidthLabels);
+        tvEmployees.setMaxWidth(tableWidth);
+
         setSpacing(spacing);
         getChildren().addAll(hboxEmployeeName, hboxEmployeeAddress,
-                hboxSalary, chIsAdmin, btnAddEmployee);
+                hboxSalary, hboxEmail, chIsAdmin, btnAddEmployee);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
 
@@ -118,6 +134,10 @@ public class AddEmployee extends VBox {
         this.tfSalary = tfSalary;
     }
 
+    public String getSalary() {
+        return tfSalary.getText();
+    }
+
     public Button getBtnAddEmployee() {
         return btnAddEmployee;
     }
@@ -140,5 +160,22 @@ public class AddEmployee extends VBox {
 
     public String getEmployeeAddress() {
         return tfEmployeeAddress.getText();
+    }
+
+    public TableView getTvEmployees() {
+        return tvEmployees;
+    }
+
+    public void setTvEmployees(TableView tvEmployees) {
+        this.tvEmployees = tvEmployees;
+        getChildren().add(tvEmployees);
+    }
+
+    public boolean isAdmin() {
+        return chIsAdmin.isSelected();
+    }
+
+    public String getEmail() {
+        return tfEmail.getText();
     }
 }

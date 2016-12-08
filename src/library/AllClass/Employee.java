@@ -1,30 +1,28 @@
-
 package library.AllClass;
 
 import java.io.Serializable;
 
+public class Employee implements Serializable {
 
+    private int emp_id;
+    private String emp_name;
+    private boolean admin;
+    private String emp_address;
+    private String emp_email;
+    private int salary;
 
-public class employee implements Serializable{
-    
-   private int emp_id;
-   private String emp_name;
-   private String isAdmin;
-   private String emp_address;
-   private String emp_email;
-
-    public employee() {
+    public Employee() {
     }
 
-    public employee(int emp_id, String emp_name, String isAdmin, String emp_address, String emp_email) {
+    public Employee(int emp_id, String emp_name, boolean isAdmin, String emp_address, String emp_email, int salary) {
         this.emp_id = emp_id;
         this.emp_name = emp_name;
-        this.isAdmin = isAdmin;
+        this.admin = isAdmin;
         this.emp_address = emp_address;
         this.emp_email = emp_email;
+        this.salary = salary;
     }
 
-   
     public int getEmp_id() {
         return emp_id;
     }
@@ -39,14 +37,6 @@ public class employee implements Serializable{
 
     public void setEmp_name(String emp_name) {
         this.emp_name = emp_name;
-    }
-
-    public String getIsAdmin() {
-        return isAdmin;
-    }
-
-    public void setIsAdmin(String isAdmin) {
-        this.isAdmin = isAdmin;
     }
 
     public String getEmp_address() {
@@ -64,8 +54,21 @@ public class employee implements Serializable{
     public void setEmp_email(String emp_email) {
         this.emp_email = emp_email;
     }
-   
-   
-   
-    
+
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
+    }
+
 }
