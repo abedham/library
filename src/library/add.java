@@ -3,14 +3,15 @@ package library;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import library.AllClass.Employee;
+import library.AllClass.member;
 
 public class add {
 
@@ -20,7 +21,7 @@ public class add {
     static Statement stmt;
     static PreparedStatement preparedStatement = null;
 
-    public void add_Book(String title, String avail, int sec_id, int pub_id, ArrayList<String> Author_name, int emp_id) {
+    public static void add_Book(String title, String avail, int sec_id, int pub_id, ArrayList<String> Author_name, int emp_id) {
 
         try {
             stmt = conn.createStatement();
@@ -55,8 +56,8 @@ public class add {
 
     }
 
-    public void add_Member(String name, String email, ArrayList<Integer> phone, int Emp_id, String address, String expire_date) {
-
+    public static member add_Member(String name, String email, List<String> phone, int Emp_id, String address, String expire_date) {
+        member member = null;
         try {
             stmt = conn.createStatement();
             String std_count = "{call addMember(?,?,?,?,? ,? , ?)}";
@@ -64,7 +65,7 @@ public class add {
 
             callableStatement.setString(1, name);
             callableStatement.setString(2, email);
-            callableStatement.setInt(3, phone.get(0));
+            callableStatement.setString(3, phone.get(0));
             callableStatement.setInt(4, Emp_id);
             callableStatement.setString(5, address);
             callableStatement.setString(6, expire_date);
@@ -73,22 +74,23 @@ public class add {
             callableStatement.executeUpdate();
 
             int mem_id = callableStatement.getInt(7);
-
+            member = new member(mem_id, name, email, address, expire_date);
+            String sql_addAuthor = "insert into phone_number values(? , ?)";
+            preparedStatement = conn.prepareStatement(sql_addAuthor);
             for (int i = 1; i < phone.size(); i++) {
-                String sql_addAuthor = "insert into phone_number values(? , ?)";
-                preparedStatement = conn.prepareStatement(sql_addAuthor);
+
                 preparedStatement.setInt(1, mem_id);
-                preparedStatement.setInt(2, phone.get(i));
+                preparedStatement.setString(2, phone.get(i));
                 preparedStatement.execute();
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(add.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return member;
     }
 
-    public void add_Publisher(String name, String address) {
+    public static void add_Publisher(String name, String address) {
 
         String add_pub = "{call add_Publisher(?,?)}";
         try {
@@ -103,7 +105,7 @@ public class add {
 
     }
 
-    public void Borrow_Book(int emp_id, int mem_id, int book_id, String expire_date) {
+    public static void Borrow_Book(int emp_id, int mem_id, int book_id, String expire_date) {
 
         String Borrow_Book = "{call Borrow_Book(?,?,?)}";
         try {
@@ -119,7 +121,7 @@ public class add {
         }
     }
 
-    public void add_section(String sec_name) {
+    public static void add_section(String sec_name) {
         String add_Section = "{call add_Section(?)}";
         try {
             callableStatement = conn.prepareCall(add_Section);
@@ -132,7 +134,7 @@ public class add {
 
     }
 
-    public Employee add_employee(String name, String address, boolean isAdmin, String email, int salary) {
+    public static Employee add_employee(String name, String address, boolean isAdmin, String email, int salary) {
         Employee emp = null;
         try {
 
@@ -154,5 +156,4 @@ public class add {
         }
         return emp;
     }
-
 }

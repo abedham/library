@@ -6,11 +6,15 @@
 package library.Views;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -28,16 +32,22 @@ public class AddMember extends VBox {
 
     private Label lbMemberName = new Label("Member Name");
     private Label lbMemberAddress = new Label("Member Address");
+    private Label lbMemberEmail = new Label("Member Email");
     private Label lbExpireDate = new Label("Expire Date");
-    private Label lbPhoneNumber = new Label("Phone Number");
+    private Label lbPhoneNumbers = new Label("Phone Numbers");
 
     private TextField tfMemberName = new TextField();
     private TextField tfMemberAddress = new TextField();
-    private TextField tfPhoneNumber = new TextField();
+    private TextField tfMemberEmail = new TextField();
 
     private Button btnAddMember = new Button("+");
 
     private DatePicker dpExpireDate = new DatePicker(LocalDate.now());
+
+    private ListView lvPhones = new ListView();
+    private TextField tfPhone = new TextField();
+    private List<TextField> tfsPhone = new ArrayList<>();
+    private Button btnAddPhone = new Button("+");
 
     public AddMember() {
         initAddMemberView();
@@ -58,44 +68,76 @@ public class AddMember extends VBox {
 
         HBox hboxMemberAddress = new HBox(10, lbMemberAddress, tfMemberAddress);
 
+        lbMemberEmail.setMinWidth(minWidthLabels);
+
+        tfMemberEmail.setMinWidth(minWidth);
+        tfMemberEmail.setPromptText("Member Email");
+
+        HBox hboxMemberEmail = new HBox(10, lbMemberEmail, tfMemberEmail);
+
         lbExpireDate.setMinWidth(minWidthLabels);
         dpExpireDate.setMinWidth(minWidth);
 
         HBox hboxExpireDate = new HBox(10, lbExpireDate, dpExpireDate);
 
-        lbPhoneNumber.setMinWidth(minWidthLabels);
+        lbPhoneNumbers.setMinWidth(minWidthLabels);
 
-        tfPhoneNumber.setMinWidth(minWidth);
-        tfPhoneNumber.setPromptText("Phone Number");
+        tfPhone.setMinWidth(minWidth);
+        tfPhone.setPromptText("Phone Number");
 
-        HBox hboxPhoneNumber = new HBox(10, lbPhoneNumber, tfPhoneNumber);
+        lbPhoneNumbers.setMinWidth(minWidthLabels);
+
+        lvPhones.setItems(FXCollections.observableArrayList());
+        tfPhone = new TextField();
+        tfPhone.setPromptText("Phone Name");
+
+        tfsPhone.add(tfPhone);
+        lvPhones.setPrefHeight(100);
+        lvPhones.setMaxWidth(minWidth);
+        lvPhones.getItems().add(new HBox(5, tfPhone, btnAddPhone));
+        btnAddPhone.setOnAction(e -> {
+            int size = lvPhones.getItems().size();
+            HBox hbox = ((HBox) lvPhones.getItems().get(size - 1));
+            hbox.getChildren().remove(btnAddPhone);
+            tfPhone = new TextField();
+            tfPhone.setPromptText("Author Name");
+            tfsPhone.add(tfPhone);
+            lvPhones.getItems().add(new HBox(5, tfPhone, btnAddPhone));
+        });
+        HBox hblvPhones = new HBox(10, lbPhoneNumbers, lvPhones);
 
         hboxMemberName.setAlignment(Pos.CENTER);
-        hboxPhoneNumber.setAlignment(Pos.CENTER);
+        hblvPhones.setAlignment(Pos.CENTER);
         hboxExpireDate.setAlignment(Pos.CENTER);
+        hboxMemberEmail.setAlignment(Pos.CENTER);
         hboxMemberAddress.setAlignment(Pos.CENTER);
-        
+
         setSpacing(spacing);
         getChildren().addAll(hboxMemberName, hboxMemberAddress,
-                hboxPhoneNumber, hboxExpireDate, btnAddMember);
+                hboxMemberEmail, hblvPhones, hboxExpireDate, btnAddMember);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
     }
 
-    private String getMemberName() {
+    public String getMemberName() {
         return tfMemberName.getText();
     }
 
-    private String getMemberAddress() {
+    public String getMemberAddress() {
         return tfMemberAddress.getText();
     }
 
-    private LocalDate getExpireDate() {
+    public LocalDate getExpireDate() {
         return dpExpireDate.getValue();
     }
 
-    private String getPhoneNumber() {
-        return tfPhoneNumber.getText();
+    public List<String> getPhoneNumbers() {
+        List<String> phones = new ArrayList<>();
+        tfsPhone.stream().filter((tfPhone) -> (!tfPhone.getText().trim().isEmpty()))
+                .forEach((tfPhone) -> {
+                    phones.add(tfPhone.getText());
+                });
+        return phones;
     }
 
     public Label getLbMemberName() {
@@ -122,12 +164,12 @@ public class AddMember extends VBox {
         this.lbExpireDate = lbExpireDate;
     }
 
-    public Label getLbPhoneNumber() {
-        return lbPhoneNumber;
+    public Label getLbPhoneNumbers() {
+        return lbPhoneNumbers;
     }
 
-    public void setLbPhoneNumber(Label lbPhoneNumber) {
-        this.lbPhoneNumber = lbPhoneNumber;
+    public void setLbPhoneNumbers(Label lbPhoneNumbers) {
+        this.lbPhoneNumbers = lbPhoneNumbers;
     }
 
     public TextField getTfMemberName() {
@@ -146,14 +188,6 @@ public class AddMember extends VBox {
         this.tfMemberAddress = tfMemberAddress;
     }
 
-    public TextField getTfPhoneNumber() {
-        return tfPhoneNumber;
-    }
-
-    public void setTfPhoneNumber(TextField tfPhoneNumber) {
-        this.tfPhoneNumber = tfPhoneNumber;
-    }
-
     public Button getBtnAddMember() {
         return btnAddMember;
     }
@@ -170,4 +204,7 @@ public class AddMember extends VBox {
         this.dpExpireDate = dpExpireDate;
     }
 
+    public String getMemberEmail() {
+        return tfMemberEmail.getText();
+    }
 }

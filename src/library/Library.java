@@ -18,6 +18,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import library.AllClass.Employee;
+import library.AllClass.member;
 import library.Views.AddBook;
 import library.Views.AddEmployee;
 import library.Views.AddMember;
@@ -34,7 +35,7 @@ import library.show_tables.show_employee_table;
  */
 public class Library extends Application {
 
-    Employee currentEmployee;
+    public static Employee currentEmployee;
     add addition = new add();
 
     @Override
@@ -44,6 +45,13 @@ public class Library extends Application {
 
         SignIn signIn = new SignIn();
         AddMember addMember = new AddMember();
+
+        addMember.getBtnAddMember().setOnAction(e -> {
+
+            member add_Member = add.add_Member(addMember.getMemberName(), addMember.getMemberEmail(),
+                    addMember.getPhoneNumbers(), currentEmployee.getEmp_id(),
+                    addMember.getMemberAddress(), addMember.getExpireDate().toString());
+        });
         AddPublisher addPublisher = new AddPublisher();
         AddBook addBook = new AddBook();
         AddSection addSection = new AddSection();

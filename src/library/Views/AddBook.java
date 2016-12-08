@@ -82,6 +82,7 @@ public class AddBook extends VBox {
         tfAuthor = new TextField();
         tfAuthor.setPromptText("Author Name");
 
+        tfsAuthors.add(tfAuthor);
         lvAuthors.setPrefHeight(100);
         lvAuthors.setMaxWidth(minWidth);
         lvAuthors.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
