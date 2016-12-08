@@ -7,17 +7,12 @@ package library.Views;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Side;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 
 /**
  *
@@ -32,35 +27,35 @@ public class SignIn extends VBox {
 
     private Button btnLogin;
 
-    private Label lbUserName;
+    private Label lbUserId;
     private Label lbPassword;
 
-    private TextField tfUserName;
-    private TextField tfPassword;
+    private TextField tfUserId;
+    private PasswordField pfPassword;
 
     public SignIn() {
         initSignInView();
     }
 
     private void initSignInView() {
-        setLbUserName(new Label("User Name"));
-        getLbUserName().setMinWidth(minWidthLabels);
+        setLbUserId(new Label("User Name"));
+        getLbUserId().setMinWidth(minWidthLabels);
 
-        setTfUserName(new TextField());
-        getTfUserName().setMinWidth(minWidth);
-        getTfUserName().setMaxWidth(minWidth);
-        getTfUserName().setPromptText("User Name");
+        setTfUserId(new TextField());
+        getTfUserId().setMinWidth(minWidth);
+        getTfUserId().setMaxWidth(minWidth);
+        getTfUserId().setPromptText("User Name");
 
-        HBox hboxUserName = new HBox(10, lbUserName, tfUserName);
+        HBox hboxUserName = new HBox(10, lbUserId, tfUserId);
         setLbPassword(new Label("Password"));
         getLbPassword().setMinWidth(minWidthLabels);
 
-        setTfPassword(new TextField());
-        getTfPassword().setMinWidth(minWidth);
-        getTfPassword().setMaxWidth(minWidth);
-        getTfPassword().setPromptText("Password");
+        setPfPassword(new PasswordField());
+        getPfPassword().setMinWidth(minWidth);
+        getPfPassword().setMaxWidth(minWidth);
+        getPfPassword().setPromptText("Password");
 
-        HBox hboxPassword = new HBox(10, lbPassword, tfPassword);
+        HBox hboxPassword = new HBox(10, lbPassword, pfPassword);
         setBtnLogin(new Button("Login"));
 
         hboxPassword.setAlignment(Pos.CENTER);
@@ -87,53 +82,53 @@ public class SignIn extends VBox {
     }
 
     /**
-     * @return the tfUserName
+     * @return the tfUserId
      */
-    public TextField getTfUserName() {
-        return tfUserName;
+    public TextField getTfUserId() {
+        return tfUserId;
     }
 
     /**
-     * @param tfUserName the tfUserName to set
+     * @param tfUserId the tfUserId to set
      */
-    public void setTfUserName(TextField tfUserName) {
-        this.tfUserName = tfUserName;
+    public void setTfUserId(TextField tfUserId) {
+        this.tfUserId = tfUserId;
     }
 
     /**
-     * @return the tfPassword
+     * @return the pfPassword
      */
-    public TextField getTfPassword() {
-        return tfPassword;
+    public TextField getPfPassword() {
+        return pfPassword;
     }
 
     /**
-     * @param tfPassword the tfPassword to set
+     * @param pfPassword the pfPassword to set
      */
-    public void setTfPassword(TextField tfPassword) {
-        this.tfPassword = tfPassword;
+    public void setPfPassword(PasswordField pfPassword) {
+        this.pfPassword = pfPassword;
     }
 
     /**
      * @return the User Name
      */
-    public String getUserName() {
-        return getTfUserName().getText();
+    public int getUserId() {
+        return Integer.parseInt(getTfUserId().getText());
     }
 
     /**
      * @return the Password
      */
     public String getPassword() {
-        return getTfPassword().getText();
+        return getPfPassword().getText();
     }
 
-    public Label getLbUserName() {
-        return lbUserName;
+    public Label getLbUserId() {
+        return lbUserId;
     }
 
-    public void setLbUserName(Label lbUserName) {
-        this.lbUserName = lbUserName;
+    public void setLbUserId(Label lbUserId) {
+        this.lbUserId = lbUserId;
     }
 
     public Label getLbPassword() {

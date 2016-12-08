@@ -6,23 +6,14 @@
 package library;
 
 import java.sql.SQLException;
-import java.time.LocalDate;
 import javafx.application.Application;
-import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -43,9 +34,7 @@ import library.show_tables.show_employee_table;
  */
 public class Library extends Application {
 
-    private int minWidth = 200;
-    private int minWidthLabels = 115;
-
+    Employee currentEmployee;
     add addition = new add();
 
     @Override
@@ -116,13 +105,26 @@ public class Library extends Application {
         tabMemberData.setText("Member Data");
 
         signIn.getBtnLogin().setOnAction(e -> {
-            if (true) {             /// if was an admin
-                tabPane.getTabs().addAll(tabAddMember, tabAddBook,
-                        tabAddEmployee, tabMemberData);
+            int id = signIn.getUserId();
+            String pass = signIn.getPassword();
+            currentEmployee = Model.logIn(id, pass);
+            Stage stage = new Stage();
 
-            } else if (false) {              /// if was an employee
-                tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
+            if (currentEmployee != null) {
+                if (currentEmployee.isAdmin()) {             /// if was an admin
+                    tabPane.getTabs().addAll(tabAddMember, tabAddBook,
+                            tabAddEmployee, tabMemberData);
+                    stage.setTitle("Control Panel(Admin)");
 
+                } else {              /// if was an employee
+                    tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
+                    stage.setTitle("Control Panel");
+                }
+                Scene scene = new Scene(tabPane);
+
+                stage.setScene(scene);
+                primaryStage.hide();
+                stage.show();
             } else {             /// if wrong input
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("Warning !");
@@ -131,15 +133,8 @@ public class Library extends Application {
 
                 alert.showAndWait();
             }
-            Scene scene = new Scene(tabPane);
-            Stage stage = new Stage();
-            stage.setTitle("Control Panel");
-            stage.setScene(scene);
-            primaryStage.hide();
-            stage.show();
         });
         Scene scene = new Scene(signIn);
-
         primaryStage.setTitle("Library Management System");
         primaryStage.setScene(scene);
         primaryStage.show();
