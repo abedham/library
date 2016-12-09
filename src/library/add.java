@@ -161,8 +161,9 @@ public class add {
             int id = callableStatement.getInt(6);
             emp = new Employee(id, name, isAdmin, address, email, salary);
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(add.class.getName()).log(Level.SEVERE, null, ex);
+            CustomAlertMsg.getEmptyError("alot");
         }
         return emp;
     }

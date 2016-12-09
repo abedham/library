@@ -79,16 +79,21 @@ public class Library extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+    int id = 0;
+    String pass = null;
 
     private void initSignIn(Stage primaryStage) {
 
         signIn.getBtnLogin().setOnAction(e -> {
-            int id = signIn.getUserId();
-            String pass = signIn.getPassword();
-            currentEmployee = Model.logIn(id, pass);
-//            currentEmployee = Model.logIn(26, "123456789");
+            try {
+                id = signIn.getUserId();
+                pass = signIn.getPassword();
+                currentEmployee = Model.logIn(id, pass);
+                tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
+            } catch (Exception ex) {
 
-            tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
+            }
+//            currentEmployee = Model.logIn(26, "123456789");
             if (currentEmployee != null) {
                 if (currentEmployee.isAdmin()) {             /// if was an admin
                     tabPane.getTabs().add(tabAddEmployee);
@@ -104,12 +109,7 @@ public class Library extends Application {
 //                primaryStage.setHeight(700);
                 primaryStage.setMaximized(true);
             } else {             /// if wrong input
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning !");
-                alert.setHeaderText("Wrong credentials");
-                alert.setContentText("Please check username and password");
-
-                alert.showAndWait();
+                CustomAlertMsg.getLoginError();
             }
         });
     }
@@ -203,17 +203,28 @@ public class Library extends Application {
         show_employee_table shEmpTv = new show_employee_table();
         addEmployee.setTvEmployees(shEmpTv.getTable_emp(shData.emp_show()));
         addEmployee.getBtnAddEmployee().setOnAction(e -> {
-            try {
-                int salary = Integer.parseInt(addEmployee.getSalary());
-                Employee emp = addition.add_employee(addEmployee.getEmployeeName(), addEmployee.getEmployeeAddress(),
-                        addEmployee.isAdmin(), addEmployee.getEmail(), salary,addEmployee.getPassword());
-                if (emp != null) {
-                    addEmployee.getTvEmployees().getItems().add(emp);
-                }
-            } catch (NumberFormatException ex) {
-                System.out.println("Error salary");
+
+            if (CustomAlertMsg.checkNameError(addEmployee.getEmployeeName())) {
+                return;
+            } else if (addEmployee.getEmployeeAddress().isEmpty()) {
+                CustomAlertMsg.getEmptyError("Address");
+                return;
+            } else if (CustomAlertMsg.checkSalary(addEmployee.getSalary())) {
+                return;
+            } else if (CustomAlertMsg.checkEmail(addEmployee.getEmail())) {
+                return;
+            } else if (CustomAlertMsg.checkPass(addEmployee.getPassword())) {
+                return;
             }
-        });
+            int salary = Integer.parseInt(addEmployee.getSalary());
+            Employee emp = addition.add_employee(addEmployee.getEmployeeName(), addEmployee.getEmployeeAddress(),
+                    addEmployee.isAdmin(), addEmployee.getEmail(), salary, addEmployee.getPassword());
+            if (emp != null) {
+                addEmployee.getTvEmployees().getItems().add(emp);
+            }
+
+        }
+        );
     }
 
     /**
