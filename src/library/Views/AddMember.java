@@ -113,7 +113,7 @@ public class AddMember extends VBox {
         hboxMemberAddress.setAlignment(Pos.CENTER);
 
         setSpacing(spacing);
-        getChildren().addAll(hboxMemberName, hboxMemberAddress,
+        getChildren().addAll(new Label("Add new member"),hboxMemberName, hboxMemberAddress,
                 hboxMemberEmail, hblvPhones, hboxExpireDate, btnAddMember);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));

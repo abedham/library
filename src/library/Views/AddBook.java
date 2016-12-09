@@ -18,6 +18,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import library.AllClass.Publisher;
+import library.AllClass.Section;
 
 /**
  *
@@ -37,8 +39,8 @@ public class AddBook extends VBox {
     private TextField tfBookName = new TextField();
     TextField tfAuthor;
 
-    private ComboBox<String> cbSection = new ComboBox<>();
-    private ComboBox<String> cbPublisher = new ComboBox<>();
+    private ComboBox<Section> cbSection = new ComboBox<>();
+    private ComboBox<Publisher> cbPublisher = new ComboBox<>();
 
     private ListView lvAuthors = new ListView();
 
@@ -70,23 +72,34 @@ public class AddBook extends VBox {
 
         cbPublisher.setMinWidth(minWidth);
 
+//        new AutoCompleteComboBoxListener<>(cbPublisher);
+//        new AutoCompleteComboBoxListener<>(cbSection);
         HBox hboxPublisher = new HBox(10, lbPublisher, cbPublisher);
 
         hboxBookName.setAlignment(Pos.CENTER);
+
         hboxPublisher.setAlignment(Pos.CENTER);
+
         hboxSection.setAlignment(Pos.CENTER);
 
         lbAuthors.setMinWidth(minWidthLabels);
 
         lvAuthors.setItems(FXCollections.observableArrayList());
         tfAuthor = new TextField();
-        tfAuthor.setPromptText("Author Name");
+
+        tfAuthor.setPromptText(
+                "Author Name");
 
         tfsAuthors.add(tfAuthor);
-        lvAuthors.setPrefHeight(100);
+
+        lvAuthors.setPrefHeight(
+                100);
         lvAuthors.setMaxWidth(minWidth);
-        lvAuthors.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
-        btnAddAuthor.setOnAction(e -> {
+
+        lvAuthors.getItems()
+                .add(new HBox(5, tfAuthor, btnAddAuthor));
+        btnAddAuthor.setOnAction(e
+                -> {
             int size = lvAuthors.getItems().size();
             HBox hbox = ((HBox) lvAuthors.getItems().get(size - 1));
             hbox.getChildren().remove(btnAddAuthor);
@@ -94,14 +107,20 @@ public class AddBook extends VBox {
             tfAuthor.setPromptText("Author Name");
             tfsAuthors.add(tfAuthor);
             lvAuthors.getItems().add(new HBox(5, tfAuthor, btnAddAuthor));
-        });
+        }
+        );
         HBox hblvAuthors = new HBox(10, lbAuthors, lvAuthors);
+
         hblvAuthors.setAlignment(Pos.CENTER);
 
         setSpacing(spacing);
-        getChildren().addAll(hboxBookName, hboxPublisher, hboxSection, hblvAuthors, btnAddBook);
+
+        getChildren()
+                .addAll(new Label("Add new book"), hboxBookName, hboxPublisher, hboxSection, hblvAuthors, btnAddBook);
         setAlignment(Pos.CENTER);
-        setPadding(new Insets(padding));
+
+        setPadding(
+                new Insets(padding));
 
     }
 
@@ -137,22 +156,6 @@ public class AddBook extends VBox {
         this.tfBookName = tfBookName;
     }
 
-    public ObservableList<String> getCbSection() {
-        return cbSection.getItems();
-    }
-
-    public void setCbSection(ComboBox<String> cbSection) {
-        this.cbSection = cbSection;
-    }
-
-    public ObservableList<String> getCbPublisher() {
-        return cbPublisher.getItems();
-    }
-
-    public void setCbPublisher(ComboBox<String> cbPublisher) {
-        this.cbPublisher = cbPublisher;
-    }
-
     public ObservableList getLvAuthor() {
         return lvAuthors.getItems();
     }
@@ -181,12 +184,12 @@ public class AddBook extends VBox {
         return tfBookName.getText();
     }
 
-    public String getPublisherName() {
-        return cbPublisher.getSelectionModel().getSelectedItem();
+    public Publisher getPublisher() {
+        return cbPublisher.getValue();
     }
 
-    public String getSectionName() {
-        return cbSection.getSelectionModel().getSelectedItem();
+    public Section getSection() {
+        return cbSection.getValue();//cbSection.getSelectionModel().getSelectedItem();
     }
 
     public List<String> getAuthors() {
@@ -197,4 +200,61 @@ public class AddBook extends VBox {
                 });
         return authors;
     }
+
+    public void setPublishers(ObservableList<Publisher> publishers) {
+        cbPublisher.setItems(publishers);
+    }
+
+    public ObservableList<Publisher> getPublishers() {
+        return cbPublisher.getItems();
+    }
+
+    public void setSections(ObservableList<Section> sections) {
+        cbSection.setItems(sections);
+    }
+
+    public ObservableList<Section> getSections() {
+        return cbSection.getItems();
+    }
+
+    public Label getLbAuthors() {
+        return lbAuthors;
+    }
+
+    public void setLbAuthors(Label lbAuthors) {
+        this.lbAuthors = lbAuthors;
+    }
+
+    public TextField getTfAuthor() {
+        return tfAuthor;
+    }
+
+    public void setTfAuthor(TextField tfAuthor) {
+        this.tfAuthor = tfAuthor;
+    }
+
+    public ComboBox<Section> getCbSection() {
+        return cbSection;
+    }
+
+    public void setCbSection(ComboBox<Section> cbSection) {
+        this.cbSection = cbSection;
+    }
+
+    public ComboBox<Publisher> getCbPublisher() {
+        return cbPublisher;
+    }
+
+    public void setCbPublisher(ComboBox<Publisher> cbPublisher) {
+        this.cbPublisher = cbPublisher;
+    }
+
+    public List<TextField> getTfsAuthors() {
+        return tfsAuthors;
+    }
+
+    public void setTfsAuthors(List<TextField> tfsAuthors) {
+        this.tfsAuthors = tfsAuthors;
+    }
+
 }

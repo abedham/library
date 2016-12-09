@@ -1,10 +1,9 @@
-
 package library.AllClass;
 
 import java.io.Serializable;
 
-public class Publisher implements Serializable{
-    
+public class Publisher implements Serializable {
+
     private int id;
     private String name;
     private String address;
@@ -12,15 +11,12 @@ public class Publisher implements Serializable{
     public Publisher() {
     }
 
-    
-    
     public Publisher(int pub_id, String pub_name, String address) {
         this.id = pub_id;
         this.name = pub_name;
         this.address = address;
     }
 
-    
     public int getId() {
         return id;
     }
@@ -44,6 +40,10 @@ public class Publisher implements Serializable{
     public void setAddress(String address) {
         this.address = address;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
+
 }

@@ -6,13 +6,13 @@ public class book implements Serializable {
 
     private int book_id;
     private String title;
-    private String available;
+    private boolean available;
     private int sec_id;
 
     public book() {
     }
 
-    public book(int book_id, String title, String available, int sec_id) {
+    public book(int book_id, String title, boolean available, int sec_id) {
         this.book_id = book_id;
         this.title = title;
         this.available = available;
@@ -35,11 +35,11 @@ public class book implements Serializable {
         this.title = title;
     }
 
-    public String getAvailable() {
+    public boolean getAvailable() {
         return available;
     }
 
-    public void setAvailable(String available) {
+    public void setAvailable(boolean available) {
         this.available = available;
     }
 

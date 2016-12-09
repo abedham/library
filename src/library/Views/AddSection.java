@@ -26,7 +26,7 @@ public class AddSection extends VBox {
 
     private Label lbSectionName = new Label("Section Name");
 
-    private TextField tfSectionName = new TextField("Section Name");
+    private TextField tfSectionName = new TextField();
 
     private Button btnAddSection = new Button("+");
 
@@ -39,11 +39,11 @@ public class AddSection extends VBox {
         lbSectionName.setMinWidth(minWidthLabels);
 
         tfSectionName.setMinWidth(minWidth);
-
+        tfSectionName.setPromptText("Section Name");
         HBox hboxSectionName = new HBox(10, lbSectionName, tfSectionName);
         hboxSectionName.setAlignment(Pos.CENTER);
         setSpacing(spacing);
-        getChildren().addAll(hboxSectionName, btnAddSection);
+        getChildren().addAll(new Label("Add new section"), hboxSectionName, btnAddSection);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
 

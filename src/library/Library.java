@@ -18,6 +18,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import library.AllClass.Employee;
+import library.AllClass.Publisher;
+import library.AllClass.Section;
 import library.AllClass.member;
 import library.Views.AddBook;
 import library.Views.AddEmployee;
@@ -37,26 +39,147 @@ public class Library extends Application {
 
     public static Employee currentEmployee;
     add addition = new add();
+    show_data shData = new show_data();
+
+    SignIn signIn = new SignIn();
+
+    AddBook addBook = new AddBook();
+    AddMember addMember = new AddMember();
+    AddPublisher addPublisher = new AddPublisher();
+    AddSection addSection = new AddSection();
+
+    AddEmployee addEmployee = new AddEmployee();
+
+    MemberData memberData = new MemberData();
+
+    TabPane tabPane = new TabPane();
+
+    Tab tabAddMember = new Tab();
+//        Tab tabAddPublisher = new Tab();
+    Tab tabAddBook = new Tab();
+//        Tab tabAddSection = new Tab();
+    Tab tabAddEmployee = new Tab();
+    Tab tabMemberData = new Tab();
 
     @Override
-    public void start(Stage primaryStage) throws SQLException {
-        show_employee_table shEmpTv = new show_employee_table();
-        show_data shData = new show_data();
+    public void start(Stage primaryStage) {
+        initAddBook();
+        initAddMember();
+        initAddEmployee();
+        initAddPublisher();
+        initAddSection();
+        initTabPane();
+        initSignIn(primaryStage);
 
-        SignIn signIn = new SignIn();
-        AddMember addMember = new AddMember();
+        Scene scene = new Scene(signIn);
+        primaryStage.setTitle("Library Management System");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
+    private void initSignIn(Stage primaryStage) {
+
+        signIn.getBtnLogin().setOnAction(e -> {
+//            int id = signIn.getUserId();
+//            String pass = signIn.getPassword();
+//            currentEmployee = Model.logIn(id, pass);
+            currentEmployee = Model.logIn(26, "123456789");
+
+            tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
+            if (currentEmployee != null) {
+                if (currentEmployee.isAdmin()) {             /// if was an admin
+                    tabPane.getTabs().add(tabAddEmployee);
+                    primaryStage.setTitle("Control Panel(Admin)");
+                } else {              /// if was an employee                    
+                    primaryStage.setTitle("Control Panel");
+                }
+                Scene scene = new Scene(tabPane);
+                primaryStage.hide();
+                primaryStage.setScene(scene);
+                primaryStage.show();
+//                primaryStage.setWidth(800);
+//                primaryStage.setHeight(700);
+                primaryStage.setMaximized(true);
+            } else {             /// if wrong input
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Warning !");
+                alert.setHeaderText("Wrong credentials");
+                alert.setContentText("Please check username and password");
+
+                alert.showAndWait();
+            }
+        });
+    }
+
+    private void initAddBook() {
+        addBook.setPublishers(shData.publisher_show());
+        addBook.setSections(shData.Section_show());
+        addBook.getBtnAddBook().setOnAction(e -> {
+            add.add_Book(addBook.getBookName(), true, addBook.getSection().getSec_id(),
+                    addBook.getPublisher().getId(), addBook.getAuthors(), currentEmployee.getEmp_id());
+        });
+    }
+
+    private void initAddPublisher() {
+        addPublisher.getBtnAddPublisher().setOnAction(e -> {
+            Publisher pub = add.add_Publisher(addPublisher.getPublisherName(), addPublisher.getPublisherAddress());
+            addBook.getCbPublisher().getItems().add(pub);
+        });
+    }
+
+    private void initAddSection() {
+        addSection.getBtnAddSection().setOnAction(e -> {
+            Section sec = add.add_section(addSection.getSectionName());
+            addBook.getCbSection().getItems().add(sec);
+        });
+    }
+
+    private void initTabPane() {
+
+        tabPane.setSide(Side.TOP);
+
+        tabAddMember.closableProperty().set(false);
+//        tabAddPublisher.closableProperty().set(false);
+        tabAddBook.closableProperty().set(false);
+//        tabAddSection.closableProperty().set(false);
+        tabAddEmployee.closableProperty().set(false);
+        tabMemberData.closableProperty().set(false);
+
+        tabAddMember.setContent(addMember);
+//        tabAddPublisher.setContent(addPublisher);
+
+        VBox vboxPubSec = new VBox(10, addPublisher, addSection);
+        vboxPubSec.setAlignment(Pos.CENTER);
+        vboxPubSec.setPadding(new Insets(10));
+
+        HBox hboxBook = new HBox(10, addBook, vboxPubSec);
+        hboxBook.setAlignment(Pos.CENTER);
+        hboxBook.setPadding(new Insets(10));
+
+        tabAddBook.setContent(hboxBook);
+//        tabAddSection.setContent(addSection);
+        tabAddEmployee.setContent(addEmployee);
+        tabMemberData.setContent(memberData);
+
+        tabAddMember.setText("Add Member");
+//        tabAddPublisher.setText("Add Publisher");
+        tabAddBook.setText("Add Book");
+//        tabAddSection.setText("Add Section");
+        tabAddEmployee.setText("Add Employee");
+        tabMemberData.setText("Member Data");
+
+    }
+
+    private void initAddMember() {
         addMember.getBtnAddMember().setOnAction(e -> {
-
             member add_Member = add.add_Member(addMember.getMemberName(), addMember.getMemberEmail(),
                     addMember.getPhoneNumbers(), currentEmployee.getEmp_id(),
                     addMember.getMemberAddress(), addMember.getExpireDate().toString());
         });
-        AddPublisher addPublisher = new AddPublisher();
-        AddBook addBook = new AddBook();
-        AddSection addSection = new AddSection();
+    }
 
-        AddEmployee addEmployee = new AddEmployee();
+    private void initAddEmployee() {
+        show_employee_table shEmpTv = new show_employee_table();
         addEmployee.setTvEmployees(shEmpTv.getTable_emp(shData.emp_show()));
         addEmployee.getBtnAddEmployee().setOnAction(e -> {
             try {
@@ -70,82 +193,6 @@ public class Library extends Application {
                 System.out.println("Error salary");
             }
         });
-
-        MemberData memberData = new MemberData();
-
-        VBox vboxPubSec = new VBox(10, addPublisher, addSection);
-        vboxPubSec.setAlignment(Pos.CENTER);
-        vboxPubSec.setPadding(new Insets(10));
-
-        HBox hboxBook = new HBox(10, addBook, vboxPubSec);
-        hboxBook.setAlignment(Pos.CENTER);
-        hboxBook.setPadding(new Insets(10));
-
-        TabPane tabPane = new TabPane();
-        tabPane.setSide(Side.TOP);
-
-        Tab tabAddMember = new Tab();
-//        Tab tabAddPublisher = new Tab();
-        Tab tabAddBook = new Tab();
-//        Tab tabAddSection = new Tab();
-        Tab tabAddEmployee = new Tab();
-        Tab tabMemberData = new Tab();
-
-        tabAddMember.closableProperty().set(false);
-//        tabAddPublisher.closableProperty().set(false);
-        tabAddBook.closableProperty().set(false);
-//        tabAddSection.closableProperty().set(false);
-        tabAddEmployee.closableProperty().set(false);
-        tabMemberData.closableProperty().set(false);
-
-        tabAddMember.setContent(addMember);
-//        tabAddPublisher.setContent(addPublisher);
-        tabAddBook.setContent(hboxBook);
-//        tabAddSection.setContent(addSection);
-        tabAddEmployee.setContent(addEmployee);
-        tabMemberData.setContent(memberData);
-
-        tabAddMember.setText("Add Member");
-//        tabAddPublisher.setText("Add Publisher");
-        tabAddBook.setText("Add Book");
-//        tabAddSection.setText("Add Section");
-        tabAddEmployee.setText("Add Employee");
-        tabMemberData.setText("Member Data");
-
-        signIn.getBtnLogin().setOnAction(e -> {
-            int id = signIn.getUserId();
-            String pass = signIn.getPassword();
-            currentEmployee = Model.logIn(id, pass);
-            Stage stage = new Stage();
-
-            if (currentEmployee != null) {
-                if (currentEmployee.isAdmin()) {             /// if was an admin
-                    tabPane.getTabs().addAll(tabAddMember, tabAddBook,
-                            tabAddEmployee, tabMemberData);
-                    stage.setTitle("Control Panel(Admin)");
-
-                } else {              /// if was an employee
-                    tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
-                    stage.setTitle("Control Panel");
-                }
-                Scene scene = new Scene(tabPane);
-
-                stage.setScene(scene);
-                primaryStage.hide();
-                stage.show();
-            } else {             /// if wrong input
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Warning !");
-                alert.setHeaderText("Wrong credentials");
-                alert.setContentText("Please check username and password");
-
-                alert.showAndWait();
-            }
-        });
-        Scene scene = new Scene(signIn);
-        primaryStage.setTitle("Library Management System");
-        primaryStage.setScene(scene);
-        primaryStage.show();
     }
 
     /**

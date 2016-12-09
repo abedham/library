@@ -1,10 +1,9 @@
-
 package library.AllClass;
 
 import java.io.Serializable;
 
-public class Section implements Serializable{
-    
+public class Section implements Serializable {
+
     private int sec_id;
     private String sec_name;
 
@@ -31,6 +30,10 @@ public class Section implements Serializable{
     public void setSec_name(String sec_name) {
         this.sec_name = sec_name;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return getSec_name();
+    }
+
 }

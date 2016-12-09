@@ -53,16 +53,16 @@ public class AddPublisher extends VBox {
         hboxPublisherName.setAlignment(Pos.CENTER);
 
         setSpacing(spacing);
-        getChildren().addAll(hboxPublisherName, hboxPublisherAddress, btnAddPublisher);
+        getChildren().addAll(new Label("Add new publisher"),hboxPublisherName, hboxPublisherAddress, btnAddPublisher);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
     }
 
-    private String getPublisherName() {
+    public String getPublisherName() {
         return tfPublisherName.getText();
     }
 
-    private String getPublisherAddress() {
+    public String getPublisherAddress() {
         return tfPublisherAddress.getText();
     }
 

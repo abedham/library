@@ -3,6 +3,8 @@ package library.show;
 import library.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import library.AllClass.Employee;
@@ -78,26 +80,31 @@ public class show_data {
     ObservableList<Supplies> data_sup;
     ///////////////////////////////////////////////
 
-    public ObservableList emp_show() throws SQLException {
+    public ObservableList emp_show() {
 
-        A_emp = new ArrayList<>();
-        data_emp = FXCollections.observableArrayList();
-        String sql = "select * from employee";
-        stat = conn.createStatement();
-        ResultSet rs = stat.executeQuery(sql);
+        try {
+            A_emp = new ArrayList<>();
+            data_emp = FXCollections.observableArrayList();
+            String sql = "select * from employee";
+            stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
 
-        while (rs.next()) {
-            A_emp.add(new Employee(rs.getInt("emp_id"), rs.getString("name"), rs.getBoolean("isAdmin"),
-                    rs.getString("address"), rs.getString("email"), rs.getInt("salary")));
+            while (rs.next()) {
+                A_emp.add(new Employee(rs.getInt("emp_id"), rs.getString("name"), rs.getBoolean("isAdmin"),
+                        rs.getString("address"), rs.getString("email"), rs.getInt("salary")));
+            }
+
+            data_emp.removeAll(data_emp);
+            for (int i = 0; i < A_emp.size(); i++) {
+                data_emp.add(new Employee(A_emp.get(i).getEmp_id(), A_emp.get(i).getEmp_name(),
+                        A_emp.get(i).isAdmin(), A_emp.get(i).getEmp_address(), A_emp.get(i).getEmp_email(), A_emp.get(i).getSalary()));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(show_data.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        data_emp.removeAll(data_emp);
-        for (int i = 0; i < A_emp.size(); i++) {
-            data_emp.add(new Employee(A_emp.get(i).getEmp_id(), A_emp.get(i).getEmp_name(),
-                    A_emp.get(i).isAdmin(), A_emp.get(i).getEmp_address(), A_emp.get(i).getEmp_email(), A_emp.get(i).getSalary()));
-        }
-
         return data_emp;
+
     }
 
     public ObservableList book_show() throws SQLException {
@@ -109,7 +116,7 @@ public class show_data {
         ResultSet rs = stat.executeQuery(sql);
 
         while (rs.next()) {
-            A_book.add(new book(rs.getInt("book_id"), rs.getString("title"), rs.getString("available"),
+            A_book.add(new book(rs.getInt("book_id"), rs.getString("title"), rs.getBoolean("available"),
                     rs.getInt("sec_id")));
         }
 
@@ -213,26 +220,30 @@ public class show_data {
         return data_phone_mem;
     }
 
-    public ObservableList publisher_show() throws SQLException {
+    public ObservableList publisher_show() {
 
-        A_pub = new ArrayList<>();
-        data_pub = FXCollections.observableArrayList();
-        String sql = "select * from publisher";
-        stat = conn.createStatement();
-        ResultSet rs = stat.executeQuery(sql);
+        try {
+            A_pub = new ArrayList<>();
+            data_pub = FXCollections.observableArrayList();
+            String sql = "select * from publisher";
+            stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
 
-        while (rs.next()) {
+            while (rs.next()) {
 
-            A_pub.add(new Publisher(rs.getInt("pub_id"), rs.getString("name"), rs.getString("address")));
+                A_pub.add(new Publisher(rs.getInt("pub_id"), rs.getString("name"), rs.getString("address")));
 
+            }
+
+            data_pub.clear();
+            for (int i = 0; i < A_pub.size(); i++) {
+                data_pub.add(new Publisher(A_pub.get(i).getId(), A_pub.get(i).getName(),
+                        A_pub.get(i).getAddress()));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(show_data.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        data_pub.removeAll(data_pub);
-        for (int i = 0; i < A_pub.size(); i++) {
-            data_pub.add(new Publisher(A_pub.get(i).getId(), A_pub.get(i).getName(),
-                    A_pub.get(i).getAddress()));
-        }
-
         return data_pub;
     }
 
@@ -280,25 +291,29 @@ public class show_data {
         return data_reg_mem;
     }
 
-    public ObservableList Section_show() throws SQLException {
+    public ObservableList Section_show() {
 
-        A_sec = new ArrayList<>();
-        data_sec = FXCollections.observableArrayList();
-        String sql = "select * from section";
-        stat = conn.createStatement();
-        ResultSet rs = stat.executeQuery(sql);
+        try {
+            A_sec = new ArrayList<>();
+            data_sec = FXCollections.observableArrayList();
+            String sql = "select * from section";
+            stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
 
-        while (rs.next()) {
+            while (rs.next()) {
 
-            A_sec.add(new Section(rs.getInt("sec_id"), rs.getString("name")));
+                A_sec.add(new Section(rs.getInt("sec_id"), rs.getString("name")));
 
+            }
+
+            data_sec.removeAll(data_sec);
+            for (int i = 0; i < A_sec.size(); i++) {
+                data_sec.add(new Section(A_sec.get(i).getSec_id(), A_sec.get(i).getSec_name()));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(show_data.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        data_sec.removeAll(data_sec);
-        for (int i = 0; i < A_sec.size(); i++) {
-            data_sec.add(new Section(A_sec.get(i).getSec_id(), A_sec.get(i).getSec_name()));
-        }
-
         return data_sec;
     }
 

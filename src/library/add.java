@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import library.AllClass.Employee;
+import library.AllClass.Publisher;
+import library.AllClass.Section;
 import library.AllClass.member;
 
 public class add {
@@ -21,7 +23,7 @@ public class add {
     static Statement stmt;
     static PreparedStatement preparedStatement = null;
 
-    public static void add_Book(String title, String avail, int sec_id, int pub_id, ArrayList<String> Author_name, int emp_id) {
+    public static void add_Book(String title, boolean avail, int sec_id, int pub_id, List<String> Author_name, int emp_id) {
 
         try {
             stmt = conn.createStatement();
@@ -29,7 +31,7 @@ public class add {
             callableStatement = conn.prepareCall(std_count);
 
             callableStatement.setString(1, title);
-            callableStatement.setString(2, avail);
+            callableStatement.setBoolean(2, avail);
             callableStatement.setInt(3, sec_id);
             callableStatement.setInt(4, pub_id);
             callableStatement.setString(5, Author_name.get(0));
@@ -90,19 +92,22 @@ public class add {
         return member;
     }
 
-    public static void add_Publisher(String name, String address) {
-
-        String add_pub = "{call add_Publisher(?,?)}";
+    public static Publisher add_Publisher(String name, String address) {
+        Publisher publisher = null;
+        String add_pub = "{call add_Publisher(?,?,?)}";
         try {
             callableStatement = conn.prepareCall(add_pub);
             callableStatement.setString(1, name);
             callableStatement.setString(2, address);
+            callableStatement.registerOutParameter(3, Types.NUMERIC);
 
             callableStatement.executeUpdate();
+            int id = callableStatement.getInt(3);
+            publisher = new Publisher(id, name, address);
         } catch (SQLException ex) {
             Logger.getLogger(add.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return publisher;
     }
 
     public static void Borrow_Book(int emp_id, int mem_id, int book_id, String expire_date) {
@@ -121,17 +126,20 @@ public class add {
         }
     }
 
-    public static void add_section(String sec_name) {
-        String add_Section = "{call add_Section(?)}";
+    public static Section add_section(String sec_name) {
+        Section section = null;
+        String add_Section = "{call add_Section(?,?)}";
         try {
             callableStatement = conn.prepareCall(add_Section);
             callableStatement.setString(1, sec_name);
-
+            callableStatement.registerOutParameter(2, Types.NUMERIC);
             callableStatement.executeUpdate();
+            int sec_id = callableStatement.getInt(2);
+            section = new Section(sec_id, sec_name);
         } catch (SQLException ex) {
             Logger.getLogger(add.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return section;
     }
 
     public static Employee add_employee(String name, String address, boolean isAdmin, String email, int salary) {
