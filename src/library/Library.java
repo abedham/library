@@ -89,6 +89,7 @@ public class Library extends Application {
                 id = signIn.getUserId();
                 pass = signIn.getPassword();
                 currentEmployee = Model.logIn(id, pass);
+                tabPane.getTabs().clear();
                 tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
             } catch (Exception ex) {
 
@@ -97,7 +98,7 @@ public class Library extends Application {
             if (currentEmployee != null) {
                 if (currentEmployee.isAdmin()) {             /// if was an admin
                     tabPane.getTabs().add(tabAddEmployee);
-                    primaryStage.setTitle("Control Panel(Admin)");
+                    primaryStage.setTitle("Control Panel (Admin)");
                 } else {              /// if was an employee                    
                     primaryStage.setTitle("Control Panel");
                 }
