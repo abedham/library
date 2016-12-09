@@ -11,9 +11,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import library.AllClass.Employee;
+import library.AllClass.member;
 
 /**
  *
@@ -24,15 +27,49 @@ public class Model {
     static DBConnection db = new DBConnection();
     static Connection conn = db.getConn();
     static PreparedStatement pstmtGetEmployee;
+    static PreparedStatement pstmtGetMember;
+    static PreparedStatement pstmtGetMemPhones;
 
     static {
         try {
             pstmtGetEmployee = conn.prepareStatement("select * from employee where emp_id=? and password=?");
+            pstmtGetMember = conn.prepareStatement("select * from member where mem_id=?");
+            pstmtGetMemPhones = conn.prepareStatement("select * from phone_number where mem_id=?");
 
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    public static member getMember(int memId) {
+        member member = null;
+        try {
+            pstmtGetMember.setInt(1, memId);
+            ResultSet res = pstmtGetMember.executeQuery();
+            if (res.next()) {
+                member = new member(memId, res.getString("NAME"),
+                        res.getString("EMAIL"), res.getString("ADDRESS"), res.getString("EXPIRE_DATE"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return member;
+    }
+
+    public static List<String> getMemberPhones(int memId) {
+        List<String> phones = new ArrayList<>();
+        try {
+            pstmtGetMemPhones.setInt(1, memId);
+            ResultSet res = pstmtGetMemPhones.executeQuery();
+            while (res.next()) {
+                phones.add(res.getString("phone"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return phones;
+    }
+    
 
     public static Employee logIn(int empId, String password) {
         Employee emp = null;

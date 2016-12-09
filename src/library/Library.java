@@ -6,6 +6,7 @@
 package library;
 
 import java.sql.SQLException;
+import java.util.List;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -20,6 +21,7 @@ import javafx.stage.Stage;
 import library.AllClass.Employee;
 import library.AllClass.Publisher;
 import library.AllClass.Section;
+import library.AllClass.book;
 import library.AllClass.member;
 import library.Views.AddBook;
 import library.Views.AddEmployee;
@@ -68,6 +70,7 @@ public class Library extends Application {
         initAddEmployee();
         initAddPublisher();
         initAddSection();
+        initMemberData();
         initTabPane();
         initSignIn(primaryStage);
 
@@ -80,10 +83,10 @@ public class Library extends Application {
     private void initSignIn(Stage primaryStage) {
 
         signIn.getBtnLogin().setOnAction(e -> {
-//            int id = signIn.getUserId();
-//            String pass = signIn.getPassword();
-//            currentEmployee = Model.logIn(id, pass);
-            currentEmployee = Model.logIn(26, "123456789");
+            int id = signIn.getUserId();
+            String pass = signIn.getPassword();
+            currentEmployee = Model.logIn(id, pass);
+//            currentEmployee = Model.logIn(26, "123456789");
 
             tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
             if (currentEmployee != null) {
@@ -115,7 +118,7 @@ public class Library extends Application {
         addBook.setPublishers(shData.publisher_show());
         addBook.setSections(shData.Section_show());
         addBook.getBtnAddBook().setOnAction(e -> {
-            add.add_Book(addBook.getBookName(), true, addBook.getSection().getSec_id(),
+            book book = add.add_Book(addBook.getBookName(), true, addBook.getSection().getSec_id(),
                     addBook.getPublisher().getId(), addBook.getAuthors(), currentEmployee.getEmp_id());
         });
     }
@@ -178,6 +181,24 @@ public class Library extends Application {
         });
     }
 
+    private void initMemberData() {
+
+        memberData.getTfMemberID().setOnAction(e -> {
+
+            member member = Model.getMember(memberData.getMemberId());
+            List<String> phones = Model.getMemberPhones(memberData.getMemberId());
+            if (member != null) {
+                memberData.setMemberName(member.getName());
+                memberData.setEmail(member.getEmail());
+                memberData.setExpireDate(member.getExpire_date());
+                memberData.setMemberAddress(member.getAddress());
+                memberData.setPhoneNumber(phones.get(0));
+            } else {
+
+            }
+        });
+    }
+
     private void initAddEmployee() {
         show_employee_table shEmpTv = new show_employee_table();
         addEmployee.setTvEmployees(shEmpTv.getTable_emp(shData.emp_show()));
@@ -185,7 +206,7 @@ public class Library extends Application {
             try {
                 int salary = Integer.parseInt(addEmployee.getSalary());
                 Employee emp = addition.add_employee(addEmployee.getEmployeeName(), addEmployee.getEmployeeAddress(),
-                        addEmployee.isAdmin(), addEmployee.getEmail(), salary);
+                        addEmployee.isAdmin(), addEmployee.getEmail(), salary,addEmployee.getPassword());
                 if (emp != null) {
                     addEmployee.getTvEmployees().getItems().add(emp);
                 }

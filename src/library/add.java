@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import library.AllClass.Employee;
 import library.AllClass.Publisher;
 import library.AllClass.Section;
+import library.AllClass.book;
 import library.AllClass.member;
 
 public class add {
@@ -23,8 +24,8 @@ public class add {
     static Statement stmt;
     static PreparedStatement preparedStatement = null;
 
-    public static void add_Book(String title, boolean avail, int sec_id, int pub_id, List<String> Author_name, int emp_id) {
-
+    public static book add_Book(String title, boolean avail, int sec_id, int pub_id, List<String> Author_name, int emp_id) {
+        book book = null;
         try {
             stmt = conn.createStatement();
             String std_count = "{call addBook(?,?,?,?,? ,? , ?)}";
@@ -42,6 +43,7 @@ public class add {
 
             int B_id = callableStatement.getInt(7);
 
+            book = new book(B_id, title, avail, sec_id);
             PreparedStatement preparedStatement = null;
 
             for (int i = 1; i < Author_name.size(); i++) {
@@ -55,7 +57,7 @@ public class add {
         } catch (SQLException ex) {
             Logger.getLogger(add.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        return book;
     }
 
     public static member add_Member(String name, String email, List<String> phone, int Emp_id, String address, String expire_date) {
@@ -142,11 +144,11 @@ public class add {
         return section;
     }
 
-    public static Employee add_employee(String name, String address, boolean isAdmin, String email, int salary) {
+    public static Employee add_employee(String name, String address, boolean isAdmin, String email, int salary, String password) {
         Employee emp = null;
         try {
 
-            String add_employee = "{call ADD_EMP(?,?,?,?,?,?)}";
+            String add_employee = "{call ADD_EMP(?,?,?,?,?,?,?)}";
             callableStatement = conn.prepareCall(add_employee);
             callableStatement.setString(1, name);
             callableStatement.setBoolean(2, isAdmin);
@@ -154,7 +156,7 @@ public class add {
             callableStatement.setString(4, email);
             callableStatement.setInt(5, salary);
             callableStatement.registerOutParameter(6, Types.NUMERIC);
-
+            callableStatement.setString(7, Model.passHash(password));
             callableStatement.executeUpdate();
             int id = callableStatement.getInt(6);
             emp = new Employee(id, name, isAdmin, address, email, salary);

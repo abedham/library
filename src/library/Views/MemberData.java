@@ -32,12 +32,14 @@ public class MemberData extends VBox {
     private Label lbExpireDate = new Label("Expire Date");
     private Label lbPhoneNumber = new Label("Phone Number");
     private Label lbMemberAddress = new Label("Member Address");
+    private Label lbMemberEmail = new Label("Member Email");
 
     private TextField tfMemberID = new TextField();
     private TextField tfMemberName = new TextField();
     private TextField tfMemberAddress = new TextField();
     private TextField tfPhoneNumber = new TextField();
     private TextField tfExpireDate = new TextField();
+    private TextField tfMemberEmail = new TextField();
 
     private TableView tableView = new TableView();
 
@@ -64,6 +66,17 @@ public class MemberData extends VBox {
 
     private void initMemberDataView() {
         initTableView();
+        tfMemberID.setPromptText("Member ID");
+        tfMemberID.setMinWidth(minWidth);
+        lbMemberID.setMinWidth(minWidthLabels);
+
+        HBox hboxMemberId = new HBox(10, lbMemberID, tfMemberID);
+
+        tfMemberEmail.setPromptText("Member Email");
+        tfMemberEmail.setMinWidth(minWidth);
+        lbMemberEmail.setMinWidth(minWidthLabels);
+
+        HBox hboxMemberEmail = new HBox(10, lbMemberEmail, tfMemberEmail);
 
         tfExpireDate.setEditable(false);
         tfMemberAddress.setEditable(false);
@@ -97,14 +110,16 @@ public class MemberData extends VBox {
 
         HBox hboxPhoneNumber = new HBox(10, lbPhoneNumber, tfPhoneNumber);
 
+        hboxMemberId.setAlignment(Pos.CENTER);
+        hboxMemberEmail.setAlignment(Pos.CENTER);
         hboxMemberName.setAlignment(Pos.CENTER);
         hboxPhoneNumber.setAlignment(Pos.CENTER);
         hboxExpireDate.setAlignment(Pos.CENTER);
         hboxMemberAddress.setAlignment(Pos.CENTER);
 
         setSpacing(spacing);
-        getChildren().addAll(hboxMemberName, hboxMemberAddress,
-                hboxPhoneNumber, hboxExpireDate, tableView);
+        getChildren().addAll(hboxMemberId, hboxMemberName, hboxMemberAddress,
+                hboxPhoneNumber, hboxMemberEmail, hboxExpireDate, tableView);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
     }
@@ -149,8 +164,8 @@ public class MemberData extends VBox {
         this.tfExpireDate = tfExpireDate;
     }
 
-    public String getMemberId() {
-        return tfMemberID.getText();
+    public int getMemberId() {
+        return Integer.parseInt(tfMemberID.getText());
     }
 
     public void setExpireDate(String expireDate) {
@@ -187,6 +202,10 @@ public class MemberData extends VBox {
 
     public TableColumn getTcStatus() {
         return tcStatus;
+    }
+
+    public void setEmail(String email) {
+        tfMemberEmail.setText(email);
     }
 
 }

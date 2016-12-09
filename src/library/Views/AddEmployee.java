@@ -30,11 +30,13 @@ public class AddEmployee extends VBox {
     private Label lbEmployeeAddress = new Label("Employee Address");
     private Label lbSalary = new Label("Salary");
     private Label lbEmail = new Label("Email");
+    private Label lbPassword = new Label("Password");
 
     private TextField tfEmployeeAddress = new TextField();
     private TextField tfEmployeeName = new TextField();
     private TextField tfSalary = new TextField();
     private TextField tfEmail = new TextField();
+    private TextField tfPassword = new TextField();
 
     private Button btnAddEmployee = new Button("+");
 
@@ -70,7 +72,13 @@ public class AddEmployee extends VBox {
         tfSalary.setPromptText("Salary");
         HBox hboxSalary = new HBox(10, lbSalary, tfSalary);
 
+        lbPassword.setMinWidth(minWidthLabels);
+        tfPassword.setMinWidth(minWidth);
+        tfPassword.setPromptText("Password");
+        HBox hboxPassword = new HBox(10, lbPassword, tfPassword);
+
         hboxEmail.setAlignment(Pos.CENTER);
+        hboxPassword.setAlignment(Pos.CENTER);
         hboxSalary.setAlignment(Pos.CENTER);
         hboxEmployeeName.setAlignment(Pos.CENTER);
         hboxEmployeeAddress.setAlignment(Pos.CENTER);
@@ -80,7 +88,7 @@ public class AddEmployee extends VBox {
 
         setSpacing(spacing);
         getChildren().addAll(hboxEmployeeName, hboxEmployeeAddress,
-                hboxSalary, hboxEmail, chIsAdmin, btnAddEmployee);
+                hboxSalary, hboxEmail, hboxPassword, chIsAdmin, btnAddEmployee);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
 
@@ -177,5 +185,9 @@ public class AddEmployee extends VBox {
 
     public String getEmail() {
         return tfEmail.getText();
+    }
+
+    public String getPassword() {
+        return tfPassword.getText();
     }
 }
