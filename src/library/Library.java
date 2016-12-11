@@ -8,6 +8,7 @@ package library;
 import java.sql.SQLException;
 import java.util.List;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
@@ -18,6 +19,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import library.AllClass.MemberBook;
 import library.AllClass.Employee;
 import library.AllClass.Publisher;
 import library.AllClass.Section;
@@ -79,22 +81,20 @@ public class Library extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-    int id = 0;
-    String pass = null;
 
     private void initSignIn(Stage primaryStage) {
 
         signIn.getBtnLogin().setOnAction(e -> {
             try {
-                id = signIn.getUserId();
-                pass = signIn.getPassword();
-                currentEmployee = Model.logIn(id, pass);
+                int id = signIn.getUserId();
+                String pass = signIn.getPassword();
+//                currentEmployee = Model.logIn(id, pass);
+                currentEmployee = Model.logIn(26, "123456789");
                 tabPane.getTabs().clear();
                 tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
             } catch (Exception ex) {
 
             }
-//            currentEmployee = Model.logIn(26, "123456789");
             if (currentEmployee != null) {
                 if (currentEmployee.isAdmin()) {             /// if was an admin
                     tabPane.getTabs().add(tabAddEmployee);
@@ -194,8 +194,8 @@ public class Library extends Application {
                 memberData.setExpireDate(member.getExpire_date());
                 memberData.setMemberAddress(member.getAddress());
                 memberData.setPhoneNumber(phones.get(0));
-            } else {
-
+                List<MemberBook> empBooks = Model.getEmpBooks(member.getMem_id());
+                memberData.getTableView().setItems(FXCollections.observableList(empBooks));
             }
         });
     }

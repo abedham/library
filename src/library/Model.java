@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import library.AllClass.MemberBook;
 import library.AllClass.Employee;
 import library.AllClass.member;
 
@@ -29,12 +30,16 @@ public class Model {
     static PreparedStatement pstmtGetEmployee;
     static PreparedStatement pstmtGetMember;
     static PreparedStatement pstmtGetMemPhones;
+    static PreparedStatement pstmtGetEmpBooks;
+    static PreparedStatement pstmtReturnBook;
 
     static {
         try {
             pstmtGetEmployee = conn.prepareStatement("select * from employee where emp_id=? and password=?");
             pstmtGetMember = conn.prepareStatement("select * from member where mem_id=?");
             pstmtGetMemPhones = conn.prepareStatement("select * from phone_number where mem_id=?");
+            pstmtGetEmpBooks = conn.prepareStatement("select * from EMP_BOOKS where MEM_ID=?");
+            pstmtReturnBook = conn.prepareStatement("{call Return_Book(?,?)}");//need procedure to update available and returned
 
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -43,33 +48,50 @@ public class Model {
 
     public static member getMember(int memId) {
         member member = null;
+        ResultSet res = null;
         try {
             pstmtGetMember.setInt(1, memId);
-            ResultSet res = pstmtGetMember.executeQuery();
+            res = pstmtGetMember.executeQuery();
             if (res.next()) {
                 member = new member(memId, res.getString("NAME"),
                         res.getString("EMAIL"), res.getString("ADDRESS"), res.getString("EXPIRE_DATE"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            if (res != null) {
+                try {
+                    res.close();
+
+                } catch (SQLException ex) {
+                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         return member;
     }
 
     public static List<String> getMemberPhones(int memId) {
         List<String> phones = new ArrayList<>();
+        ResultSet res = null;
         try {
             pstmtGetMemPhones.setInt(1, memId);
-            ResultSet res = pstmtGetMemPhones.executeQuery();
+            res = pstmtGetMemPhones.executeQuery();
             while (res.next()) {
                 phones.add(res.getString("phone"));
             }
         } catch (SQLException ex) {
+            if (res != null) {
+                try {
+                    res.close();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
         return phones;
     }
-    
 
     public static Employee logIn(int empId, String password) {
         Employee emp = null;
@@ -96,6 +118,31 @@ public class Model {
         return emp;
     }
 
+    public static List<MemberBook> getEmpBooks(int memId) {
+        List<MemberBook> empBooks = new ArrayList<>();
+        ResultSet res = null;
+        try {
+            pstmtGetEmpBooks.setInt(1, memId);
+            res = pstmtGetEmpBooks.executeQuery();
+//            res = conn.createStatement().executeQuery("select * from EMP_BOOKS where MEM_ID='1'");
+
+            while (res.next()) {
+                empBooks.add(new MemberBook(res.getInt("BOOK_ID"), res.getInt("MEM_ID"), res.getString("TITLE"),
+                        res.getString("CUR_DATE"), res.getString("EXPIRE_DATE"), res.getBoolean("returned")));
+            }
+        } catch (SQLException ex) {
+            if (res != null) {
+                try {
+                    res.close();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return empBooks;
+    }
+
     public static String passHash(String pass) {
         try {
             MessageDigest mdAlgorithm = MessageDigest.getInstance("MD5");
@@ -115,5 +162,16 @@ public class Model {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public static void returnBook(int memberId, int bookId) {
+        try {
+            pstmtReturnBook.setInt(1, bookId);
+            pstmtReturnBook.setInt(2, memberId);
+            pstmtReturnBook.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 }

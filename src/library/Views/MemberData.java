@@ -7,14 +7,21 @@ package library.Views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
+import library.AllClass.MemberBook;
+import library.Model;
 
 /**
  *
@@ -41,12 +48,14 @@ public class MemberData extends VBox {
     private TextField tfExpireDate = new TextField();
     private TextField tfMemberEmail = new TextField();
 
-    private TableView tableView = new TableView();
+    private TableView<MemberBook> tableView = new TableView<>();
 
-    private TableColumn tcBookName = new TableColumn("Book Name");
-    private TableColumn tcBorrowDate = new TableColumn("Borrow Date");
-    private TableColumn tcReturnDate = new TableColumn("Return Date");
-    private TableColumn tcStatus = new TableColumn("Status");
+    private TableColumn<MemberBook, Integer> tcBookID = new TableColumn("Book id");
+    private TableColumn<MemberBook, String> tcBookName = new TableColumn("Book Name");
+    private TableColumn<MemberBook, String> tcBorrowDate = new TableColumn("Borrow Date");
+    private TableColumn<MemberBook, String> tcReturnDate = new TableColumn("Return Date");
+    private TableColumn<MemberBook, String> tcStatus = new TableColumn("Status");
+    private TableColumn<MemberBook, String> tcAction = new TableColumn("Action");
 
     private ObservableList date = FXCollections.observableArrayList();
 
@@ -56,12 +65,54 @@ public class MemberData extends VBox {
 
     private void initTableView() {
         tableView.setItems(date);
-        tableView.setMaxWidth(minWidth + minWidthLabels + 200);
-        tcBookName.setMinWidth(minWidth);
+        tableView.setMaxWidth(minWidth + minWidthLabels + 340);
+        tcBookID.setMinWidth(50);
+        tcBookID.setMaxWidth(50);
+        tcBookName.setMinWidth(minWidth + 30);
         tcBorrowDate.setMinWidth((minWidthLabels + 200) / 3);
         tcReturnDate.setMinWidth((minWidthLabels + 200) / 3);
         tcStatus.setMinWidth((minWidthLabels + 200) / 3);
-        tableView.getColumns().addAll(tcBookName, tcBorrowDate, tcReturnDate, tcStatus);
+        tcStatus.setMinWidth((minWidthLabels + 200) / 3);
+        tcAction.setMinWidth(60);
+        tcAction.setMaxWidth(60);
+        tableView.getColumns().addAll(tcBookID, tcBookName, tcBorrowDate, tcReturnDate, tcStatus, tcAction);
+        tcBookID.setCellValueFactory(new PropertyValueFactory("bookId"));
+        tcBookName.setCellValueFactory(new PropertyValueFactory("bookName"));
+        tcBorrowDate.setCellValueFactory(new PropertyValueFactory("borrowDate"));
+        tcReturnDate.setCellValueFactory(new PropertyValueFactory("returnDate"));
+        tcStatus.setCellValueFactory(new PropertyValueFactory("status"));
+        tcAction.setCellValueFactory(new PropertyValueFactory<>("DUMMY"));
+        tcAction.setCellFactory(e -> {
+            return new TableCell<MemberBook, String>() {
+                final Button btn = new Button("Return");
+
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+                        MemberBook memberBook = getTableView().getItems().get(getIndex());
+                        btn.setOnAction(e -> {
+                            memberDataBtnAction(memberBook);
+                            getTableView().refresh();
+                            btn.setDisable(true);
+                        });
+                        if ("Returned".equals(memberBook.getStatus())) {
+                            setGraphic(btn);
+                        }
+                    }
+                    setText(null);
+                }
+
+            };
+        });
+    }
+
+    private void memberDataBtnAction(MemberBook memberBook) {
+        if ("Not returned".equals(memberBook.getStatus())) {
+            Model.returnBook(memberBook.getMemberId(), memberBook.getBookId());
+            memberBook.setStatus("Returned");
+        }
     }
 
     private void initMemberDataView() {
