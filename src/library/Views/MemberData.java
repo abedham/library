@@ -133,6 +133,7 @@ public class MemberData extends VBox {
         tfMemberAddress.setEditable(false);
         tfMemberName.setEditable(false);
         tfPhoneNumber.setEditable(false);
+        tfMemberEmail.setEditable(false);
 
         lbMemberName.setMinWidth(minWidthLabels);
 

@@ -6,6 +6,7 @@
 package library;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -118,24 +119,125 @@ public class Library extends Application {
     private void initAddBook() {
         addBook.setPublishers(shData.publisher_show());
         addBook.setSections(shData.Section_show());
+
         addBook.getBtnAddBook().setOnAction(e -> {
-            book book = add.add_Book(addBook.getBookName(), true, addBook.getSection().getSec_id(),
-                    addBook.getPublisher().getId(), addBook.getAuthors(), currentEmployee.getEmp_id());
+
+            if (addBook.getBookName().isEmpty()) {
+                CustomAlertMsg.getEmptyError("Book Name");
+            } else if (addBook.getPublisher() == null) {
+                CustomAlertMsg.getEmptyError("Publisher Name");
+            } else if (addBook.getSection() == null) {
+                CustomAlertMsg.getEmptyError("Section Type");
+            } else if (addBook.getAuthors().isEmpty()) {
+                CustomAlertMsg.getEmptyError("Authers");
+            } else {
+                book book = add.add_Book(addBook.getBookName(), true, addBook.getSection().getSec_id(),
+                        addBook.getPublisher().getId(), addBook.getAuthors(), currentEmployee.getEmp_id());
+            }
         });
     }
 
     private void initAddPublisher() {
         addPublisher.getBtnAddPublisher().setOnAction(e -> {
-            Publisher pub = add.add_Publisher(addPublisher.getPublisherName(), addPublisher.getPublisherAddress());
-            addBook.getCbPublisher().getItems().add(pub);
-        });
+            if (CustomAlertMsg.checkNameError(addPublisher.getPublisherName())
+                    || CustomAlertMsg.checkAddress(addPublisher.getPublisherAddress())) {
+            } else {
+                Publisher pub = add.add_Publisher(addPublisher.getPublisherName(),
+                        addPublisher.getPublisherAddress());
+                addBook.getCbPublisher().getItems().add(pub);
+            }
+
+        }
+        );
     }
 
     private void initAddSection() {
         addSection.getBtnAddSection().setOnAction(e -> {
-            Section sec = add.add_section(addSection.getSectionName());
-            addBook.getCbSection().getItems().add(sec);
+            if (!CustomAlertMsg.checkNameError(addSection.getSectionName())) {
+                Section sec = add.add_section(addSection.getSectionName());
+                addBook.getCbSection().getItems().add(sec);
+            }
         });
+    }
+
+    private void initAddMember() {
+        addMember.getBtnAddMember().setOnAction(e -> {
+            if (CustomAlertMsg.checkNameError(addMember.getMemberName())) {
+            } else if (CustomAlertMsg.checkAddress(addMember.getMemberAddress())) {
+            } else if (CustomAlertMsg.checkEmail(addMember.getMemberEmail())) {
+            } else if (addMember.getPhoneNumbers().isEmpty()) {
+                CustomAlertMsg.getEmptyError("Phone Number");
+            } else if (addMember.getExpireDate().isBefore(LocalDate.now())) {
+                CustomAlertMsg.getDateError("before");
+            } else {
+                member add_Member = add.add_Member(addMember.getMemberName(), addMember.getMemberEmail(),
+                        addMember.getPhoneNumbers(), currentEmployee.getEmp_id(),
+                        addMember.getMemberAddress(), addMember.getExpireDate().toString());
+            }
+        });
+    }
+
+    private void initMemberData() {
+
+        memberData.getTfMemberID().setOnAction(e -> {
+<<<<<<< HEAD
+
+            member member = Model.getMember(memberData.getMemberId());
+            List<String> phones = Model.getMemberPhones(memberData.getMemberId());
+            if (member != null) {
+                memberData.setMemberName(member.getName());
+                memberData.setEmail(member.getEmail());
+                memberData.setExpireDate(member.getExpire_date());
+                memberData.setMemberAddress(member.getAddress());
+                memberData.setPhoneNumber(phones.get(0));
+                List<MemberBook> empBooks = Model.getEmpBooks(member.getMem_id());
+                memberData.getTableView().setItems(FXCollections.observableList(empBooks));
+=======
+            try {
+                member member = Model.getMember(memberData.getMemberId());
+                List<String> phones = Model.getMemberPhones(memberData.getMemberId());
+                if (member != null) {
+                    memberData.setMemberName(member.getName());
+                    memberData.setEmail(member.getEmail());
+                    memberData.setExpireDate(member.getExpire_date());
+                    memberData.setMemberAddress(member.getAddress());
+                    memberData.setPhoneNumber(phones.get(0));
+                } else {
+                    CustomAlertMsg.getDoesNotExist("Member");
+                }
+            } catch (NumberFormatException ex) {
+                CustomAlertMsg.getIDError();
+>>>>>>> bd01354857e057fce7f31bfc66488f6423a66c93
+            }
+        });
+    }
+
+    private void initAddEmployee() {
+        show_employee_table shEmpTv = new show_employee_table();
+        addEmployee.setTvEmployees(shEmpTv.getTable_emp(shData.emp_show()));
+        addEmployee.getBtnAddEmployee().setOnAction(e -> {
+
+            if (CustomAlertMsg.checkNameError(addEmployee.getEmployeeName())) {
+                return;
+            } else if (addEmployee.getEmployeeAddress().isEmpty()) {
+                CustomAlertMsg.getEmptyError("Address");
+                return;
+            } else if (CustomAlertMsg.checkSalary(addEmployee.getSalary())) {
+                return;
+            } else if (CustomAlertMsg.checkEmail(addEmployee.getEmail())) {
+                return;
+            } else if (CustomAlertMsg.checkPass(addEmployee.getPassword())) {
+                return;
+            }
+            int salary = Integer.parseInt(addEmployee.getSalary());
+            Employee emp = addition.add_employee(addEmployee.getEmployeeName(), addEmployee.getEmployeeAddress(),
+                    addEmployee.isAdmin(), addEmployee.getEmail(), salary, addEmployee.getPassword());
+            if (emp != null) {
+                addEmployee.getTvEmployees().getItems().add(emp);
+            }
+
+        }
+        );
     }
 
     private void initTabPane() {
@@ -172,60 +274,6 @@ public class Library extends Application {
         tabAddEmployee.setText("Add Employee");
         tabMemberData.setText("Member Data");
 
-    }
-
-    private void initAddMember() {
-        addMember.getBtnAddMember().setOnAction(e -> {
-            member add_Member = add.add_Member(addMember.getMemberName(), addMember.getMemberEmail(),
-                    addMember.getPhoneNumbers(), currentEmployee.getEmp_id(),
-                    addMember.getMemberAddress(), addMember.getExpireDate().toString());
-        });
-    }
-
-    private void initMemberData() {
-
-        memberData.getTfMemberID().setOnAction(e -> {
-
-            member member = Model.getMember(memberData.getMemberId());
-            List<String> phones = Model.getMemberPhones(memberData.getMemberId());
-            if (member != null) {
-                memberData.setMemberName(member.getName());
-                memberData.setEmail(member.getEmail());
-                memberData.setExpireDate(member.getExpire_date());
-                memberData.setMemberAddress(member.getAddress());
-                memberData.setPhoneNumber(phones.get(0));
-                List<MemberBook> empBooks = Model.getEmpBooks(member.getMem_id());
-                memberData.getTableView().setItems(FXCollections.observableList(empBooks));
-            }
-        });
-    }
-
-    private void initAddEmployee() {
-        show_employee_table shEmpTv = new show_employee_table();
-        addEmployee.setTvEmployees(shEmpTv.getTable_emp(shData.emp_show()));
-        addEmployee.getBtnAddEmployee().setOnAction(e -> {
-
-            if (CustomAlertMsg.checkNameError(addEmployee.getEmployeeName())) {
-                return;
-            } else if (addEmployee.getEmployeeAddress().isEmpty()) {
-                CustomAlertMsg.getEmptyError("Address");
-                return;
-            } else if (CustomAlertMsg.checkSalary(addEmployee.getSalary())) {
-                return;
-            } else if (CustomAlertMsg.checkEmail(addEmployee.getEmail())) {
-                return;
-            } else if (CustomAlertMsg.checkPass(addEmployee.getPassword())) {
-                return;
-            }
-            int salary = Integer.parseInt(addEmployee.getSalary());
-            Employee emp = addition.add_employee(addEmployee.getEmployeeName(), addEmployee.getEmployeeAddress(),
-                    addEmployee.isAdmin(), addEmployee.getEmail(), salary, addEmployee.getPassword());
-            if (emp != null) {
-                addEmployee.getTvEmployees().getItems().add(emp);
-            }
-
-        }
-        );
     }
 
     /**

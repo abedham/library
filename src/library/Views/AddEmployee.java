@@ -31,9 +31,9 @@ public class AddEmployee extends VBox {
     private Label lbSalary = new Label("Salary");
     private Label lbEmail = new Label("Email");
     private Label lbPassword = new Label("Password");
-
-    private TextField tfEmployeeAddress = new TextField();
+    
     private TextField tfEmployeeName = new TextField();
+    private TextField tfEmployeeAddress = new TextField();
     private TextField tfSalary = new TextField();
     private TextField tfEmail = new TextField();
     private TextField tfPassword = new TextField();

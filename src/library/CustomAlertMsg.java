@@ -38,7 +38,7 @@ public class CustomAlertMsg {
         alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error !");
         alert.setHeaderText("ID Error");
-        alert.setContentText("Bad ID, please try again");
+        alert.setContentText("Bad ID, please enter a valid id");
         alert.showAndWait();
     }
 
@@ -100,11 +100,19 @@ public class CustomAlertMsg {
         alert.showAndWait();
     }
 
+    static boolean checkAddress(String address) {
+        if (address.isEmpty()) {
+            CustomAlertMsg.getEmptyError("Address");
+            return true;
+        }
+        return false;
+    }
+
     static boolean checkNameError(String name) {
         if (name.isEmpty()) {
             CustomAlertMsg.getEmptyError("Name");
             return true;
-        } else if (!name.matches("^[ A-z]+$")) {
+        } else if (!name.matches("^[ A-z -]+$")) {
             CustomAlertMsg.getNameError();
             return true;
         } else {
@@ -139,9 +147,26 @@ public class CustomAlertMsg {
 
     static void getDateError(String value) {
         alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Error !");
-        alert.setHeaderText("Wrong Date format");
-        alert.setContentText("Please type a vaild date");
+        if (value.equals("before")) {
+            alert.setTitle("Error !");
+            alert.setHeaderText("Wrong Expire Date");
+            alert.setContentText("Expire Date Cannot be before current date");
+            alert.showAndWait();
+        } else {
+            alert.setTitle("Error !");
+            alert.setHeaderText("Wrong Date format");
+            alert.setContentText("Please type a vaild date");
+            alert.showAndWait();
+        }
+    }
+
+    static void getDoesNotExist(String x) {
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(x + " Does not exist");
+        alert.setHeaderText(x + " Does not exist");
+        alert.setContentText("This " + x + " does not exist in our records,"
+                + "\nplease check the entered id"
+                + "\n For any problem please contact us");
         alert.showAndWait();
     }
 }
