@@ -180,19 +180,6 @@ public class Library extends Application {
     private void initMemberData() {
 
         memberData.getTfMemberID().setOnAction(e -> {
-<<<<<<< HEAD
-
-            member member = Model.getMember(memberData.getMemberId());
-            List<String> phones = Model.getMemberPhones(memberData.getMemberId());
-            if (member != null) {
-                memberData.setMemberName(member.getName());
-                memberData.setEmail(member.getEmail());
-                memberData.setExpireDate(member.getExpire_date());
-                memberData.setMemberAddress(member.getAddress());
-                memberData.setPhoneNumber(phones.get(0));
-                List<MemberBook> empBooks = Model.getEmpBooks(member.getMem_id());
-                memberData.getTableView().setItems(FXCollections.observableList(empBooks));
-=======
             try {
                 member member = Model.getMember(memberData.getMemberId());
                 List<String> phones = Model.getMemberPhones(memberData.getMemberId());
@@ -202,12 +189,13 @@ public class Library extends Application {
                     memberData.setExpireDate(member.getExpire_date());
                     memberData.setMemberAddress(member.getAddress());
                     memberData.setPhoneNumber(phones.get(0));
+                    List<MemberBook> empBooks = Model.getEmpBooks(member.getMem_id());
+                    memberData.getTableView().setItems(FXCollections.observableList(empBooks));
                 } else {
                     CustomAlertMsg.getDoesNotExist("Member");
                 }
             } catch (NumberFormatException ex) {
                 CustomAlertMsg.getIDError();
->>>>>>> bd01354857e057fce7f31bfc66488f6423a66c93
             }
         });
     }
