@@ -5,7 +5,6 @@
  */
 package library;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +14,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
@@ -89,7 +87,7 @@ public class Library extends Application {
                 int id = signIn.getUserId();
                 String pass = signIn.getPassword();
 //                currentEmployee = Model.logIn(id, pass);
-                currentEmployee = Model.logIn(26, "123456789");
+                currentEmployee = Model.logIn(57, "123");
 
             } catch (Exception ex) {
 
@@ -148,7 +146,8 @@ public class Library extends Application {
 
                 EmpBook empBook = new EmpBook(book.getBook_id(),
                         book.getTitle(), addBook.getSection().getSec_name(),
-                        currentEmployee.getEmp_name(), Model.formatDate(new Date()), true);
+                        addBook.getPublisher().getName(), currentEmployee.getEmp_name(),
+                        Model.formatDate(new Date()), true);
                 booksData.getData().add(empBook);
             }
         });

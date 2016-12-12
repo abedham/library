@@ -97,8 +97,12 @@ public class MemberData extends VBox {
                         });
                         setGraphic(btn);
                         if ("Returned".equals(memberBook.getStatus())) {
+                            System.out.println(memberBook.getStatus());
                             btn.setDisable(true);
+                        } else {
+                            btn.setDisable(false);
                         }
+                        System.out.println(memberBook.getStatus());
                     }
                     setText(null);
                 }

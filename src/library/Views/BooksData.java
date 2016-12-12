@@ -38,6 +38,7 @@ public class BooksData extends VBox {
     private TableColumn<EmpBook, Integer> tcBookID = new TableColumn("Book id");
     private TableColumn<EmpBook, String> tcBookName = new TableColumn("Book Name");
     private TableColumn<EmpBook, String> tcSectionName = new TableColumn("Section name");
+    private TableColumn<EmpBook, String> tcPublisherName = new TableColumn("Publisher name");
     private TableColumn<EmpBook, String> tcRegBy = new TableColumn("Registerd by");
     private TableColumn<EmpBook, String> tcRegDate = new TableColumn("Registered at");
     private TableColumn<EmpBook, String> tcAvailable = new TableColumn("Status");
@@ -51,13 +52,15 @@ public class BooksData extends VBox {
     private void initTableView() {
         // 0. Initialize the columns.
 
-        tableView.setMaxWidth(minWidth + minWidthLabels + 340);
+        tableView.setMaxWidth(minWidth + minWidthLabels + 280);
+        tableView.setMinWidth(minWidth + minWidthLabels + 280);
 
-        tableView.getColumns().addAll(tcBookID, tcBookName, tcSectionName, tcRegBy, tcRegDate);
+        tableView.getColumns().addAll(tcBookID, tcBookName, tcSectionName, tcPublisherName, tcRegBy, tcRegDate);
 
         tcBookID.setCellValueFactory(new PropertyValueFactory("bookId"));
         tcBookName.setCellValueFactory(new PropertyValueFactory("bookName"));
         tcSectionName.setCellValueFactory(new PropertyValueFactory("section"));
+        tcPublisherName.setCellValueFactory(new PropertyValueFactory("publisher"));
         tcRegBy.setCellValueFactory(new PropertyValueFactory("empName"));
         tcRegDate.setCellValueFactory(new PropertyValueFactory("date"));
         tcAvailable.setCellValueFactory(new PropertyValueFactory("available"));

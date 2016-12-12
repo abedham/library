@@ -154,8 +154,10 @@ public class Model {
         try {
             res = pstmtGetEmpBooks.executeQuery();
             while (res.next()) {
-                empBooks.add(new EmpBook(res.getInt("BOOK_ID"), res.getString("TITLE"),
-                        res.getString("SEC_NAME"), res.getString("EMP_NAME"), res.getString("CUR_DATE"), res.getBoolean("AVAILABLE")));
+                empBooks.add(new EmpBook(res.getInt("BOOK_ID"),
+                        res.getString("TITLE"), res.getString("SEC_NAME"),
+                        res.getString("PUB_NAME"), res.getString("EMP_NAME"),
+                        res.getString("CUR_DATE"), res.getBoolean("AVAILABLE")));
             }
         } catch (SQLException ex) {
             if (res != null) {

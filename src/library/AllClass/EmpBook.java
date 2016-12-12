@@ -14,6 +14,7 @@ public class EmpBook {
     private int bookId;
     private String bookName;
     private String section;
+    private String publisher;
     private String empName;
     private String date;
     private boolean available;
@@ -21,10 +22,11 @@ public class EmpBook {
     public EmpBook() {
     }
 
-    public EmpBook(int bookId, String bookName, String section, String empName, String date, boolean available) {
+    public EmpBook(int bookId, String bookName, String section, String publisher, String empName, String date, boolean available) {
         this.bookId = bookId;
         this.bookName = bookName;
         this.section = section;
+        this.publisher = publisher;
         this.empName = empName;
         this.date = date;
         this.available = available;
@@ -76,6 +78,14 @@ public class EmpBook {
 
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
 }
