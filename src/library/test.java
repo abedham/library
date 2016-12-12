@@ -18,37 +18,28 @@ import javafx.scene.control.TableView;
 import javafx.stage.Stage;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.layout.HBox;
 import library.AllClass.member;
 import library.show_tables.show_list_Author;
 import static javafx.application.Application.launch;
 
-/**
- *
- * @author HP
- */
+
+
 public class test extends Application {
 
-    TableView<member> table;
-    ObservableList<member> data = FXCollections.observableArrayList();
-
-    static DBConnection db = new DBConnection();
-    static Connection conn = db.getConn();
-    static Statement stat = null;
-
-    show_list_Author sh = new show_list_Author();
 
     public test() throws SQLException {
 
-        // data = sh.Author_book_show();
+      
     }
 
     @Override
     public void start(Stage primaryStage) throws SQLException {
 
-        //    sla.getList_Author( data);
         Button btn = new Button();
-        btn.setText("Say 'Hello World'");
+        btn.setText("Report");
 
         ArrayList<Integer> As = new ArrayList<>();
         As.add(852582148);
@@ -58,23 +49,19 @@ public class test extends Application {
             @Override
             public void handle(ActionEvent event) {
 
-            }
-            /*
-             try {
-
-             data.clear();
-             a.add_Member("Tamer", "T@gmail.com", As, 3, "Gaza", "1/1/17");
-             data = sh.member_show();
-             table.setItems(data);
-             } catch (SQLException ex) {
-             Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+                try {
+                    itext i = new itext();
+                    i.getReprot();
+                } catch (SQLException ex) {
+                    Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
-                    
-             }
-             */
+       
+            }
+        
         });
 
-        HBox h = new HBox(10, sh.getList_Author(), btn);
+        HBox h = new HBox(10 , btn);
 
         Scene scene = new Scene(h, 300, 250);
 
