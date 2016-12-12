@@ -92,7 +92,7 @@ public class MemberData extends VBox {
                         MemberBook memberBook = getTableView().getItems().get(getIndex());
                         btn.setOnAction(e -> {
                             memberDataBtnAction(memberBook);
-                            getTableView().refresh();
+//                            getTableView().refresh();
                             btn.setDisable(true);
                         });
                         setGraphic(btn);

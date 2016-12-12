@@ -48,11 +48,10 @@ public class itext {
 
             addContent(document);
             document.close();
-            
-        }catch (FileNotFoundException ex) {
+
+        } catch (FileNotFoundException ex) {
             System.out.println("الرجاء اغلاق ملف pdf");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error");
         }
     }
@@ -94,12 +93,13 @@ public class itext {
     }
 
     private static void createTable(Section subCatPart)
-            throws BadElementException, SQLException {
+            throws BadElementException, SQLException, DocumentException {
 
         stat = conn.createStatement();
-        String sql = "SELECT BOOK.BOOK_ID , BOOK.TITLE , SECTION.NAME FROM BOOK NATURAL JOIN SECTION";
+        //   String sql = "SELECT BOOK.BOOK_ID , BOOK.TITLE , SECTION.NAME FROM BOOK NATURAL JOIN SECTION";
+        String sql = ("SELECT BOOK.BOOK_ID , BOOK.TITLE , SECTION.NAME , publisher.name as A  FROM BOOK NATURAL JOIN section join PUBLISHER using(pub_id)");
         ResultSet rs = stat.executeQuery(sql);
-        PdfPTable table = new PdfPTable(3);
+        PdfPTable table = new PdfPTable(4);
 
         PdfPCell c1 = new PdfPCell(new Phrase("book_id"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -112,13 +112,20 @@ public class itext {
         c1 = new PdfPCell(new Phrase("section name"));
         c1.setHorizontalAlignment(Element.ALIGN_CENTER);
         table.addCell(c1);
-        table.setHeaderRows(1);
 
+        c1 = new PdfPCell(new Phrase("publisher name"));
+        c1.setHorizontalAlignment(Element.ALIGN_CENTER);
+        table.addCell(c1);
+        table.setHeaderRows(1);
+        float[] columnWidths = new float[]{13f, 30f, 30f, 30f};
+        table.setWidths(columnWidths);
+        
         while (rs.next()) {
 
             table.addCell(rs.getInt("BOOK_ID") + "");
             table.addCell(rs.getString("title"));
             table.addCell(rs.getString("name"));
+            table.addCell(rs.getString("A"));
 
         }
 
