@@ -7,7 +7,6 @@ package library.Views;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -19,7 +18,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.util.Callback;
 import library.AllClass.MemberBook;
 import library.Model;
 
@@ -57,14 +55,14 @@ public class MemberData extends VBox {
     private TableColumn<MemberBook, String> tcStatus = new TableColumn("Status");
     private TableColumn<MemberBook, String> tcAction = new TableColumn("Action");
 
-    private ObservableList date = FXCollections.observableArrayList();
+    private ObservableList data = FXCollections.observableArrayList();
 
     public MemberData() {
         initMemberDataView();
     }
 
     private void initTableView() {
-        tableView.setItems(date);
+        tableView.setItems(data);
         tableView.setMaxWidth(minWidth + minWidthLabels + 340);
         tcBookID.setMinWidth(50);
         tcBookID.setMaxWidth(50);

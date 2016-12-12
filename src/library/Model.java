@@ -7,14 +7,18 @@ package library;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import library.AllClass.EmpBook;
 import library.AllClass.MemberBook;
 import library.AllClass.Employee;
 import library.AllClass.member;
@@ -30,16 +34,18 @@ public class Model {
     static PreparedStatement pstmtGetEmployee;
     static PreparedStatement pstmtGetMember;
     static PreparedStatement pstmtGetMemPhones;
+    static PreparedStatement pstmtGetMmberBooks;
     static PreparedStatement pstmtGetEmpBooks;
-    static PreparedStatement pstmtReturnBook;
+    static CallableStatement pstmtReturnBook;
 
     static {
         try {
             pstmtGetEmployee = conn.prepareStatement("select * from employee where emp_id=? and password=?");
             pstmtGetMember = conn.prepareStatement("select * from member where mem_id=?");
             pstmtGetMemPhones = conn.prepareStatement("select * from phone_number where mem_id=?");
-            pstmtGetEmpBooks = conn.prepareStatement("select * from EMP_BOOKS where MEM_ID=?");
-            pstmtReturnBook = conn.prepareStatement("{call Return_Book(?,?)}");//need procedure to update available and returned
+            pstmtGetMmberBooks = conn.prepareStatement("select * from MEMBER_BOOKS where MEM_ID=?");
+            pstmtGetEmpBooks = conn.prepareStatement("select * from EMP_BOOKS");
+            pstmtReturnBook = conn.prepareCall("{call Return_Book(?,?)}");//need procedure to update available and returned
 
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -118,17 +124,38 @@ public class Model {
         return emp;
     }
 
-    public static List<MemberBook> getEmpBooks(int memId) {
-        List<MemberBook> empBooks = new ArrayList<>();
+    public static List<MemberBook> getMemberBooks(int memId) {
+        List<MemberBook> memberBooks = new ArrayList<>();
         ResultSet res = null;
         try {
-            pstmtGetEmpBooks.setInt(1, memId);
-            res = pstmtGetEmpBooks.executeQuery();
-//            res = conn.createStatement().executeQuery("select * from EMP_BOOKS where MEM_ID='1'");
+            pstmtGetMmberBooks.setInt(1, memId);
+            res = pstmtGetMmberBooks.executeQuery();
 
             while (res.next()) {
-                empBooks.add(new MemberBook(res.getInt("BOOK_ID"), res.getInt("MEM_ID"), res.getString("TITLE"),
+                memberBooks.add(new MemberBook(res.getInt("BOOK_ID"), res.getInt("MEM_ID"), res.getString("TITLE"),
                         res.getString("CUR_DATE"), res.getString("EXPIRE_DATE"), res.getBoolean("returned")));
+            }
+        } catch (SQLException ex) {
+            if (res != null) {
+                try {
+                    res.close();
+                } catch (SQLException ex1) {
+                    Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex1);
+                }
+            }
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return memberBooks;
+    }
+
+    public static List<EmpBook> getBooks() {
+        List<EmpBook> empBooks = new ArrayList<>();
+        ResultSet res = null;
+        try {
+            res = pstmtGetEmpBooks.executeQuery();
+            while (res.next()) {
+                empBooks.add(new EmpBook(res.getInt("BOOK_ID"), res.getString("TITLE"),
+                        res.getString("SEC_NAME"), res.getString("EMP_NAME"), res.getString("CUR_DATE"), res.getBoolean("AVAILABLE")));
             }
         } catch (SQLException ex) {
             if (res != null) {
@@ -162,6 +189,11 @@ public class Model {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
+    }
+
+    public static String formatDate(Date date) {
+        SimpleDateFormat dt = new SimpleDateFormat("dd-mm-yy");
+        return dt.format(date);
     }
 
     public static void returnBook(int memberId, int bookId) {

@@ -7,6 +7,7 @@ package library;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -20,6 +21,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import library.AllClass.EmpBook;
 import library.AllClass.MemberBook;
 import library.AllClass.Employee;
 import library.AllClass.Publisher;
@@ -31,6 +33,7 @@ import library.Views.AddEmployee;
 import library.Views.AddMember;
 import library.Views.AddPublisher;
 import library.Views.AddSection;
+import library.Views.BooksData;
 import library.Views.MemberData;
 import library.Views.SignIn;
 import library.show.show_data;
@@ -56,6 +59,7 @@ public class Library extends Application {
     AddEmployee addEmployee = new AddEmployee();
 
     MemberData memberData = new MemberData();
+    BooksData booksData = new BooksData();
 
     TabPane tabPane = new TabPane();
 
@@ -65,16 +69,11 @@ public class Library extends Application {
 //        Tab tabAddSection = new Tab();
     Tab tabAddEmployee = new Tab();
     Tab tabMemberData = new Tab();
+//    Tab tabBooksData = new Tab();
 
     @Override
     public void start(Stage primaryStage) {
-        initAddBook();
-        initAddMember();
-        initAddEmployee();
-        initAddPublisher();
-        initAddSection();
-        initMemberData();
-        initTabPane();
+
         initSignIn(primaryStage);
 
         Scene scene = new Scene(signIn);
@@ -91,12 +90,25 @@ public class Library extends Application {
                 String pass = signIn.getPassword();
 //                currentEmployee = Model.logIn(id, pass);
                 currentEmployee = Model.logIn(26, "123456789");
-                tabPane.getTabs().clear();
-                tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);
+
             } catch (Exception ex) {
 
             }
             if (currentEmployee != null) {
+
+                initAddBook();
+                initAddMember();
+                initAddEmployee();
+                initAddPublisher();
+                initAddSection();
+                initMemberData();
+                initTabPane();
+                initBooksData();
+
+                tabPane.getTabs().clear();
+                tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);//, tabBooksData);
+                booksData.setAdmin(currentEmployee.isAdmin());
+
                 if (currentEmployee.isAdmin()) {             /// if was an admin
                     tabPane.getTabs().add(tabAddEmployee);
                     primaryStage.setTitle("Control Panel (Admin)");
@@ -133,6 +145,11 @@ public class Library extends Application {
             } else {
                 book book = add.add_Book(addBook.getBookName(), true, addBook.getSection().getSec_id(),
                         addBook.getPublisher().getId(), addBook.getAuthors(), currentEmployee.getEmp_id());
+
+                EmpBook empBook = new EmpBook(book.getBook_id(),
+                        book.getTitle(), addBook.getSection().getSec_name(),
+                        currentEmployee.getEmp_name(), Model.formatDate(new Date()), true);
+                booksData.getData().add(empBook);
             }
         });
     }
@@ -189,7 +206,7 @@ public class Library extends Application {
                     memberData.setExpireDate(member.getExpire_date());
                     memberData.setMemberAddress(member.getAddress());
                     memberData.setPhoneNumber(phones.get(0));
-                    List<MemberBook> empBooks = Model.getEmpBooks(member.getMem_id());
+                    List<MemberBook> empBooks = Model.getMemberBooks(member.getMem_id());
                     memberData.getTableView().setItems(FXCollections.observableList(empBooks));
                 } else {
                     CustomAlertMsg.getDoesNotExist("Member");
@@ -198,6 +215,13 @@ public class Library extends Application {
                 CustomAlertMsg.getIDError();
             }
         });
+    }
+
+    private void initBooksData() {
+
+        booksData.getTableView().getItems().clear();
+        booksData.setData(Model.getBooks());
+
     }
 
     private void initAddEmployee() {
@@ -238,6 +262,7 @@ public class Library extends Application {
 //        tabAddSection.closableProperty().set(false);
         tabAddEmployee.closableProperty().set(false);
         tabMemberData.closableProperty().set(false);
+//        tabBooksData.closableProperty().set(false);
 
         tabAddMember.setContent(addMember);
 //        tabAddPublisher.setContent(addPublisher);
@@ -246,7 +271,7 @@ public class Library extends Application {
         vboxPubSec.setAlignment(Pos.CENTER);
         vboxPubSec.setPadding(new Insets(10));
 
-        HBox hboxBook = new HBox(10, addBook, vboxPubSec);
+        HBox hboxBook = new HBox(10, addBook, vboxPubSec, booksData);
         hboxBook.setAlignment(Pos.CENTER);
         hboxBook.setPadding(new Insets(10));
 
@@ -254,13 +279,14 @@ public class Library extends Application {
 //        tabAddSection.setContent(addSection);
         tabAddEmployee.setContent(addEmployee);
         tabMemberData.setContent(memberData);
-
+//        tabBooksData.setContent(booksData);
         tabAddMember.setText("Add Member");
 //        tabAddPublisher.setText("Add Publisher");
         tabAddBook.setText("Add Book");
 //        tabAddSection.setText("Add Section");
         tabAddEmployee.setText("Add Employee");
         tabMemberData.setText("Member Data");
+//        tabBooksData.setText("Books Data");
 
     }
 
