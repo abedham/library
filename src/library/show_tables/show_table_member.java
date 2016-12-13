@@ -14,9 +14,14 @@ import library.AllClass.Member;
 import library.DBConnection;
 import library.show.show_data;
 import java.sql.*;
+import java.time.LocalDate;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
+import library.AllClass.MemberBook;
+import library.Model;
 
 public class show_table_member {
 
@@ -126,12 +131,39 @@ public class show_table_member {
         TableColumn tc5 = new TableColumn("expire_date");
         tc5.setPrefWidth(150);
         tc5.setCellValueFactory(new PropertyValueFactory("expire_date"));
-//        tc5.setCellFactory(new Callable<Object>() {
-//            @Override
-//            public Object call() throws Exception {
-//                
-//            }
-//        });
+        tc5.setCellFactory(e -> {
+            return new TableCell<Member, String>() {
+                final DatePicker datePicker = new DatePicker();
+
+                @Override
+                public void updateItem(String item, boolean empty) {
+                    if (empty) {
+                        setGraphic(null);
+                    } else {
+
+                        Member member = getTableView().getItems().get(getIndex());
+                        datePicker.setValue(LocalDate.parse(member.getExpire_date()));
+                        datePicker.setOnAction(e -> {
+                            int mem_id = member.getMem_id();
+                            String updateTableSQL = "UPDATE member SET expire_date = ? WHERE mem_id = ?";
+                            PreparedStatement preparedStatement = null;
+                            try {
+                                preparedStatement = conn.prepareStatement(updateTableSQL);
+                                preparedStatement.setString(1, Model.formatDate(datePicker.getValue()));
+                                preparedStatement.setInt(2, mem_id);
+                                preparedStatement.executeUpdate();
+
+                            } catch (SQLException ex) {
+                                Logger.getLogger(show_table_member.class.getName()).log(Level.SEVERE, null, ex);
+                            }
+                        });
+                        setGraphic(datePicker);
+                    }
+                    setText(null);
+                }
+
+            };
+        });
         TableColumn tc6 = new TableColumn("empName");
         tc6.setPrefWidth(150);
         tc6.setCellValueFactory(new PropertyValueFactory("empName"));
