@@ -96,7 +96,7 @@ public class Library extends Application {
                             @Override
                             public void run() {
                                 signIn.setDisable(false);
-
+                                counter = 0;
                             }
                         },
                         10000
@@ -127,10 +127,14 @@ public class Library extends Application {
                 tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);//, tabBooksData);
                 booksData.setAdmin(currentEmployee.isAdmin());
 
-                if (currentEmployee.isAdmin()) {             /// if was an admin
+                if (currentEmployee.isAdmin()) {
+                    counter = 0;
+                    /// if was an admin
                     tabPane.getTabs().add(tabAddEmployee);
                     primaryStage.setTitle("Control Panel (Admin)");
-                } else {              /// if was an employee                    
+                } else {
+                    counter = 0;
+                   /// if was an employee                    
                     primaryStage.setTitle("Control Panel");
                 }
                 Scene scene = new Scene(tabPane);
