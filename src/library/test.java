@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.scene.layout.HBox;
-import library.AllClass.member;
+import library.AllClass.Member;
 import library.show_tables.show_list_Author;
+import static javafx.application.Application.launch;
 import static javafx.application.Application.launch;
 
 

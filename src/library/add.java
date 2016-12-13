@@ -14,7 +14,7 @@ import library.AllClass.Employee;
 import library.AllClass.Publisher;
 import library.AllClass.Section;
 import library.AllClass.book;
-import library.AllClass.member;
+import library.AllClass.Member;
 
 public class add {
 
@@ -60,8 +60,8 @@ public class add {
         return book;
     }
 
-    public static member add_Member(String name, String email, List<String> phone, int Emp_id, String address, String expire_date) {
-        member member = null;
+    public static Member add_Member(String name, String empName, String email, List<String> phone, int Emp_id, String address, String expire_date) {
+        Member member = null;
         try {
             stmt = conn.createStatement();
             String std_count = "{call addMember(?,?,?,?,? ,? , ?)}";
@@ -78,7 +78,7 @@ public class add {
             callableStatement.executeUpdate();
 
             int mem_id = callableStatement.getInt(7);
-            member = new member(mem_id, name, email, address, expire_date);
+            member = new Member(mem_id, empName, name, email, address, expire_date);
             String sql_addAuthor = "insert into phone_number values(? , ?)";
             preparedStatement = conn.prepareStatement(sql_addAuthor);
             for (int i = 1; i < phone.size(); i++) {

@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 import library.AllClass.EmpBook;
 import library.AllClass.MemberBook;
 import library.AllClass.Employee;
-import library.AllClass.member;
+import library.AllClass.Member;
 
 /**
  *
@@ -57,14 +57,14 @@ public class Model {
         }
     }
 
-    public static member getMember(int memId) {
-        member member = null;
+    public static Member getMember(int memId) {
+        Member member = null;
         ResultSet res = null;
         try {
             pstmtGetMember.setInt(1, memId);
             res = pstmtGetMember.executeQuery();
             if (res.next()) {
-                member = new member(memId, res.getString("NAME"),
+                member = new Member(memId, "", res.getString("NAME"),
                         res.getString("EMAIL"), res.getString("ADDRESS"), res.getString("EXPIRE_DATE"));
             }
         } catch (SQLException ex) {

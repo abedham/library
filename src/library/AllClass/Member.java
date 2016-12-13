@@ -1,28 +1,28 @@
-
 package library.AllClass;
 
 import java.io.Serializable;
 
-public class member implements Serializable{
-    
+public class Member implements Serializable {
+
     private int mem_id;
     private String name;
     private String email;
     private String address;
     private String expire_date;
+    private String empName;
 
-    public member() {
+    public Member() {
     }
 
-    public member(int mem_id, String name, String email, String address, String expire_date) {
+    public Member(int mem_id, String empName, String name, String email, String address, String expire_date) {
         this.mem_id = mem_id;
         this.name = name;
         this.email = email;
         this.address = address;
+        this.empName = empName;
         this.expire_date = expire_date;
     }
 
-    
     public int getMem_id() {
         return mem_id;
     }
@@ -62,6 +62,13 @@ public class member implements Serializable{
     public void setExpire_date(String expire_date) {
         this.expire_date = expire_date;
     }
-    
-    
+
+    public String getEmpName() {
+        return empName;
+    }
+
+    public void setEmpName(String empName) {
+        this.empName = empName;
+    }
+
 }

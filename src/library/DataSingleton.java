@@ -10,6 +10,7 @@ import javafx.collections.ObservableList;
 import library.AllClass.EmpBook;
 import library.AllClass.Employee;
 import library.AllClass.MemberBook;
+import library.AllClass.Member;
 
 /**
  *
@@ -21,11 +22,13 @@ public class DataSingleton {
     private final ObservableList<EmpBook> empBooks;
     private final ObservableList<MemberBook> memberBooks;
     private final ObservableList<Employee> employess;
+    private final ObservableList<Member> members;
 
     public DataSingleton() {
         this.empBooks = FXCollections.observableArrayList();
         this.memberBooks = FXCollections.observableArrayList();
         this.employess = FXCollections.observableArrayList();
+        this.members = FXCollections.observableArrayList();
     }
 
     public static DataSingleton getInstance() {
@@ -71,4 +74,14 @@ public class DataSingleton {
         }
         return null;
     }
+
+    public ObservableList<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(ObservableList members) {
+        this.members.clear();
+        this.members.addAll(members);
+    }
+
 }

@@ -25,7 +25,7 @@ import library.AllClass.Employee;
 import library.AllClass.Publisher;
 import library.AllClass.Section;
 import library.AllClass.book;
-import library.AllClass.member;
+import library.AllClass.Member;
 import library.Views.AddBook;
 import library.Views.AddEmployee;
 import library.Views.AddMember;
@@ -36,6 +36,7 @@ import library.Views.MemberData;
 import library.Views.SignIn;
 import library.show.show_data;
 import library.show_tables.show_employee_table;
+import library.show_tables.show_table_member;
 
 /**
  *
@@ -93,12 +94,12 @@ public class Library extends Application {
 
                 new java.util.Timer().schedule(
                         new java.util.TimerTask() {
-                            @Override
-                            public void run() {
-                                signIn.setDisable(false);
-                                counter = 0;
-                            }
-                        },
+                    @Override
+                    public void run() {
+                        signIn.setDisable(false);
+                        counter = 0;
+                    }
+                },
                         10000
                 );
             }
@@ -108,7 +109,6 @@ public class Library extends Application {
                 String pass = signIn.getPassword();
 
                 currentEmployee = Model.logIn(id, pass);
-
 
             } catch (Exception ex) {
 
@@ -135,7 +135,7 @@ public class Library extends Application {
                     primaryStage.setTitle("Control Panel (Admin)");
                 } else {
                     counter = 0;
-                   /// if was an employee                    
+                    /// if was an employee                    
                     primaryStage.setTitle("Control Panel");
                 }
                 Scene scene = new Scene(tabPane);
@@ -202,7 +202,13 @@ public class Library extends Application {
     }
 
     private void initAddMember() {
+        show_table_member shMemTv = new show_table_member();
+        DataSingleton data = DataSingleton.getInstance();
+        data.setMembers(shData.member_show());
+        addMember.setTableView(shMemTv.getTable_member(currentEmployee.isAdmin(), data.getMembers()));
+
         addMember.getBtnAddMember().setOnAction(e -> {
+
             if (CustomAlertMsg.checkNameError(addMember.getMemberName())) {
             } else if (CustomAlertMsg.checkAddress(addMember.getMemberAddress())) {
             } else if (CustomAlertMsg.checkEmail(addMember.getMemberEmail())) {
@@ -211,7 +217,7 @@ public class Library extends Application {
             } else if (addMember.getExpireDate().isBefore(LocalDate.now())) {
                 CustomAlertMsg.getDateError("before");
             } else {
-                member add_Member = add.add_Member(addMember.getMemberName(), addMember.getMemberEmail(),
+                Member add_Member = add.add_Member(addMember.getMemberName(), currentEmployee.getEmp_name(), addMember.getMemberEmail(),
                         addMember.getPhoneNumbers(), currentEmployee.getEmp_id(),
                         addMember.getMemberAddress(), addMember.getExpireDate().toString());
             }
@@ -222,7 +228,7 @@ public class Library extends Application {
 
         memberData.getTfMemberID().setOnAction(e -> {
             try {
-                member member = Model.getMember(memberData.getMemberId());
+                Member member = Model.getMember(memberData.getMemberId());
                 List<String> phones = Model.getMemberPhones(memberData.getMemberId());
                 if (member != null) {
                     memberData.setMemberName(member.getName());

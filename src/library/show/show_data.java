@@ -9,7 +9,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import library.AllClass.Employee;
 import library.AllClass.book;
-import library.AllClass.member;
+import library.AllClass.Member;
 import library.AllClass.borrow;
 import library.AllClass.Author_book;
 import library.AllClass.phone_number;
@@ -35,9 +35,9 @@ public class show_data {
     ObservableList<book> data_book;
 
     ///////////////////////////////////////////////
-    ////////       member     ////////////////////
-    ArrayList<member> A_mem;
-    ObservableList<member> data_mem;
+    ////////       Member     ////////////////////
+    ArrayList<Member> A_mem;
+    ObservableList<Member> data_mem;
     ///////////////////////////////////////////////
 
     //////////       borrow_book     ////////////////////
@@ -129,28 +129,33 @@ public class show_data {
         return data_book;
     }
 
-    public ObservableList member_show() throws SQLException {
+    public ObservableList member_show() {
 
-        A_mem = new ArrayList<>();
-        data_mem = FXCollections.observableArrayList();
-        String sql = "select * from member";
-        stat = conn.createStatement();
-        ResultSet rs = stat.executeQuery(sql);
+        try {
+            A_mem = new ArrayList<>();
+            data_mem = FXCollections.observableArrayList();
+            String sql = "select * from MEM_EMP";
+            stat = conn.createStatement();
+            ResultSet rs = stat.executeQuery(sql);
 
-        while (rs.next()) {
-            A_mem.add(new member(rs.getInt("mem_id"), rs.getString("name"), rs.getString("email"),
-                    rs.getString("address"), rs.getString("expire_date")));
+            while (rs.next()) {
+                A_mem.add(new Member(rs.getInt("mem_id"), rs.getString("EMP_NAME"), rs.getString("MEM_NAME"), rs.getString("email"),
+                        rs.getString("address"), rs.getString("expire_date")));
 
+            }
+
+            data_mem.removeAll(data_mem);
+            for (int i = 0; i < A_mem.size(); i++) {
+
+                data_mem.add(new Member(A_mem.get(i).getMem_id(), A_mem.get(i).getEmpName(), A_mem.get(i).getName(),
+                        A_mem.get(i).getEmail(), A_mem.get(i).getAddress(), A_mem.get(i).getExpire_date()));
+            }
+
+            return data_mem;
+        } catch (SQLException ex) {
+            Logger.getLogger(show_data.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        data_mem.removeAll(data_mem);
-        for (int i = 0; i < A_mem.size(); i++) {
-
-            data_mem.add(new member(A_mem.get(i).getMem_id(), A_mem.get(i).getName(),
-                    A_mem.get(i).getEmail(), A_mem.get(i).getAddress(), A_mem.get(i).getExpire_date()));
-        }
-
-        return data_mem;
+        return null;
     }
 
     public ObservableList borrow_show() throws SQLException {

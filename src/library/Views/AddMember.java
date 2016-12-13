@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -48,6 +49,8 @@ public class AddMember extends VBox {
     private TextField tfPhone = new TextField();
     private List<TextField> tfsPhone = new ArrayList<>();
     private Button btnAddPhone = new Button("+");
+
+    private TableView tableView;
 
     public AddMember() {
         initAddMemberView();
@@ -113,7 +116,7 @@ public class AddMember extends VBox {
         hboxMemberAddress.setAlignment(Pos.CENTER);
 
         setSpacing(spacing);
-        getChildren().addAll(new Label("Add new member"),hboxMemberName, hboxMemberAddress,
+        getChildren().addAll(new Label("Add new member"), hboxMemberName, hboxMemberAddress,
                 hboxMemberEmail, hblvPhones, hboxExpireDate, btnAddMember);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
@@ -206,5 +209,14 @@ public class AddMember extends VBox {
 
     public String getMemberEmail() {
         return tfMemberEmail.getText();
+    }
+
+    public TableView getTableView() {
+        return tableView;
+    }
+
+    public void setTableView(TableView tableView) {
+        this.tableView = tableView;
+        getChildren().add(tableView);
     }
 }

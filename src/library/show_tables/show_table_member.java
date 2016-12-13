@@ -10,23 +10,22 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
 import javafx.util.Callback;
-import library.AllClass.member;
+import library.AllClass.Member;
 import library.DBConnection;
 import library.show.show_data;
 import java.sql.*;
+import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class show_table_member {
 
-    
-    
-    TableView<member> table_member;
+    TableView<Member> table_member;
     static DBConnection db = new DBConnection();
     static Connection conn = db.getConn();
     static Statement stat = null;
 
-    public TableView getTable_member(ObservableList ob) {
+    public TableView getTable_member(boolean admin, ObservableList ob) {
 
         table_member = new TableView<>();
 
@@ -40,108 +39,118 @@ public class show_table_member {
         Callback<TableColumn, TableCell> cellFactory
                 = new Callback<TableColumn, TableCell>() {
 
-                    @Override
-                    public TableCell call(TableColumn p) {
-                        return new show_table_member.EditingCell();
-                    }
-                };
+            @Override
+            public TableCell call(TableColumn p) {
+                return new show_table_member.EditingCell();
+            }
+        };
 
         TableColumn tc2 = new TableColumn("name");
-        tc2.setPrefWidth(200);
+        tc2.setPrefWidth(150);
         tc2.setCellValueFactory(new PropertyValueFactory("name"));
         tc2.setCellFactory(cellFactory);
-        tc2.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<member, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<member, String> t) {
-                        ((member) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setName(t.getNewValue());
+        tc2.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Member, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Member, String> t) {
+                ((Member) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())).setName(t.getNewValue());
 
-                        int mem_id = table_member.getSelectionModel().getSelectedItem().getMem_id();
-                        String updateTableSQL = "UPDATE member SET name = ? WHERE mem_id = ?";
-                        PreparedStatement preparedStatement = null;
-                        try {
-                            preparedStatement = conn.prepareStatement(updateTableSQL);
-                            preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, mem_id);
-                            preparedStatement.executeUpdate();
+                int mem_id = table_member.getSelectionModel().getSelectedItem().getMem_id();
+                String updateTableSQL = "UPDATE member SET name = ? WHERE mem_id = ?";
+                PreparedStatement preparedStatement = null;
+                try {
+                    preparedStatement = conn.prepareStatement(updateTableSQL);
+                    preparedStatement.setString(1, t.getNewValue());
+                    preparedStatement.setInt(2, mem_id);
+                    preparedStatement.executeUpdate();
 
-                        } catch (SQLException ex) {
-                            Logger.getLogger(show_table_member.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                } catch (SQLException ex) {
+                    Logger.getLogger(show_table_member.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-                    }
-                });
+            }
+        });
 
-        
-        
         TableColumn tc3 = new TableColumn("email");
-        tc3.setPrefWidth(200);
+        tc3.setPrefWidth(150);
         tc3.setCellValueFactory(new PropertyValueFactory("email"));
         tc3.setCellFactory(cellFactory);
-        tc3.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<member, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<member, String> t) {
-                        ((member) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setEmail(t.getNewValue());
+        tc3.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Member, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Member, String> t) {
+                ((Member) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())).setEmail(t.getNewValue());
 
-                        int mem_id = table_member.getSelectionModel().getSelectedItem().getMem_id();
-                        String updateTableSQL = "UPDATE member SET email = ? WHERE mem_id = ?";
-                        PreparedStatement preparedStatement = null;
-                        try {
-                            preparedStatement = conn.prepareStatement(updateTableSQL);
-                            preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, mem_id);
-                            preparedStatement.executeUpdate();
+                int mem_id = table_member.getSelectionModel().getSelectedItem().getMem_id();
+                String updateTableSQL = "UPDATE member SET email = ? WHERE mem_id = ?";
+                PreparedStatement preparedStatement = null;
+                try {
+                    preparedStatement = conn.prepareStatement(updateTableSQL);
+                    preparedStatement.setString(1, t.getNewValue());
+                    preparedStatement.setInt(2, mem_id);
+                    preparedStatement.executeUpdate();
 
-                        } catch (SQLException ex) {
-                            Logger.getLogger(show_table_member.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                } catch (SQLException ex) {
+                    Logger.getLogger(show_table_member.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-                    }
-                });
+            }
+        });
 
         TableColumn tc4 = new TableColumn("address");
-        tc4.setPrefWidth(200);
+        tc4.setPrefWidth(150);
         tc4.setCellValueFactory(new PropertyValueFactory("address"));
         tc4.setCellFactory(cellFactory);
-        tc4.setOnEditCommit(
-                new EventHandler<TableColumn.CellEditEvent<member, String>>() {
-                    @Override
-                    public void handle(TableColumn.CellEditEvent<member, String> t) {
-                        ((member) t.getTableView().getItems().get(
-                                t.getTablePosition().getRow())).setAddress(t.getNewValue());
+        tc4.setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Member, String>>() {
+            @Override
+            public void handle(TableColumn.CellEditEvent<Member, String> t) {
+                ((Member) t.getTableView().getItems().get(
+                        t.getTablePosition().getRow())).setAddress(t.getNewValue());
 
-                        int mem_id = table_member.getSelectionModel().getSelectedItem().getMem_id();
-                        String updateTableSQL = "UPDATE member SET address = ? WHERE mem_id = ?";
-                        PreparedStatement preparedStatement = null;
-                        try {
-                            preparedStatement = conn.prepareStatement(updateTableSQL);
-                            preparedStatement.setString(1, t.getNewValue());
-                            preparedStatement.setInt(2, mem_id);
-                            preparedStatement.executeUpdate();
+                int mem_id = table_member.getSelectionModel().getSelectedItem().getMem_id();
+                String updateTableSQL = "UPDATE member SET address = ? WHERE mem_id = ?";
+                PreparedStatement preparedStatement = null;
+                try {
+                    preparedStatement = conn.prepareStatement(updateTableSQL);
+                    preparedStatement.setString(1, t.getNewValue());
+                    preparedStatement.setInt(2, mem_id);
+                    preparedStatement.executeUpdate();
 
-                        } catch (SQLException ex) {
-                            Logger.getLogger(show_table_member.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                } catch (SQLException ex) {
+                    Logger.getLogger(show_table_member.class.getName()).log(Level.SEVERE, null, ex);
+                }
 
-                    }
-                });
+            }
+        });
 
-        
+        TableColumn tc5 = new TableColumn("expire_date");
+        tc5.setPrefWidth(150);
+        tc5.setCellValueFactory(new PropertyValueFactory("expire_date"));
+//        tc5.setCellFactory(new Callable<Object>() {
+//            @Override
+//            public Object call() throws Exception {
+//                
+//            }
+//        });
+        TableColumn tc6 = new TableColumn("empName");
+        tc6.setPrefWidth(150);
+        tc6.setCellValueFactory(new PropertyValueFactory("empName"));
+
         table_member.setItems(ob);
-        table_member.getColumns().addAll(tc1, tc2 , tc3 , tc4);
+
+        if (admin) {
+            table_member.getColumns().addAll(tc1, tc2, tc3, tc4, tc5, tc6);
+        } else {
+            table_member.getColumns().addAll(tc1, tc2, tc3, tc4, tc5);
+        }
+
         table_member.setMaxSize(600, 800);
 
         return table_member;
 
     }
 
-    
-    
-    
-    class EditingCell extends TableCell<member, String> {
+    class EditingCell extends TableCell<Member, String> {
 
         private TextField textField;
 
@@ -177,19 +186,17 @@ public class show_table_member {
             if (empty) {
                 setText(null);
                 setGraphic(null);
-            } else {
-                if (isEditing()) {
-                    if (textField != null) {
-                        textField.setText(getString());
+            } else if (isEditing()) {
+                if (textField != null) {
+                    textField.setText(getString());
 
-                    }
-
-                    setGraphic(textField);
-                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                } else {
-                    setText(getString());
-                    setContentDisplay(ContentDisplay.TEXT_ONLY);
                 }
+
+                setGraphic(textField);
+                setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
+            } else {
+                setText(getString());
+                setContentDisplay(ContentDisplay.TEXT_ONLY);
             }
         }
 
