@@ -119,7 +119,7 @@ public class itext {
         table.setHeaderRows(1);
         float[] columnWidths = new float[]{13f, 30f, 30f, 30f};
         table.setWidths(columnWidths);
-        
+
         while (rs.next()) {
 
             table.addCell(rs.getInt("BOOK_ID") + "");

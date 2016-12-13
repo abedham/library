@@ -31,7 +31,7 @@ public class AddEmployee extends VBox {
     private Label lbSalary = new Label("Salary");
     private Label lbEmail = new Label("Email");
     private Label lbPassword = new Label("Password");
-    
+
     private TextField tfEmployeeName = new TextField();
     private TextField tfEmployeeAddress = new TextField();
     private TextField tfSalary = new TextField();
@@ -42,7 +42,7 @@ public class AddEmployee extends VBox {
 
     private CheckBox chIsAdmin = new CheckBox("Admin Privileges");
 
-    TableView tvEmployees = new TableView();
+    TableView tvEmployees;
 
     public AddEmployee() {
         initAddEmployeeView();
@@ -84,7 +84,7 @@ public class AddEmployee extends VBox {
         hboxEmployeeAddress.setAlignment(Pos.CENTER);
 
         double tableWidth = 1.3 * (minWidth + minWidthLabels);
-        tvEmployees.setMaxWidth(tableWidth);
+        
 
         setSpacing(spacing);
         getChildren().addAll(hboxEmployeeName, hboxEmployeeAddress,

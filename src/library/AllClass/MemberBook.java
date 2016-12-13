@@ -11,6 +11,7 @@ package library.AllClass;
  */
 public class MemberBook {
 
+    private int borrowId;
     private int bookId;
     private int memberId;
     private String bookName;
@@ -21,12 +22,13 @@ public class MemberBook {
     public MemberBook() {
     }
 
-    public MemberBook(int bookId, int memberId, String bookName, String borrowDate, String returnDate, boolean status) {
+    public MemberBook(int bookId, int borrowId, int memberId, String bookName, String borrowDate, String returnDate, boolean status) {
         this.bookId = bookId;
         this.memberId = memberId;
         this.bookName = bookName;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
+        this.borrowId = borrowId;
         if (status) {
             this.status = "Returned";
         } else {
@@ -80,6 +82,14 @@ public class MemberBook {
 
     public void setMemberId(int memberId) {
         this.memberId = memberId;
+    }
+
+    public int getBorrowId() {
+        return borrowId;
+    }
+
+    public void setBorrowId(int borrowId) {
+        this.borrowId = borrowId;
     }
 
 }

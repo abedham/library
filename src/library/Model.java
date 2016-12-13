@@ -12,7 +12,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +39,8 @@ public class Model {
     static PreparedStatement pstmtGetMemPhones;
     static PreparedStatement pstmtGetMmberBooks;
     static PreparedStatement pstmtGetEmpBooks;
-    static CallableStatement pstmtReturnBook;
+    static CallableStatement callReturnBook;
+    static CallableStatement callBorrowBook;
 
     static {
         try {
@@ -45,7 +49,8 @@ public class Model {
             pstmtGetMemPhones = conn.prepareStatement("select * from phone_number where mem_id=?");
             pstmtGetMmberBooks = conn.prepareStatement("select * from MEMBER_BOOKS where MEM_ID=?");
             pstmtGetEmpBooks = conn.prepareStatement("select * from EMP_BOOKS");
-            pstmtReturnBook = conn.prepareCall("{call Return_Book(?,?)}");//need procedure to update available and returned
+            callReturnBook = conn.prepareCall("{call Return_Book(?,?)}");//need procedure to update available and returned
+            callBorrowBook = conn.prepareCall("{call BORROW_BOOK(?,?,?,?,?)}");//need procedure to update available and returned
 
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
@@ -132,7 +137,7 @@ public class Model {
             res = pstmtGetMmberBooks.executeQuery();
 
             while (res.next()) {
-                memberBooks.add(new MemberBook(res.getInt("BOOK_ID"), res.getInt("MEM_ID"), res.getString("TITLE"),
+                memberBooks.add(new MemberBook(res.getInt("BOOK_ID"), res.getInt("BORROW_ID"), res.getInt("MEM_ID"), res.getString("TITLE"),
                         res.getString("CUR_DATE"), res.getString("EXPIRE_DATE"), res.getBoolean("returned")));
             }
         } catch (SQLException ex) {
@@ -194,15 +199,39 @@ public class Model {
     }
 
     public static String formatDate(Date date) {
-        SimpleDateFormat dt = new SimpleDateFormat("dd-mm-yy");
+        SimpleDateFormat dt = new SimpleDateFormat("yyyy-mm-dd");
         return dt.format(date);
     }
 
-    public static void returnBook(int memberId, int bookId) {
+    public static String formatDate(LocalDate date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return formatter.format(date);
+    }
+
+    public static Integer borrowBook(int bookId, int memId, int empId, LocalDate localeDate) {
+
+        Integer borrowId = null;
         try {
-            pstmtReturnBook.setInt(1, bookId);
-            pstmtReturnBook.setInt(2, memberId);
-            pstmtReturnBook.executeUpdate();
+            String date = formatDate(localeDate);
+            callBorrowBook.setInt(1, empId);
+            callBorrowBook.setInt(2, memId);
+            callBorrowBook.setInt(3, bookId);
+            callBorrowBook.setString(4, date);
+            callBorrowBook.registerOutParameter(5, Types.NUMERIC);
+            callBorrowBook.executeUpdate();
+            borrowId = callBorrowBook.getInt(5);
+        } catch (SQLException ex) {
+            Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+        return borrowId;
+    }
+
+    public static void returnBook(int borrowId, int bookId) {
+        try {
+            callReturnBook.setInt(1, bookId);
+            callReturnBook.setInt(2, borrowId);
+            callReturnBook.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(Model.class.getName()).log(Level.SEVERE, null, ex);
         }

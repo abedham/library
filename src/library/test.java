@@ -49,12 +49,12 @@ public class test extends Application {
             @Override
             public void handle(ActionEvent event) {
 
-                try {
-                    itext i = new itext();
-                    i.getReprot();
-                } catch (SQLException ex) {
-                    Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
-                }
+//                try {
+//                    itext i = new itext();
+//                    i.getReprot();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(test.class.getName()).log(Level.SEVERE, null, ex);
+//                }
                 
        
             }

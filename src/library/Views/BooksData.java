@@ -6,6 +6,7 @@
 package library.Views;
 
 import java.util.List;
+import java.util.function.Consumer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -18,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 import library.AllClass.EmpBook;
+import library.DataSingleton;
 
 /**
  *
@@ -32,7 +34,7 @@ public class BooksData extends VBox {
     private final int spacing = 15;
     private final int padding = 10;
 
-    private ObservableList<EmpBook> data = FXCollections.observableArrayList();
+    private ObservableList<EmpBook> data = DataSingleton.getInstance().getEmpBooks();
     private TableView<EmpBook> tableView = new TableView<>(data);
 
     private TableColumn<EmpBook, Integer> tcBookID = new TableColumn("Book id");
@@ -144,6 +146,16 @@ public class BooksData extends VBox {
 
     public void setTableView(TableView<EmpBook> tableView) {
         this.tableView = tableView;
+    }
+
+    public EmpBook getEmpBook(int bookId) {
+        for (EmpBook empBook : data) {
+
+            if (empBook.getBookId() == bookId) {
+                return empBook;
+            }
+        }
+        return null;
     }
 
 }

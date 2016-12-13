@@ -87,7 +87,7 @@ public class Library extends Application {
                 int id = signIn.getUserId();
                 String pass = signIn.getPassword();
 //                currentEmployee = Model.logIn(id, pass);
-                currentEmployee = Model.logIn(57, "123");
+                currentEmployee = Model.logIn(58, "123456");
 
             } catch (Exception ex) {
 
@@ -148,7 +148,7 @@ public class Library extends Application {
                         book.getTitle(), addBook.getSection().getSec_name(),
                         addBook.getPublisher().getName(), currentEmployee.getEmp_name(),
                         Model.formatDate(new Date()), true);
-                booksData.getData().add(empBook);
+                DataSingleton.getInstance().getEmpBooks().add(empBook);
             }
         });
     }
@@ -204,14 +204,39 @@ public class Library extends Application {
                     memberData.setEmail(member.getEmail());
                     memberData.setExpireDate(member.getExpire_date());
                     memberData.setMemberAddress(member.getAddress());
-                    memberData.setPhoneNumber(phones.get(0));
+                    if (phones != null && phones.size() > 0) {
+                        memberData.setPhoneNumber(phones.get(0));
+                    } else {
+                        memberData.setPhoneNumber("");
+                    }
                     List<MemberBook> empBooks = Model.getMemberBooks(member.getMem_id());
-                    memberData.getTableView().setItems(FXCollections.observableList(empBooks));
+                    memberData.setData(FXCollections.observableList(empBooks));
                 } else {
+                    memberData.getData().clear();
                     CustomAlertMsg.getDoesNotExist("Member");
                 }
             } catch (NumberFormatException ex) {
                 CustomAlertMsg.getIDError();
+            }
+        });
+        memberData.getBtnBorrow().setOnAction(e -> {
+
+            try {
+                EmpBook empBook = booksData.getEmpBook(memberData.getBookId());
+                if (empBook.isAvailable()) {
+//                if (memberData.getDate().compareTo(LocalDate.ofEpochDay(new Date().getTime())) > 0) {
+                    int borrowId = Model.borrowBook(memberData.getBookId(), memberData.getMemberId(), currentEmployee.getEmp_id(), memberData.getDate());
+                    MemberBook memberBook = new MemberBook(memberData.getBookId(),
+                            borrowId, memberData.getMemberId(), empBook.getBookName(),
+                            Model.formatDate(new Date()), Model.formatDate(memberData.getDate()), false);
+                    DataSingleton.getInstance().getMemberBooks().add(memberBook);
+                    empBook.setAvailable(false);
+//                } else {
+//                    //Expire date error
+//                }
+                }
+            } catch (NumberFormatException ex) {
+                // Ammar add id errors,
             }
         });
     }
@@ -225,7 +250,9 @@ public class Library extends Application {
 
     private void initAddEmployee() {
         show_employee_table shEmpTv = new show_employee_table();
-        addEmployee.setTvEmployees(shEmpTv.getTable_emp(shData.emp_show()));
+        DataSingleton data = DataSingleton.getInstance();
+        data.setEmployess(shData.emp_show());
+        addEmployee.setTvEmployees(shEmpTv.getTable_emp(data.getEmployess()));
         addEmployee.getBtnAddEmployee().setOnAction(e -> {
 
             if (CustomAlertMsg.checkNameError(addEmployee.getEmployeeName())) {
@@ -244,7 +271,7 @@ public class Library extends Application {
             Employee emp = addition.add_employee(addEmployee.getEmployeeName(), addEmployee.getEmployeeAddress(),
                     addEmployee.isAdmin(), addEmployee.getEmail(), salary, addEmployee.getPassword());
             if (emp != null) {
-                addEmployee.getTvEmployees().getItems().add(emp);
+                data.getEmployess().add(emp);
             }
 
         }

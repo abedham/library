@@ -1,11 +1,16 @@
 --------------------------------------------------------
---  File created - «·«À‰Ì‰-œÌ”„»—-12-2016   
+--  File created - «·À·«À«¡-œÌ”„»—-13-2016   
 --------------------------------------------------------
 --------------------------------------------------------
 --  DDL for Sequence BOOK_ID
 --------------------------------------------------------
 
    CREATE SEQUENCE  "D_PROJECT"."BOOK_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 87 CACHE 20 NOORDER  NOCYCLE ;
+--------------------------------------------------------
+--  DDL for Sequence BORROW_ID
+--------------------------------------------------------
+
+   CREATE SEQUENCE  "D_PROJECT"."BORROW_ID"  MINVALUE 1 MAXVALUE 9999999999999999999999999999 INCREMENT BY 1 START WITH 21 CACHE 20 NOORDER  NOCYCLE ;
 --------------------------------------------------------
 --  DDL for Sequence DBOBJECTID_SEQUENCE
 --------------------------------------------------------
@@ -68,7 +73,8 @@
 	"BOOK_ID" NUMBER(6,0), 
 	"CUR_DATE" VARCHAR2(10 BYTE), 
 	"EXPIRE_DATE" VARCHAR2(10 BYTE), 
-	"RETURNED" NUMBER(1,0) DEFAULT 0
+	"RETURNED" NUMBER(1,0) DEFAULT 0, 
+	"ID" NUMBER(6,0)
    ) SEGMENT CREATION IMMEDIATE 
   PCTFREE 10 PCTUSED 40 INITRANS 1 MAXTRANS 255 NOCOMPRESS LOGGING
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
@@ -185,36 +191,56 @@
 --  DDL for View MEMBER_BOOKS
 --------------------------------------------------------
 
-  CREATE OR REPLACE FORCE VIEW "D_PROJECT"."MEMBER_BOOKS" ("MEM_ID", "BOOK_ID", "TITLE", "CUR_DATE", "EXPIRE_DATE", "RETURNED") AS 
-  select mem_id, book_id, title,cur_date, expire_date, returned from BOOK NATURAL join BORROW;
+  CREATE OR REPLACE FORCE VIEW "D_PROJECT"."MEMBER_BOOKS" ("BORROW_ID", "MEM_ID", "BOOK_ID", "TITLE", "CUR_DATE", "EXPIRE_DATE", "RETURNED") AS 
+  select id,mem_id, book_id, title,cur_date, expire_date, returned from BOOK NATURAL join BORROW;
 REM INSERTING into D_PROJECT.AUTHOR_BOOK
 SET DEFINE OFF;
 Insert into D_PROJECT.AUTHOR_BOOK (AUTHOR_NAME,BOOK_ID) values ('Ahmed El Desoky',67);
+Insert into D_PROJECT.AUTHOR_BOOK (AUTHOR_NAME,BOOK_ID) values ('Ahmed',68);
+Insert into D_PROJECT.AUTHOR_BOOK (AUTHOR_NAME,BOOK_ID) values ('Rami',69);
 REM INSERTING into D_PROJECT.BOOK
 SET DEFINE OFF;
+Insert into D_PROJECT.BOOK (BOOK_ID,TITLE,AVAILABLE,SEC_ID,PUB_ID) values (69,'Najah',1,41,41);
+Insert into D_PROJECT.BOOK (BOOK_ID,TITLE,AVAILABLE,SEC_ID,PUB_ID) values (68,'Salama',1,41,41);
 Insert into D_PROJECT.BOOK (BOOK_ID,TITLE,AVAILABLE,SEC_ID,PUB_ID) values (67,'Islamic History',1,41,41);
 REM INSERTING into D_PROJECT.BORROW
 SET DEFINE OFF;
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,68,'2016-12-13','2016-12-13',1,7);
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,67,'2016-12-13','2016-12-13',0,9);
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,68,'2016-12-13','2016-12-13',0,11);
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,68,'2016-12-13','2016-12-13',0,13);
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,68,'2016-12-13','2016-12-13',0,15);
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,68,'2016-12-13','2016-12-13',0,17);
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,68,'2016-12-13','2016-12-13',0,19);
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,67,'2016-12-13','2016-12-13',1,1);
+Insert into D_PROJECT.BORROW (EMP_ID,MEM_ID,BOOK_ID,CUR_DATE,EXPIRE_DATE,RETURNED,ID) values (58,22,68,'2016-12-13','2016-12-13',1,3);
 REM INSERTING into D_PROJECT.EMPLOYEE
 SET DEFINE OFF;
+Insert into D_PROJECT.EMPLOYEE (EMP_ID,NAME,ISADMIN,ADDRESS,EMAIL,SALARY,PASSWORD) values (60,'Ammar',1,'remal','am@hotmail.com',9999,'e10adc3949ba59abbe56e057f20f883e');
 Insert into D_PROJECT.EMPLOYEE (EMP_ID,NAME,ISADMIN,ADDRESS,EMAIL,SALARY,PASSWORD) values (58,'Mohammed',1,'nasser','moh@htotmail.com',9999,'e10adc3949ba59abbe56e057f20f883e');
 Insert into D_PROJECT.EMPLOYEE (EMP_ID,NAME,ISADMIN,ADDRESS,EMAIL,SALARY,PASSWORD) values (59,'rami',0,'remal','rm@gmail.com',454,'e10adc3949ba59abbe56e057f20f883e');
 Insert into D_PROJECT.EMPLOYEE (EMP_ID,NAME,ISADMIN,ADDRESS,EMAIL,SALARY,PASSWORD) values (57,'AbdelRahman',1,'Mokhabarat','abed.ha15@gmail.com',9000,'202cb962ac59075b964b07152d234b70');
 REM INSERTING into D_PROJECT.MEMBER
 SET DEFINE OFF;
 Insert into D_PROJECT.MEMBER (MEM_ID,NAME,EMAIL,ADDRESS,EXPIRE_DATE) values (23,'Jameel','jam@hotmil.com','Ramallah','2017-12-13');
+Insert into D_PROJECT.MEMBER (MEM_ID,NAME,EMAIL,ADDRESS,EXPIRE_DATE) values (24,'Sami','mmem@hotmail.com','Gaza','2016-12-13');
+Insert into D_PROJECT.MEMBER (MEM_ID,NAME,EMAIL,ADDRESS,EXPIRE_DATE) values (21,'Abed','abed@mail.com','gaza, palestine','2016-12-22');
+Insert into D_PROJECT.MEMBER (MEM_ID,NAME,EMAIL,ADDRESS,EXPIRE_DATE) values (22,'Ahmed','eee@ww.c','ppastne','2016-12-21');
 REM INSERTING into D_PROJECT.PHONE_NUMBER
 SET DEFINE OFF;
 Insert into D_PROJECT.PHONE_NUMBER (MEM_ID,PHONE) values (23,'+972597868282');
+Insert into D_PROJECT.PHONE_NUMBER (MEM_ID,PHONE) values (24,'0597868282');
 REM INSERTING into D_PROJECT.PUBLISHER
 SET DEFINE OFF;
 Insert into D_PROJECT.PUBLISHER (PUB_ID,NAME,ADDRESS) values (41,'Al_Salam','Gaza');
 REM INSERTING into D_PROJECT.REG_BOOK
 SET DEFINE OFF;
-Insert into D_PROJECT.REG_BOOK (EMP_ID,BOOK_ID,CUR_DATE) values (57,67,'13/12/16');
+Insert into D_PROJECT.REG_BOOK (EMP_ID,BOOK_ID,CUR_DATE) values (58,69,'2016-12-13');
+Insert into D_PROJECT.REG_BOOK (EMP_ID,BOOK_ID,CUR_DATE) values (59,68,'2016-12-13');
 REM INSERTING into D_PROJECT.REG_MEMBER
 SET DEFINE OFF;
 Insert into D_PROJECT.REG_MEMBER (EMP_ID,MEM_ID,CUR_DATE,EXPIRE_DATE) values (57,23,'13/12/16','2017-12-13');
+Insert into D_PROJECT.REG_MEMBER (EMP_ID,MEM_ID,CUR_DATE,EXPIRE_DATE) values (59,24,'13/12/16','2016-12-13');
 REM INSERTING into D_PROJECT.SECTION
 SET DEFINE OFF;
 Insert into D_PROJECT.SECTION (SEC_ID,NAME) values (41,'History');
@@ -264,19 +290,19 @@ Insert into D_PROJECT.SECTION (SEC_ID,NAME) values (41,'History');
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS" ;
 --------------------------------------------------------
---  DDL for Index SYS_C007310
+--  DDL for Index SYS_C007305
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "D_PROJECT"."SYS_C007310" ON "D_PROJECT"."BORROW" ("EMP_ID", "MEM_ID", "BOOK_ID", "CUR_DATE") 
+  CREATE UNIQUE INDEX "D_PROJECT"."SYS_C007305" ON "D_PROJECT"."PUBLISHER" ("PUB_ID") 
   PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
   TABLESPACE "USERS" ;
 --------------------------------------------------------
---  DDL for Index SYS_C007305
+--  DDL for Index PK_BORROW
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX "D_PROJECT"."SYS_C007305" ON "D_PROJECT"."PUBLISHER" ("PUB_ID") 
+  CREATE UNIQUE INDEX "D_PROJECT"."PK_BORROW" ON "D_PROJECT"."BORROW" ("ID") 
   PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
@@ -350,7 +376,7 @@ Insert into D_PROJECT.SECTION (SEC_ID,NAME) values (41,'History');
 --------------------------------------------------------
 
   ALTER TABLE "D_PROJECT"."BORROW" MODIFY ("RETURNED" NOT NULL ENABLE);
-  ALTER TABLE "D_PROJECT"."BORROW" ADD PRIMARY KEY ("EMP_ID", "MEM_ID", "BOOK_ID", "CUR_DATE")
+  ALTER TABLE "D_PROJECT"."BORROW" ADD CONSTRAINT "PK_BORROW" PRIMARY KEY ("ID")
   USING INDEX PCTFREE 10 INITRANS 2 MAXTRANS 255 COMPUTE STATISTICS 
   STORAGE(INITIAL 65536 NEXT 1048576 MINEXTENTS 1 MAXEXTENTS 2147483645
   PCTINCREASE 0 FREELISTS 1 FREELIST GROUPS 1 BUFFER_POOL DEFAULT FLASH_CACHE DEFAULT CELL_FLASH_CACHE DEFAULT)
@@ -471,7 +497,7 @@ begin
 insert into BOOK VALUES(book_id.NEXTVAL , title ,available , sec_id ,Pub_id);
 select book_id.CURRVAL into b_id from dual ;
 insert into Author_Book VALUES (Author_name ,book_id.CURRVAL );
-insert into Reg_Book VALUES(Emp_id ,book_id.CURRVAL ,sysdate );
+insert into Reg_Book VALUES(Emp_id ,book_id.CURRVAL ,TO_CHAR(SYSDATE, 'YYYY-MM-DD') );
 
 end;
 
@@ -502,7 +528,7 @@ begin
 insert into MEMBER VALUES(Mem_id.NEXTVAL , name , email , address ,expire_date  );
 select Mem_id.CURRVAL into member_id from dual;
 insert into Phone_number VALUES (Mem_id.CURRVAL ,phone );
-insert into Reg_Member VALUES (Emp_id ,Mem_id.CURRVAL ,sysdate , expire_date  );
+insert into Reg_Member VALUES (Emp_id ,Mem_id.CURRVAL ,TO_CHAR(SYSDATE, 'YYYY-MM-DD') , expire_date  );
 
 end;
 
@@ -537,10 +563,11 @@ end;
 --------------------------------------------------------
 set define off;
 
-  CREATE OR REPLACE PROCEDURE "D_PROJECT"."BORROW_BOOK" (emp_id in number , mem_id in number , bookid in number , expire_date in varchar2) is
+  CREATE OR REPLACE PROCEDURE "D_PROJECT"."BORROW_BOOK" (emp_id in number , mem_id in number , bookid in number , expire_date in varchar2, borrowID out number) is
 begin 
-insert into borrow values(emp_id ,mem_id ,bookid ,sysdate ,  expire_date, 0);
+insert into borrow values(emp_id ,mem_id ,bookid ,TO_CHAR(SYSDATE, 'YYYY-MM-DD') ,  expire_date, 0,BORROW_ID.nextval);
 update BOOK set AVAILABLE=0 where BOOK_ID= bookid;
+select BORROW_ID.nextval into borrowId from dual;
 end;
 
 /
@@ -549,9 +576,9 @@ end;
 --------------------------------------------------------
 set define off;
 
-  CREATE OR REPLACE PROCEDURE "D_PROJECT"."RETURN_BOOK" (bookID number, MEMBER_ID number) IS
+  CREATE OR REPLACE PROCEDURE "D_PROJECT"."RETURN_BOOK" (bookID number, BORR_ID number) IS
 begin
-update BORROW set returned=1 where mem_id=MEMBER_ID and BOOK_ID=bookID;
+update BORROW set returned=1 where ID=BORR_ID;
 update BOOK set AVAILABLE=1 where BOOK_ID=bookID;
 end;
 

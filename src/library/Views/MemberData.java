@@ -5,11 +5,12 @@
  */
 package library.Views;
 
-import javafx.collections.FXCollections;
+import java.time.LocalDate;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -19,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import library.AllClass.MemberBook;
+import library.DataSingleton;
 import library.Model;
 
 /**
@@ -38,7 +40,13 @@ public class MemberData extends VBox {
     private Label lbPhoneNumber = new Label("Phone Number");
     private Label lbMemberAddress = new Label("Member Address");
     private Label lbMemberEmail = new Label("Member Email");
+    private Label lbBookId = new Label("Book ID");
+    private Label lbBorrowBook = new Label("Borrow Book");
+    private Label lbReturnDate = new Label("Return Date");
 
+    private DatePicker dpReturnDate = new DatePicker(LocalDate.now());
+
+    private TextField tfBookId = new TextField();
     private TextField tfMemberID = new TextField();
     private TextField tfMemberName = new TextField();
     private TextField tfMemberAddress = new TextField();
@@ -55,7 +63,8 @@ public class MemberData extends VBox {
     private TableColumn<MemberBook, String> tcStatus = new TableColumn("Status");
     private TableColumn<MemberBook, String> tcAction = new TableColumn("Action");
 
-    private ObservableList data = FXCollections.observableArrayList();
+    Button btnBorrow = new Button("Borrow");
+    private ObservableList<MemberBook> data = DataSingleton.getInstance().getMemberBooks();
 
     public MemberData() {
         initMemberDataView();
@@ -92,17 +101,16 @@ public class MemberData extends VBox {
                         MemberBook memberBook = getTableView().getItems().get(getIndex());
                         btn.setOnAction(e -> {
                             memberDataBtnAction(memberBook);
-//                            getTableView().refresh();
+                            getTableView().refresh();
+
                             btn.setDisable(true);
                         });
                         setGraphic(btn);
                         if ("Returned".equals(memberBook.getStatus())) {
-                            System.out.println(memberBook.getStatus());
                             btn.setDisable(true);
                         } else {
                             btn.setDisable(false);
                         }
-                        System.out.println(memberBook.getStatus());
                     }
                     setText(null);
                 }
@@ -113,8 +121,9 @@ public class MemberData extends VBox {
 
     private void memberDataBtnAction(MemberBook memberBook) {
         if ("Not returned".equals(memberBook.getStatus())) {
-            Model.returnBook(memberBook.getMemberId(), memberBook.getBookId());
+            Model.returnBook(memberBook.getBorrowId(), memberBook.getBookId());
             memberBook.setStatus("Returned");
+            DataSingleton.getInstance().getEmpBook(memberBook.getBookId()).setAvailable(true);
         }
     }
 
@@ -165,16 +174,39 @@ public class MemberData extends VBox {
 
         HBox hboxPhoneNumber = new HBox(10, lbPhoneNumber, tfPhoneNumber);
 
+        lbBookId.setMinWidth(minWidthLabels);
+
+        tfBookId.setMinWidth(minWidth);
+        tfBookId.setPromptText("Book Id");
+
+        HBox hboxBook = new HBox(10, lbBookId, tfBookId);
+
+        lbReturnDate.setMinWidth(minWidthLabels);
+
+        dpReturnDate.setMinWidth(minWidth);
+
+        HBox hboxReturnDate = new HBox(10, lbReturnDate, dpReturnDate);
+
+        VBox vboxBook = new VBox(10, lbBorrowBook, hboxBook, hboxReturnDate, btnBorrow);
+
         hboxMemberId.setAlignment(Pos.CENTER);
         hboxMemberEmail.setAlignment(Pos.CENTER);
         hboxMemberName.setAlignment(Pos.CENTER);
         hboxPhoneNumber.setAlignment(Pos.CENTER);
         hboxExpireDate.setAlignment(Pos.CENTER);
         hboxMemberAddress.setAlignment(Pos.CENTER);
+        hboxBook.setAlignment(Pos.CENTER);
+        hboxReturnDate.setAlignment(Pos.CENTER);
+        vboxBook.setAlignment(Pos.CENTER);
 
+        VBox vbox = new VBox(spacing, hboxMemberId, hboxMemberName, hboxMemberAddress,
+                hboxPhoneNumber, hboxMemberEmail, hboxExpireDate);
+        HBox hbox = new HBox(20, vbox, vboxBook);
+        hbox.setAlignment(Pos.CENTER);
+
+        vbox.setAlignment(Pos.CENTER);
         setSpacing(spacing);
-        getChildren().addAll(hboxMemberId, hboxMemberName, hboxMemberAddress,
-                hboxPhoneNumber, hboxMemberEmail, hboxExpireDate, tableView);
+        getChildren().addAll(hbox, tableView);
         setAlignment(Pos.CENTER);
         setPadding(new Insets(padding));
     }
@@ -239,9 +271,9 @@ public class MemberData extends VBox {
         tfMemberAddress.setText(memberAddress);
     }
 
-    public TableView getTableView() {
-        return tableView;
-    }
+//    public TableView getTableView() {
+//        return tableView;
+//    }
 
     public TableColumn getTcBookName() {
         return tcBookName;
@@ -261,6 +293,27 @@ public class MemberData extends VBox {
 
     public void setEmail(String email) {
         tfMemberEmail.setText(email);
+    }
+
+    public Button getBtnBorrow() {
+        return btnBorrow;
+    }
+
+    public int getBookId() {
+        return Integer.parseInt(tfBookId.getText());
+    }
+
+    public LocalDate getDate() {
+        return dpReturnDate.getValue();
+    }
+
+    public ObservableList<MemberBook> getData() {
+        return data;
+    }
+
+    public void setData(ObservableList data) {
+        this.data.clear();
+        this.data.addAll(data);
     }
 
 }
