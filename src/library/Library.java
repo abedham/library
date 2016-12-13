@@ -6,6 +6,7 @@
 package library;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import javafx.application.Application;
@@ -59,9 +60,8 @@ public class Library extends Application {
 
     AddEmployee addEmployee = new AddEmployee();
 
-    MemberData memberData = new MemberData();
     BooksData booksData = new BooksData();
-
+    MemberData memberData = new MemberData(booksData);
     TabPane tabPane = new TabPane();
 
     Tab tabAddMember = new Tab();
@@ -72,6 +72,13 @@ public class Library extends Application {
     Tab tabMemberData = new Tab();
 //    Tab tabBooksData = new Tab();
 
+    
+    
+    
+    
+    
+    
+    
     @Override
     public void start(Stage primaryStage) {
 
@@ -83,6 +90,11 @@ public class Library extends Application {
         primaryStage.show();
     }
 
+    
+    
+    
+    
+    
     private void initSignIn(Stage primaryStage) {
         counter = 0;
 
@@ -139,6 +151,7 @@ public class Library extends Application {
                     primaryStage.setTitle("Control Panel");
                 }
                 Scene scene = new Scene(tabPane);
+//                scene.getStylesheets().add(getClass().getResource("Theme.css").toExternalForm());
                 primaryStage.hide();
                 primaryStage.setScene(scene);
                 primaryStage.show();
@@ -220,6 +233,8 @@ public class Library extends Application {
                 Member add_Member = add.add_Member(addMember.getMemberName(), currentEmployee.getEmp_name(), addMember.getMemberEmail(),
                         addMember.getPhoneNumbers(), currentEmployee.getEmp_id(),
                         addMember.getMemberAddress(), addMember.getExpireDate().toString());
+                DataSingleton.getInstance().getMembers().add(add_Member);
+                addMember.clearField();
             }
         });
     }
@@ -245,37 +260,58 @@ public class Library extends Application {
                 } else {
                     memberData.getData().clear();
                     CustomAlertMsg.getDoesNotExist("Member");
+                    memberData.clearFields();
+
                 }
             } catch (NumberFormatException ex) {
-                CustomAlertMsg.getIDError();
+                CustomAlertMsg.getIDError("Member");
             }
         });
         memberData.getBtnBorrow().setOnAction(e -> {
-
+            try {
+                int x = memberData.getMemberId();
+            } catch (NumberFormatException ex) {
+                CustomAlertMsg.getEmptyError("Member Info");
+                return;
+            }
             try {
                 EmpBook empBook = booksData.getEmpBook(memberData.getBookId());
-                if (empBook.isAvailable()) {
-//                if (memberData.getDate().compareTo(LocalDate.ofEpochDay(new Date().getTime())) > 0) {
-                    int borrowId = Model.borrowBook(memberData.getBookId(), memberData.getMemberId(), currentEmployee.getEmp_id(), memberData.getDate());
-                    MemberBook memberBook = new MemberBook(memberData.getBookId(),
-                            borrowId, memberData.getMemberId(), empBook.getBookName(),
-                            Model.formatDate(new Date()), Model.formatDate(memberData.getDate()), false);
-                    DataSingleton.getInstance().getMemberBooks().add(memberBook);
-                    empBook.setAvailable(false);
-//                } else {
-//                    //Expire date error
-//                }
+                if (empBook != null) {
+                    if (empBook.isAvailable()) {
+                        if (LocalDate.parse(memberData.getExpireDate(), DateTimeFormatter.ISO_DATE).isAfter(LocalDate.now())) {
+                            if (memberData.getDate().isAfter(LocalDate.now()) && empBook.isAvailable()) {
+                                int borrowId = Model.borrowBook(memberData.getBookId(), memberData.getMemberId(), currentEmployee.getEmp_id(), memberData.getDate());
+                                MemberBook memberBook = new MemberBook(memberData.getBookId(),
+                                        borrowId, memberData.getMemberId(), empBook.getBookName(),
+                                        Model.formatDate(new Date()), Model.formatDate(memberData.getDate()), false);
+                                DataSingleton.getInstance().getMemberBooks().add(memberBook);
+                                empBook.setAvailable(false);
+                                initBooksData();
+                            } else {
+                                CustomAlertMsg.getDateError("before");
+                            }
+                        } else {
+                            CustomAlertMsg.getDateError("after");
+                        }
+                    } else {
+                        CustomAlertMsg.getDoesNotExist("Book");
+                    }
+                } else {
+                    CustomAlertMsg.getDoesNotExist("Book");
                 }
             } catch (NumberFormatException ex) {
-                // Ammar add id errors,
-            }
-        });
+                CustomAlertMsg.getEmptyError("Book ID");
+            }//            } catch (Exception ex) {
+//                CustomAlertMsg.getEmptyError("Member Info");
+//
+//            }
+        }
+        );
     }
 
     private void initBooksData() {
-
-        booksData.getTableView().getItems().clear();
-        booksData.setData(Model.getBooks());
+        DataSingleton.getInstance().setEmpBooks(Model.getBooks());
+        booksData.initTableView();
 
     }
 
@@ -303,6 +339,7 @@ public class Library extends Application {
                     addEmployee.isAdmin(), addEmployee.getEmail(), salary, addEmployee.getPassword());
             if (emp != null) {
                 data.getEmployess().add(emp);
+                addEmployee.clearFields();
             }
 
         }

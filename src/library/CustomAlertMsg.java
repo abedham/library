@@ -28,17 +28,17 @@ public class CustomAlertMsg {
                     + "\n 5. Password Can be anything");
 
         } else {
-            alert.setHeaderText(FieldName + " Cannot be empty");
+            alert.setHeaderText("Problem in " + FieldName);
             alert.setContentText("Please fill " + FieldName + " Field");
         }
         alert.showAndWait();
     }
 
-    static void getIDError() {
+    static void getIDError(String cell) {
         alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Error !");
         alert.setHeaderText("ID Error");
-        alert.setContentText("Bad ID, please enter a valid id");
+        alert.setContentText("Bad " + cell + " ID, please enter a valid id");
         alert.showAndWait();
     }
 
@@ -152,6 +152,11 @@ public class CustomAlertMsg {
             alert.setHeaderText("Wrong Expire Date");
             alert.setContentText("Expire Date Cannot be before current date");
             alert.showAndWait();
+        } else if (value.equals("after")) {
+            alert.setTitle("Error !");
+            alert.setHeaderText("Account expired");
+            alert.setContentText("Please renew this member subscribtion");
+            alert.showAndWait();
         } else {
             alert.setTitle("Error !");
             alert.setHeaderText("Wrong Date format");
@@ -165,8 +170,8 @@ public class CustomAlertMsg {
         alert.setTitle(x + " Does not exist");
         alert.setHeaderText(x + " Does not exist");
         alert.setContentText("This " + x + " does not exist in our records,"
-                + "\nplease check the entered id"
-                + "\n For any problem please contact us");
+                + "\nplease check the entered id");
         alert.showAndWait();
     }
+
 }

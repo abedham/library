@@ -51,13 +51,13 @@ public class BooksData extends VBox {
         initBooksDataView();
     }
 
-    private void initTableView() {
+    public void initTableView() {
         // 0. Initialize the columns.
 
         tableView.setMaxWidth(minWidth + minWidthLabels + 280);
         tableView.setMinWidth(minWidth + minWidthLabels + 280);
-
-        tableView.getColumns().addAll(tcBookID, tcBookName, tcSectionName, tcPublisherName, tcRegBy, tcRegDate);
+        tableView.getColumns().clear();
+        tableView.getColumns().addAll(tcBookID, tcBookName, tcSectionName, tcPublisherName, tcRegBy, tcRegDate, tcAvailable);
 
         tcBookID.setCellValueFactory(new PropertyValueFactory("bookId"));
         tcBookName.setCellValueFactory(new PropertyValueFactory("bookName"));
@@ -135,7 +135,7 @@ public class BooksData extends VBox {
         return data;
     }
 
-    public void setData(List<EmpBook> empBooks) {
+    public void setData(ObservableList<EmpBook> empBooks) {
         data.clear();
         data.addAll(empBooks);
     }

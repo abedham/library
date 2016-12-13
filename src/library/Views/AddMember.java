@@ -103,7 +103,7 @@ public class AddMember extends VBox {
             HBox hbox = ((HBox) lvPhones.getItems().get(size - 1));
             hbox.getChildren().remove(btnAddPhone);
             tfPhone = new TextField();
-            tfPhone.setPromptText("Author Name");
+            tfPhone.setPromptText("Phone Number");
             tfsPhone.add(tfPhone);
             lvPhones.getItems().add(new HBox(5, tfPhone, btnAddPhone));
         });
@@ -119,7 +119,7 @@ public class AddMember extends VBox {
         getChildren().addAll(new Label("Add new member"), hboxMemberName, hboxMemberAddress,
                 hboxMemberEmail, hblvPhones, hboxExpireDate, btnAddMember);
         setAlignment(Pos.CENTER);
-        setPadding(new Insets(padding));
+        setPadding(new Insets(padding + 20));
     }
 
     public String getMemberName() {
@@ -217,6 +217,18 @@ public class AddMember extends VBox {
 
     public void setTableView(TableView tableView) {
         this.tableView = tableView;
+        tableView.setMinWidth(900);
         getChildren().add(tableView);
     }
+
+    public void clearField() {
+        tfMemberAddress.setText("");
+        tfMemberEmail.setText("");
+        tfMemberName.setText("");
+        tfPhone.setText("");
+        tfsPhone.stream().forEach((tf) -> {
+            tf.setText("");
+        });
+    }
+
 }

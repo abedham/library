@@ -21,6 +21,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import library.AllClass.EmpBook;
 import library.AllClass.MemberBook;
 import library.AllClass.Employee;
@@ -153,8 +155,8 @@ public class Model {
         return memberBooks;
     }
 
-    public static List<EmpBook> getBooks() {
-        List<EmpBook> empBooks = new ArrayList<>();
+    public static ObservableList<EmpBook> getBooks() {
+        ObservableList<EmpBook> empBooks = FXCollections.observableArrayList();
         ResultSet res = null;
         try {
             res = pstmtGetEmpBooks.executeQuery();

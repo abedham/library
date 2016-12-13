@@ -19,6 +19,7 @@ import com.itextpdf.text.Section;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.sql.Connection;
 import library.DBConnection;
@@ -26,10 +27,11 @@ import java.sql.*;
 
 public class itext {
 
+    static int x = 0;
     static DBConnection db = new DBConnection();
     static Connection conn = db.getConn();
     static Statement stat;
-    private static String FILE = "D:/temp/Report.pdf";
+    private static String FILE;
     private static Font catFont = new Font(Font.FontFamily.TIMES_ROMAN, 18,
             Font.BOLD);
     private static Font redFont = new Font(Font.FontFamily.TIMES_ROMAN, 12,
@@ -42,7 +44,10 @@ public class itext {
     public void getReprot() {
 
         try {
+            FILE = "D:/temp/Report" + x++ + ".pdf";
             Document document = new Document();
+            File file = new File(FILE);
+            file.createNewFile();
             PdfWriter.getInstance(document, new FileOutputStream(FILE));
             document.open();
 

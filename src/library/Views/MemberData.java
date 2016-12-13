@@ -66,8 +66,11 @@ public class MemberData extends VBox {
     Button btnBorrow = new Button("Borrow");
     private ObservableList<MemberBook> data = DataSingleton.getInstance().getMemberBooks();
 
-    public MemberData() {
+    BooksData booksData;
+
+    public MemberData(BooksData booksData) {
         initMemberDataView();
+        this.booksData = booksData;
     }
 
     private void initTableView() {
@@ -102,7 +105,8 @@ public class MemberData extends VBox {
                         btn.setOnAction(e -> {
                             memberDataBtnAction(memberBook);
                             getTableView().refresh();
-
+                            DataSingleton.getInstance().setEmpBooks(Model.getBooks());
+                            booksData.initTableView();
                             btn.setDisable(true);
                         });
                         setGraphic(btn);
@@ -247,6 +251,10 @@ public class MemberData extends VBox {
         return tfExpireDate;
     }
 
+    public String getExpireDate() {
+        return tfExpireDate.getText();
+    }
+
     public void setTfExpireDate(TextField tfExpireDate) {
         this.tfExpireDate = tfExpireDate;
     }
@@ -274,7 +282,6 @@ public class MemberData extends VBox {
 //    public TableView getTableView() {
 //        return tableView;
 //    }
-
     public TableColumn getTcBookName() {
         return tcBookName;
     }
@@ -316,4 +323,13 @@ public class MemberData extends VBox {
         this.data.addAll(data);
     }
 
+    public void clearFields() {
+        setExpireDate("");
+        setMemberName("");
+        setMemberAddress("");
+        setPhoneNumber("");
+        setEmail("");
+        tfBookId.setText("");
+                
+    }
 }
