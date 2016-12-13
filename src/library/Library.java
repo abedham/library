@@ -43,6 +43,8 @@ import library.show_tables.show_employee_table;
  */
 public class Library extends Application {
 
+    static int counter;
+
     public static Employee currentEmployee;
     add addition = new add();
     show_data shData = new show_data();
@@ -81,13 +83,31 @@ public class Library extends Application {
     }
 
     private void initSignIn(Stage primaryStage) {
+        counter = 0;
 
         signIn.getBtnLogin().setOnAction(e -> {
+            counter++;
+            if (counter == 5) {
+
+                signIn.setDisable(true);
+
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                signIn.setDisable(false);
+
+                            }
+                        },
+                        10000
+                );
+            }
             try {
+
                 int id = signIn.getUserId();
                 String pass = signIn.getPassword();
-//                currentEmployee = Model.logIn(id, pass);
-                currentEmployee = Model.logIn(57, "123");
+                currentEmployee = Model.logIn(id, pass);
+                // currentEmployee = Model.logIn(57, "123");
 
             } catch (Exception ex) {
 

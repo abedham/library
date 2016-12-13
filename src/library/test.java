@@ -38,6 +38,9 @@ public class test extends Application {
     @Override
     public void start(Stage primaryStage) throws SQLException {
 
+        
+  
+        
         Button btn = new Button();
         btn.setText("Report");
 
