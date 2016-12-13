@@ -162,7 +162,7 @@ public class Model {
                 empBooks.add(new EmpBook(res.getInt("BOOK_ID"),
                         res.getString("TITLE"), res.getString("SEC_NAME"),
                         res.getString("PUB_NAME"), res.getString("EMP_NAME"),
-                        res.getString("CUR_DATE"), res.getBoolean("AVAILABLE")));
+                        res.getString("REG_DATE"), res.getBoolean("AVAILABLE")));
             }
         } catch (SQLException ex) {
             if (res != null) {
