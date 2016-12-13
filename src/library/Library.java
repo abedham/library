@@ -43,6 +43,8 @@ import library.show_tables.show_employee_table;
  */
 public class Library extends Application {
 
+    static int counter;
+
     public static Employee currentEmployee;
     add addition = new add();
     show_data shData = new show_data();
@@ -81,13 +83,32 @@ public class Library extends Application {
     }
 
     private void initSignIn(Stage primaryStage) {
+        counter = 0;
 
         signIn.getBtnLogin().setOnAction(e -> {
+            counter++;
+            if (counter == 5) {
+
+                signIn.setDisable(true);
+
+                new java.util.Timer().schedule(
+                        new java.util.TimerTask() {
+                            @Override
+                            public void run() {
+                                signIn.setDisable(false);
+                                counter = 0;
+                            }
+                        },
+                        10000
+                );
+            }
             try {
+
                 int id = signIn.getUserId();
                 String pass = signIn.getPassword();
-//                currentEmployee = Model.logIn(id, pass);
-                currentEmployee = Model.logIn(58, "123456");
+
+                currentEmployee = Model.logIn(id, pass);
+
 
             } catch (Exception ex) {
 
@@ -107,10 +128,14 @@ public class Library extends Application {
                 tabPane.getTabs().addAll(tabAddMember, tabAddBook, tabMemberData);//, tabBooksData);
                 booksData.setAdmin(currentEmployee.isAdmin());
 
-                if (currentEmployee.isAdmin()) {             /// if was an admin
+                if (currentEmployee.isAdmin()) {
+                    counter = 0;
+                    /// if was an admin
                     tabPane.getTabs().add(tabAddEmployee);
                     primaryStage.setTitle("Control Panel (Admin)");
-                } else {              /// if was an employee                    
+                } else {
+                    counter = 0;
+                   /// if was an employee                    
                     primaryStage.setTitle("Control Panel");
                 }
                 Scene scene = new Scene(tabPane);
